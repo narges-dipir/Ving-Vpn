@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Abrnoc Application</string>
+    <!-- bottom tabs -->
+    <string name="home">Home</string>
+    <string name="custom_config">Custom Config</string>
+    <string name="profile">Profile</string>
+</resources>

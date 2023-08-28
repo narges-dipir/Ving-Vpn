@@ -68,4 +68,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     //compose
     implementation("androidx.compose.ui:ui-util:1.4.3")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.30.1")
+    implementation("androidx.compose.material:material:1.4.3")
+    implementation("androidx.navigation:navigation-compose:2.6.0")
 }

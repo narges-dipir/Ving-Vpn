@@ -1,4 +1,4 @@
-package com.abrnoc.application.ui.theme
+package com.abrnoc.application.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
@@ -9,6 +9,7 @@ val Pink80 = Color(0xFFEFB8C8)
 val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
+val Shadow12 = Color(0xFF037FC9)
 val Shadow11 = Color(0xff001787)
 val Shadow10 = Color(0xff00119e)
 val Shadow9 = Color(0xff0009b3)
@@ -22,6 +23,7 @@ val Shadow2 = Color(0xffc8bbfd)
 val Shadow1 = Color(0xffded6fe)
 val Shadow0 = Color(0xfff4f2ff)
 
+val Ocean12 = Color(0xFF0988D7)
 val Ocean11 = Color(0xff005687)
 val Ocean10 = Color(0xff006d9e)
 val Ocean9 = Color(0xff0087b3)
@@ -35,6 +37,9 @@ val Ocean2 = Color(0xffbbfdfd)
 val Ocean1 = Color(0xffd6fefe)
 val Ocean0 = Color(0xfff2ffff)
 
+val Sky0 = Color(0xFFB6E4FF)
+val Sky1 = Color(0xFF8CC8FF)
+
 val Lavender11 = Color(0xff170085)
 val Lavender10 = Color(0xff23009e)
 val Lavender9 = Color(0xff3300b3)
@@ -47,3 +52,23 @@ val Lavender3 = Color(0xffc186fa)
 val Lavender2 = Color(0xffdebbfd)
 val Lavender1 = Color(0xffebd6fe)
 val Lavender0 = Color(0xfff9f2ff)
+
+val Violate0 = Color(0xFF94A3B8)
+
+val Blue1 = Color(0xFF005696)
+val Blue0 = Color(0xFF11A8FD)
+
+val FunctionalRed = Color(0xffd00036)
+val FunctionalRedDark = Color(0xffea6d7e)
+
+val Neutral8 = Color(0xff121212)
+val Neutral7 = Color(0xde000000)
+val Neutral6 = Color(0x99000000)
+val Neutral5 = Color(0x61000000)
+val Neutral4 = Color(0x1f000000)
+val Neutral3 = Color(0x1fffffff)
+val Neutral2 = Color(0xFF818A99)
+val Neutral1 = Color(0xbdffffff)
+val Neutral0 = Color(0xffffffff)
+val FunctionalDarkGrey = Color(0xff2e2e2e)
+const val AlphaNearOpaque = 0.95f

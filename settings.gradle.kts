@@ -3,6 +3,7 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven( "https://jitpack.io")
     }
 }
 dependencyResolutionManagement {
@@ -10,9 +11,11 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven( "https://jitpack.io")
     }
 }
 
 rootProject.name = "Abrnoc Application"
 include(":app")
- 
+include(":data")
+include(":domain")

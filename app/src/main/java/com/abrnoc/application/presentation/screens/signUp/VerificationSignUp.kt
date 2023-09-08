@@ -1,5 +1,6 @@
 package com.abrnoc.application.presentation.screens.signUp
 
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,31 +11,45 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.abrnoc.application.presentation.components.ButtonGradient
-import com.abrnoc.application.presentation.components.CustomOtpContainer
+import com.abrnoc.application.presentation.components.SmsCodeView
+import com.abrnoc.application.presentation.connection.ConnActivity
 import com.abrnoc.application.presentation.screens.landing.AnimatedLogo
-import com.abrnoc.application.presentation.ui.theme.AbrnocApplicationTheme
 import com.abrnoc.application.presentation.ui.theme.ApplicationTheme
 import com.abrnoc.application.presentation.ui.theme.Blue0
 import com.abrnoc.application.presentation.ui.theme.Blue1
 import com.abrnoc.application.presentation.ui.theme.Sky0
 import com.abrnoc.application.presentation.ui.theme.Sky1
+import com.abrnoc.application.presentation.viewModel.VerificationCodeViewModel
 
 @Composable
-fun VerificationSignUp() {
-    val columnState = rememberScrollState()
+fun VerificationSignUp(navController: NavController?,
+                       verificationCodeViewModel: VerificationCodeViewModel = hiltViewModel()) {
+    val context = LocalContext.current
+    val otpValue = remember { mutableStateOf("") }
+    var smsCodeNumber by remember {
+        mutableStateOf("")
+    }
+    var isNextBtnStatus by remember {
+        mutableStateOf(false)
+    }
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -74,12 +89,30 @@ fun VerificationSignUp() {
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            val otpValue = remember { mutableStateOf("") }
+//            val otpValue = remember { mutableStateOf("") }
             Spacer(modifier = Modifier.height(32.dp))
-            CustomOtpContainer(value = otpValue.value, onValueChange = {
-                otpValue.value = it
-            }
+
+            SmsCodeView(
+                smsCodeLength = 6,
+                textFieldColors = TextFieldDefaults.textFieldColors(),
+                textStyle = MaterialTheme.typography.h6,
+                smsFulled = {
+                    smsCodeNumber = it
+                    isNextBtnStatus = it.length == 4
+                }
             )
+//            PinInput(
+//                cellModifier = Modifier.border(
+//                    BorderStroke(2.dp, Neutral2),
+//                    shape = RoundedCornerShape(10.dp)
+//                ),
+//                value = otpValue.value,
+//                obscureText = null,
+//                length = 6,
+//                disableKeypad = false // Optional
+//            ) {
+//                otpValue.value = it
+//            }
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "Code is 6 digits without space",
@@ -95,7 +128,8 @@ fun VerificationSignUp() {
                 nameButton = "Verify",
                 roundedCornerShape = RoundedCornerShape(30.dp)
             ) {
-
+                val intent = Intent(context, ConnActivity::class.java)
+                context.startActivity(intent)
             }
             Spacer(modifier = Modifier.padding(10.dp))
             Text(
@@ -109,10 +143,10 @@ fun VerificationSignUp() {
     }
 }
 
-@Composable
-@Preview
-private fun Preview() {
-    AbrnocApplicationTheme {
-        VerificationSignUp()
-    }
-}
+//@Composable
+//@Preview
+//private fun Preview() {
+//    AbrnocApplicationTheme {
+//        VerificationSignUp(null, null)
+//    }
+//}

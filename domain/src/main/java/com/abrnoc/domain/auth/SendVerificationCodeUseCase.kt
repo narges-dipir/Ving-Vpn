@@ -7,15 +7,16 @@ import javax.inject.Inject
 
 class SendVerificationCodeUseCase @Inject constructor(
     private val authenticationRemoteDataSource: AuthenticationRemoteDataSource,
-    private val dispatchers: DefaultDispatcherProvider
+    dispatchers: DefaultDispatcherProvider
 
-) : SuspendUseCase<String, String>(dispatchers.io) {
-    override suspend fun execute(parameters: String): String {
-        return when (authenticationRemoteDataSource.sendCodeVerification(parameters).code()) {
-            400 -> "User already exists for: $parameters"
-            200 -> "The Code Was Send To Your Email"
+) : SuspendUseCase<String, Int>(dispatchers.io) {
+    override suspend fun execute(parameters: String): Int {
+        return try {
+            val response = authenticationRemoteDataSource.sendCodeVerification(parameters)
+            response.code()
 
-            else -> "Connection Interrupt, Check your connection"
+        } catch (e: Exception) {
+            0
         }
-    }
+}
 }

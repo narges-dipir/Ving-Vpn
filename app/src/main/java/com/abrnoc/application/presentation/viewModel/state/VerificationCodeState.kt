@@ -1,0 +1,14 @@
+package com.abrnoc.application.presentation.viewModel.state
+
+import com.abrnoc.domain.model.VerificationObject
+
+data class VerificationCodeState(
+    val isLoading: Boolean = false,
+    val isSuccessful: Boolean = false,
+    val error: String = "",
+    val verificationObject: VerificationObject ?= null,
+    val password: String = "",
+    val email: String = "",
+    val code: String = ""
+)
+

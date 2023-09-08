@@ -29,13 +29,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.abrnoc.application.R
+import com.abrnoc.application.presentation.navigation.Navigation
 import com.abrnoc.application.presentation.ui.theme.AbrnocApplicationTheme
 import com.abrnoc.application.presentation.ui.theme.ApplicationTheme
 import com.abrnoc.application.presentation.ui.theme.Ocean11
 
 @Composable
-fun Landing() {
+fun Landing(navController: NavController?) {
     val brush = Brush.verticalGradient(ApplicationTheme.colors.welcomeGradiant)
 
     Column(
@@ -48,7 +50,7 @@ fun Landing() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.weight(0.6f))
+        Spacer(modifier = Modifier.weight(0.5f))
         Image(painter = painterResource(id = R.drawable.map_pins)
             , contentDescription = "map image background")
         Spacer(modifier = Modifier.height(32.dp))
@@ -82,7 +84,7 @@ fun Landing() {
                 ),
                 shape = RoundedCornerShape(50),
                 colors = ButtonDefaults.buttonColors(containerColor = Color.White),
-                onClick = { /*TODO*/ }) {
+                onClick = { navController?.navigate(Navigation.WelcomeScreen.route) }) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
@@ -100,6 +102,6 @@ fun Landing() {
 @Composable
 private fun Preview() {
     AbrnocApplicationTheme {
-        Landing()
+        Landing(null)
     }
 }

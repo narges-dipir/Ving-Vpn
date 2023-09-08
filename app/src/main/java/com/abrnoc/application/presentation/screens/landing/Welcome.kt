@@ -1,13 +1,7 @@
 package com.abrnoc.application.presentation.screens.landing
 
-import androidx.compose.animation.core.AnimationState
-import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.StartOffset
-import androidx.compose.animation.core.TweenSpec
-import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.repeatable
 import androidx.compose.animation.core.tween
@@ -30,9 +24,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
@@ -46,7 +37,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.abrnoc.application.R
+import com.abrnoc.application.presentation.navigation.Navigation
 import com.abrnoc.application.presentation.ui.theme.AbrnocApplicationTheme
 import com.abrnoc.application.presentation.ui.theme.ApplicationTheme
 import com.abrnoc.application.presentation.ui.theme.Ocean11
@@ -54,7 +47,7 @@ import com.abrnoc.application.presentation.ui.theme.Shadow0
 import com.abrnoc.application.presentation.ui.theme.Shadow2
 
 @Composable
-fun Welcome() {
+fun Welcome(navController: NavController?) {
     val brush = Brush.verticalGradient(ApplicationTheme.colors.welcomeGradiant)
 
     Column(
@@ -68,7 +61,7 @@ fun Welcome() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.weight(0.6f))
+        Spacer(modifier = Modifier.weight(0.8f))
         AnimatedLogo(
             modifier = Modifier
                 .fillMaxWidth(.3f)
@@ -105,7 +98,7 @@ fun Welcome() {
                 ),
                 shape = RoundedCornerShape(50),
                 colors = ButtonDefaults.buttonColors(containerColor = Color.White),
-                onClick = { /*TODO*/ }) {
+                onClick = { navController?.navigate(Navigation.EmailSignUpScreen.route) }) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
@@ -164,6 +157,6 @@ fun AnimatedLogo(modifier: Modifier = Modifier, colors: List<Color> = listOf(Sha
 @Composable
 private fun Preview() {
     AbrnocApplicationTheme {
-        Welcome()
+        Welcome(null)
     }
 }

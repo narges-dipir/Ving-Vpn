@@ -6,6 +6,8 @@ import retrofit2.http.Headers
 
 interface ConnectionApi {
     @GET("/gw/v1/proxy")
-    @Headers("Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1MiIsImlhdCI6MTY5MTkyODcxOCwianRpIjoiMGQ5MHQ0NjU1ODFtZCIsImV4cCI6MTY5MzEzODMxOH0.SDkESm1km47pBdJDT4qERhgrwaQz5gxmoawVLRoYqLS_Fv-VJA0EhUAsr80i9bMBIkgOp9teJvHuOsxS0N2aPw")
-    suspend fun getAllConfigs(): List<Url>
+    @Headers("Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1MiIsImlhdCI6MTY5MzgyNDY5NiwianRpIjoiMGRnMnRwcjN3aGE0MyIsImV4cCI6MTY5NTAzNDI5Nn0.MGIX7LXtrVUX4Y2uvCiQt0IZw5N0YTxWWL2OIFjD9eu1K6h7J2Q5P7UcgLuW-wARFOJhbGF0McwG0rK6OHBYPg")
+    suspend fun getAllConfigs(
+//        @Header("Authorization") jwt: String,
+    ): List<Url>
 }

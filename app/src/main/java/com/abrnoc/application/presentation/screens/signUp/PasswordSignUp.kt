@@ -34,13 +34,14 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.abrnoc.application.R
 import com.abrnoc.application.presentation.components.ButtonGradient
+import com.abrnoc.application.presentation.navigation.Navigation
 import com.abrnoc.application.presentation.screens.landing.AnimatedLogo
-import com.abrnoc.application.presentation.ui.theme.AbrnocApplicationTheme
 import com.abrnoc.application.presentation.ui.theme.ApplicationTheme
 import com.abrnoc.application.presentation.ui.theme.Blue0
 import com.abrnoc.application.presentation.ui.theme.Blue1
@@ -48,10 +49,14 @@ import com.abrnoc.application.presentation.ui.theme.Sky0
 import com.abrnoc.application.presentation.ui.theme.Sky1
 import com.abrnoc.application.presentation.utiles.Visibility
 import com.abrnoc.application.presentation.utiles.VisibilityOff
+import com.abrnoc.application.presentation.viewModel.AuthenticationViewModel
+import com.abrnoc.application.presentation.viewModel.VerificationCodeViewModel
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun PasswordSignUp() {
+fun PasswordSignUp(navController: NavController?,
+                   verificationCodeViewModel: VerificationCodeViewModel = hiltViewModel(),
+                   authenticationViewModel: AuthenticationViewModel = hiltViewModel()) {
     var text by rememberSaveable {
         mutableStateOf("")
     }
@@ -188,17 +193,21 @@ fun PasswordSignUp() {
                 nameButton = "Next",
                 roundedCornerShape = RoundedCornerShape(30.dp)
             ) {
-
+                verificationCodeViewModel.state = verificationCodeViewModel.state.copy(
+                    password = password,
+                    email = authenticationViewModel.state.email
+                )
+                navController?.navigate(Navigation.VerificationCodeScreen.route)
             }
 
         }
     }
 }
 
-@Preview
-@Composable
-private fun Preview() {
-    AbrnocApplicationTheme {
-        PasswordSignUp()
-    }
-}
+//@Preview
+//@Composable
+//private fun Preview() {
+//    AbrnocApplicationTheme {
+//        PasswordSignUp(null, VerificationCodeViewModel(), AuthenticationViewModel())
+//    }
+//}

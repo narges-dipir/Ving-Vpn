@@ -55,4 +55,7 @@ dependencies {
     implementation("com.github.ihsanbal:LoggingInterceptor:3.1.0") {
         exclude( "org.json",  "json")
     }
+    // Preferences DataStore
+    implementation("androidx.datastore:datastore-preferences:1.1.0-alpha04")
+
 }

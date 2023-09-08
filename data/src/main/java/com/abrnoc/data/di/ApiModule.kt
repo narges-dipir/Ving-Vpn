@@ -15,6 +15,7 @@ import okhttp3.internal.platform.Platform
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
+import javax.net.ssl.HostnameVerifier
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -26,19 +27,20 @@ object ApiModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(): OkHttpClient {
+    fun provideOkHttp(): OkHttpClient {
         return OkHttpClient.Builder()
             .apply {
-                addInterceptor(
-                    LoggingInterceptor.Builder()
-                        .setLevel(Level.BASIC)
-                        .log(Platform.INFO)
-                        .request("LOG")
-                        .response("LOG")
-                        .build()
-                )
-            }
+            addInterceptor(
+                LoggingInterceptor.Builder()
+                    .setLevel(Level.BASIC)
+                    .log(Platform.INFO)
+                    .request("LOG")
+                    .response("LOG")
+                    .build(),
+            )
+        }.hostnameVerifier(HostnameVerifier { hostname, session -> true })
             .build()
+
     }
 
     @Provides
@@ -47,7 +49,7 @@ object ApiModule {
         okHttpClient: OkHttpClient,
     ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://172.86.76.146:8080/")
+            .baseUrl("https://172.86.76.146:8080/")  //https://172.86.76.146:8080/
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

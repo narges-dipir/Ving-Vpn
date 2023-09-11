@@ -37,7 +37,9 @@ import com.abrnoc.application.presentation.ui.theme.Blue0
 import com.abrnoc.application.presentation.ui.theme.Blue1
 import com.abrnoc.application.presentation.ui.theme.Sky0
 import com.abrnoc.application.presentation.ui.theme.Sky1
+import com.abrnoc.application.presentation.utiles.longToast
 import com.abrnoc.application.presentation.viewModel.VerificationCodeViewModel
+import com.abrnoc.application.presentation.viewModel.event.SendVerificationEvent
 
 @Composable
 fun VerificationSignUp(navController: NavController?,
@@ -128,8 +130,22 @@ fun VerificationSignUp(navController: NavController?,
                 nameButton = "Verify",
                 roundedCornerShape = RoundedCornerShape(30.dp)
             ) {
-                val intent = Intent(context, ConnActivity::class.java)
-                context.startActivity(intent)
+                if (smsCodeNumber.length == 6) {
+                verificationCodeViewModel.onEvent(
+                    SendVerificationEvent.SignInQuery(
+                        email = verificationCodeViewModel.state.email,
+                        password = verificationCodeViewModel.state.password,
+                        code = smsCodeNumber
+                    )
+                )
+                    if (verificationCodeViewModel.state.isSuccessful) {
+                        val intent = Intent(context, ConnActivity::class.java)
+                        context.startActivity(intent)
+                    } else {
+                        longToast(context, verificationCodeViewModel.state.error ?: "400 Bad Request")
+                    }
+                }
+
             }
             Spacer(modifier = Modifier.padding(10.dp))
             Text(

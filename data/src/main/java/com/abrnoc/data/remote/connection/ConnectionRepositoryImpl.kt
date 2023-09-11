@@ -2,14 +2,16 @@ package com.abrnoc.data.remote.connection
 
 import com.abrnoc.data.api.connection.ConnectionApi
 import com.abrnoc.data.api.connection.model.Url
+import com.abrnoc.data.local.AuthDataStore
 import com.abrnoc.data.remote.model.DefaultConfig
 import javax.inject.Inject
 
 class ConnectionRepositoryImpl @Inject constructor(
     private val connectionApi: ConnectionApi,
+    private val dataStore: AuthDataStore,
 ) : ConnectionRepository {
     override suspend fun getAppConfigs(): List<DefaultConfig> {
-        return connectionApi.getAllConfigs().mapToDefaultConfig()
+        return connectionApi.getAllConfigs(dataStore.getJwtAuth()).mapToDefaultConfig()
     }
 
     private fun List<Url>.mapToDefaultConfig(): List<DefaultConfig> {

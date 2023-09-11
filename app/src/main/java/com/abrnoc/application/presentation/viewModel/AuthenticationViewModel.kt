@@ -28,10 +28,10 @@ class AuthenticationViewModel @Inject constructor(
                 state = state.copy(email = event.email)
                 searchJob?.cancel()
                 searchJob = viewModelScope.launch {
-                    delay(500L)
                     if (isValidEmail(state.email)) {
                         sendVerificationCode()
                     }
+                    delay(100L)
                 }
 
             }

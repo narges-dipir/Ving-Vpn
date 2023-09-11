@@ -11,8 +11,10 @@ import com.abrnoc.application.R
 import com.abrnoc.application.connection.database.GroupManager
 import com.abrnoc.application.connection.database.ProfileManager
 import com.abrnoc.application.connection.group.GroupUpdater
+import com.abrnoc.application.connection.group.RawUpdater
 import com.abrnoc.application.connection.neko.Util
 import com.abrnoc.application.databinding.ActivityConnBinding
+import com.abrnoc.application.ftm.AbstractBean
 import com.abrnoc.application.ftm.KryoConverters
 import com.abrnoc.application.presentation.connection.fragment.ConfigurationFragment
 import com.abrnoc.application.presentation.connection.fragment.ToolbarFragment
@@ -22,6 +24,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import io.nekohasekai.sagernet.aidl.ISagerNetService
 import io.nekohasekai.sagernet.group.GroupInterfaceAdapter
+import io.nekohasekai.sagernet.ktx.SubscriptionFoundException
 import io.nekohasekai.sagernet.ktx.alert
 import io.nekohasekai.sagernet.widget.ListHolderListener
 
@@ -35,7 +38,27 @@ class ConnActivity : ThemedActivity(), SagerConnection.Callback,
 
         defaultConfigsViewModel.defaultConfigFlow.observe(this) { state ->
             state?.let {
-                println(" the ** is $it " )
+                it.configs?.forEach { config ->
+                        val text = config.url
+                    if (text.isBlank()) {
+                        println(getString(R.string.clipboard_empty))
+                    } else runOnDefaultDispatcher {
+                        try {
+                            val proxies = RawUpdater.parseRaw(text)
+                            if (proxies.isNullOrEmpty()) onMainDispatcher {
+                                println(getString(R.string.no_proxies_found_in_clipboard))
+                            } else import(proxies)
+                        } catch (e: SubscriptionFoundException) {
+                            importSubscription(Uri.parse(e.link))
+                        } catch (e: Exception) {
+                            Logs.w(e)
+
+                            onMainDispatcher {
+                                snackbar(e.readableMessage).show()
+                            }
+                        }
+                    }
+                }
             }
         }
         binding = ActivityConnBinding.inflate(layoutInflater)
@@ -61,7 +84,21 @@ class ConnActivity : ThemedActivity(), SagerConnection.Callback,
         }
 
     }
+    suspend fun import(proxies: List<AbstractBean>) {
+        val targetId = DataStore.selectedGroupForImport()
+        for (proxy in proxies) {
+            ProfileManager.createProfile(targetId, proxy)
+        }
+        onMainDispatcher {
+            DataStore.editingGroup = targetId
+            snackbar(
+                this@ConnActivity.resources.getQuantityString(
+                    R.plurals.added, proxies.size, proxies.size
+                )
+            ).show()
+        }
 
+    }
     override fun onPreferenceDataStoreChanged(store: PreferenceDataStore, key: String) {
         when (key) {
             Key.SERVICE_MODE -> onBinderDied()
@@ -187,6 +224,45 @@ class ConnActivity : ThemedActivity(), SagerConnection.Callback,
         }
 
     }
+    suspend fun importProfile(uri: Uri) {
+        val profile = try {
+            io.nekohasekai.sagernet.ktx.parseProxies(uri.toString()).getOrNull(0) ?: error(getString(R.string.no_proxies_found))
+        } catch (e: Exception) {
+            onMainDispatcher {
+                alert(e.readableMessage).show()
+            }
+            return
+        }
+
+        onMainDispatcher {
+            MaterialAlertDialogBuilder(this@ConnActivity).setTitle(R.string.profile_import)
+                .setMessage(getString(R.string.profile_import_message, profile.displayName()))
+                .setPositiveButton(R.string.yes) { _, _ ->
+                    runOnDefaultDispatcher {
+                        finishImportProfile(profile)
+                    }
+                }
+                .setNegativeButton(android.R.string.cancel, null)
+                .show()
+        }
+
+    }
+
+    private suspend fun finishImportProfile(profile: AbstractBean) {
+        val targetId = DataStore.selectedGroupForImport()
+
+        ProfileManager.createProfile(targetId, profile)
+
+        onMainDispatcher {
+//            displayFragmentWithId(R.id.nav_configuration)
+
+            snackbar(resources.getQuantityString(R.plurals.added, 1, 1)).show()
+        }
+    }
+
+
+
+
 
     private suspend fun finishImportSubscription(subscription: ProxyGroup) {
         GroupManager.createGroup(subscription)

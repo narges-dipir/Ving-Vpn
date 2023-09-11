@@ -49,14 +49,12 @@ import com.abrnoc.application.presentation.ui.theme.Sky0
 import com.abrnoc.application.presentation.ui.theme.Sky1
 import com.abrnoc.application.presentation.utiles.Visibility
 import com.abrnoc.application.presentation.utiles.VisibilityOff
-import com.abrnoc.application.presentation.viewModel.AuthenticationViewModel
-import com.abrnoc.application.presentation.viewModel.VerificationCodeViewModel
+import com.abrnoc.application.presentation.viewModel.PasswordViewModel
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun PasswordSignUp(navController: NavController?,
-                   verificationCodeViewModel: VerificationCodeViewModel = hiltViewModel(),
-                   authenticationViewModel: AuthenticationViewModel = hiltViewModel()) {
+                   passwordViewModel: PasswordViewModel = hiltViewModel()) {
     var text by rememberSaveable {
         mutableStateOf("")
     }
@@ -193,11 +191,10 @@ fun PasswordSignUp(navController: NavController?,
                 nameButton = "Next",
                 roundedCornerShape = RoundedCornerShape(30.dp)
             ) {
-                verificationCodeViewModel.state = verificationCodeViewModel.state.copy(
-                    password = password,
-                    email = authenticationViewModel.state.email
-                )
-                navController?.navigate(Navigation.VerificationCodeScreen.route)
+
+                navController?.
+                navigate(
+                    Navigation.VerificationCodeScreen.route + "/${passwordViewModel.email.value}" + "/${password.toString()}")
             }
 
         }

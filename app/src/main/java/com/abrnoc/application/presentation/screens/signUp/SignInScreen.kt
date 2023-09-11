@@ -203,15 +203,16 @@ fun EmailSignIn(navController: NavController?,
                         password = password
                     )
                 )
-                if (viewModel.state.isLoading){
+                if (viewModel.state.isRequestSend){
+                    if (viewModel.state.isLoading) {
 
-                } else if(viewModel.state.isSuccessful) {
-                    val intent = Intent(context, ConnActivity::class.java)
-                    context.startActivity(intent)
-                } else {
-                    longToast(context, "Your Password Doesn't Match, Try Again")
-                }
-
+                    } else if (viewModel.state.isSuccessful) {
+                        val intent = Intent(context, ConnActivity::class.java)
+                        context.startActivity(intent)
+                    } else {
+                        longToast(context, "Your Password Doesn't Match, Try Again")
+                    }
+            }
             }
 
         }

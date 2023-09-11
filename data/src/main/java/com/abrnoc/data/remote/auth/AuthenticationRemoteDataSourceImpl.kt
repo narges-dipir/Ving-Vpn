@@ -11,6 +11,7 @@ import javax.inject.Inject
 
 class AuthenticationRemoteDataSourceImpl @Inject constructor(
     private val authApi: AuthApi,
+
 ) : AuthenticationRemoteDataSource {
     override suspend fun sendCodeVerification(email: String): Response<Unit> {
         return authApi.setEmailForVerification(Email(email))
@@ -25,7 +26,7 @@ class AuthenticationRemoteDataSourceImpl @Inject constructor(
     }
 
     override suspend fun signInVerification(email: String, password: String): String {
-        return authApi.setAuthenticationSignIn(SignIn(email, password))
+        return authApi.setAuthenticationSignIn(SignIn(email, password)).jwt
     }
 
 

@@ -156,21 +156,18 @@ fun EmailSignUp(
                 nameButton = "Next",
                 roundedCornerShape = RoundedCornerShape(30.dp)
             ) {
-
-                if (!viewModel.state.isValid) {
-                    longToast(context, " The email Is Not Valid, Try Again!") }
-                    else if (text == "nargesdeypir@gmail.com") {
-                    navController?.navigate(Navigation.EmailSignInScreen.route)
-
-                } else if (!viewModel.state.isAlreadyRegistered and viewModel.state.isValid) {
-                    longToast(context, "The Verification Code Has Been Send To Your Email")
-                   navController?.navigate(Navigation.VerificationCodeScreen.route)
-               }
-                else if (viewModel.state.isAlreadyRegistered) {
-                    navController?.navigate(Navigation.EmailSignInScreen.route)
-                } else {
-                    longToast(context, viewModel.state.message)
-                }
+                if (viewModel.state.email != "") {
+                    if (!viewModel.state.isValid) {
+                        longToast(context, " The email Is Not Valid, Try Again!")
+                    } else if (viewModel.state.isAlreadyRegistered) {
+                        navController?.navigate(Navigation.EmailSignInScreen.route)
+                    } else if (!viewModel.state.isAlreadyRegistered and viewModel.state.isValid) {
+                        longToast(context, "The Verification Code Has Been Send To Your Email")
+                        navController?.navigate(Navigation.PasswordScreen.route + "/${text}")
+                    } else {
+                        longToast(context, viewModel.state.message)
+                    }
+            }
             }
 
             Spacer(modifier = Modifier.padding(10.dp))

@@ -6,6 +6,7 @@ data class SignInState(
     val isLoading: Boolean = false,
     val signIn: SignInObj?= null,
     val isSuccessful: Boolean = false,
+    val isRequestSend: Boolean = true,
     val error: String = ""
 )
 

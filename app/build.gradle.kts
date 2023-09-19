@@ -85,12 +85,16 @@ dependencies {
     implementation("androidx.compose.material:material:1.4.3")
     implementation("androidx.navigation:navigation-compose:2.6.0")
     implementation("androidx.compose.foundation:foundation:1.4.3")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+
     // Hilt
     implementation("com.google.dagger:hilt-android:2.44.2")
     kapt("com.google.dagger:hilt-compiler:2.44.2")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+    implementation("dev.olshevski.navigation:reimagined-hilt:1.1.1")
     // temp
-    implementation("com.google.android.material:material:1.6.0")
+    implementation("com.google.android.material:material:1.9.0")
+    implementation("com.github.daniel-stoneuk:material-about-library:3.2.0-rc01")
     implementation("androidx.room:room-runtime:2.4.2")
     kapt("androidx.room:room-compiler:2.4.2")
     implementation("androidx.room:room-ktx:2.4.2")
@@ -129,4 +133,10 @@ dependencies {
     kapt("androidx.hilt:hilt-compiler:1.0.0")
     // Preferences DataStore
     implementation("androidx.datastore:datastore-preferences:1.1.0-alpha04")
+    // Timber
+    implementation("com.jakewharton.timber:timber:4.7.1")
+    // coil
+    implementation("io.coil-kt:coil:2.4.0")
+    implementation("io.coil-kt:coil-compose:2.4.0")
+    // flags
 }

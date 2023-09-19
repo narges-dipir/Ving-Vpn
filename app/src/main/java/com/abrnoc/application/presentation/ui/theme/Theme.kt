@@ -26,6 +26,7 @@ private val DarkColorPalette = ApplicationColors(
     textHelp = Neutral6,
     iconGradiant = listOf(Ocean9, Shadow11),
     welcomeGradiant = listOf(Shadow12, Ocean12),
+    neturalBackGround = listOf(Neutral1,Violate0,Neutral0),
     error = FunctionalRedDark,
     navigationPrimary = Neutral3,
     iconInteractiveInactive = Neutral6,
@@ -40,6 +41,7 @@ private val LightColorPalette = ApplicationColors(
     textHelp = Neutral1,
     iconGradiant = listOf(Ocean9, Shadow11),
     welcomeGradiant = listOf(Shadow12, Ocean12),
+    neturalBackGround = listOf(Neutral1,Violate0,Neutral0),
     error = FunctionalRed,
     navigationPrimary = Lavender2,
     iconInteractiveInactive = Neutral1,
@@ -98,6 +100,7 @@ class ApplicationColors(
     textHelp: Color,
     iconGradiant: List<Color>,
     welcomeGradiant: List<Color>,
+    neturalBackGround: List<Color>,
     error: Color,
     navigationPrimary: Color,
     iconInteractiveInactive: Color,
@@ -119,6 +122,7 @@ class ApplicationColors(
 
     var welcomeGradiant by mutableStateOf(welcomeGradiant)
         private set
+    var neturalBackGround by mutableStateOf(neturalBackGround)
     var error by mutableStateOf(error)
         private set
     var isDark by mutableStateOf(isDark)
@@ -137,6 +141,7 @@ class ApplicationColors(
         textHelp = other.textHelp
         iconGradiant = other.iconGradiant
         welcomeGradiant = other.welcomeGradiant
+        neturalBackGround = other.neturalBackGround
         error = other.error
         navigationPrimary = other.navigationPrimary
         iconInteractiveInactive = other.iconInteractiveInactive
@@ -151,6 +156,7 @@ class ApplicationColors(
         textHelp = textHelp,
         iconGradiant = iconGradiant,
         welcomeGradiant = welcomeGradiant,
+        neturalBackGround = neturalBackGround,
         error = error,
         navigationPrimary = navigationPrimary,
         iconInteractiveInactive= iconInteractiveInactive,

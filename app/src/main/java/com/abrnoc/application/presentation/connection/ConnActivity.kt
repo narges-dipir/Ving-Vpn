@@ -11,7 +11,6 @@ import com.abrnoc.application.R
 import com.abrnoc.application.connection.database.GroupManager
 import com.abrnoc.application.connection.database.ProfileManager
 import com.abrnoc.application.connection.group.GroupUpdater
-import com.abrnoc.application.connection.group.RawUpdater
 import com.abrnoc.application.connection.neko.Util
 import com.abrnoc.application.databinding.ActivityConnBinding
 import com.abrnoc.application.ftm.AbstractBean
@@ -21,12 +20,14 @@ import com.abrnoc.application.presentation.connection.fragment.ToolbarFragment
 import com.abrnoc.application.presentation.connection.profile.ThemedActivity
 import com.abrnoc.application.presentation.viewModel.DefaultConfigViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import io.nekohasekai.sagernet.aidl.ISagerNetService
+import io.nekohasekai.sagernet.aidl.TrafficStats
 import io.nekohasekai.sagernet.group.GroupInterfaceAdapter
-import io.nekohasekai.sagernet.ktx.SubscriptionFoundException
 import io.nekohasekai.sagernet.ktx.alert
 import io.nekohasekai.sagernet.widget.ListHolderListener
+import timber.log.Timber
 
 @AndroidEntryPoint
 class ConnActivity : ThemedActivity(), SagerConnection.Callback,
@@ -36,34 +37,43 @@ class ConnActivity : ThemedActivity(), SagerConnection.Callback,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        defaultConfigsViewModel.defaultConfigFlow.observe(this) { state ->
-            state?.let {
-                it.configs?.forEach { config ->
-                        val text = config.url
-                    if (text.isBlank()) {
-                        println(getString(R.string.clipboard_empty))
-                    } else runOnDefaultDispatcher {
-                        try {
-                            val proxies = RawUpdater.parseRaw(text)
-                            if (proxies.isNullOrEmpty()) onMainDispatcher {
-                                println(getString(R.string.no_proxies_found_in_clipboard))
-                            } else import(proxies)
-                        } catch (e: SubscriptionFoundException) {
-                            importSubscription(Uri.parse(e.link))
-                        } catch (e: Exception) {
-                            Logs.w(e)
-
-                            onMainDispatcher {
-                                snackbar(e.readableMessage).show()
-                            }
-                        }
-                    }
-                }
-            }
-        }
+//        defaultConfigsViewModel.defaultConfigFlow.observe(this) { state ->
+//            state?.let {
+//                it.configs?.forEach { config ->
+//                        val text = config.url
+//                    if (text.isBlank()) {
+//                        println(getString(R.string.clipboard_empty))
+//                    } else runOnDefaultDispatcher {
+//                        try {
+//                            val proxies = RawUpdater.parseRaw(text)
+//                            if (proxies.isNullOrEmpty()) onMainDispatcher {
+//                                println(getString(R.string.no_proxies_found_in_clipboard))
+//                            } else import(proxies)
+//                        } catch (e: SubscriptionFoundException) {
+//                            importSubscription(Uri.parse(e.link))
+//                        } catch (e: Exception) {
+//                            Logs.w(e)
+//
+//                            onMainDispatcher {
+//                                snackbar(e.readableMessage).show()
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
         binding = ActivityConnBinding.inflate(layoutInflater)
         binding.fab.initProgress(binding.fabProgress)
+        binding.testButton.setOnClickListener {
+            println("im here ***")
+            Timber.i("***", "Im here")
+            if (DataStore.serviceState.canStop) SagerNet.stopService() else connect.launch(
+                null
+            )
+        }
         binding.fab.setOnClickListener {
+            println("im here ***")
+            Timber.i("***", "Im here")
             if (DataStore.serviceState.canStop) SagerNet.stopService() else connect.launch(
                 null
             )
@@ -112,18 +122,32 @@ class ConnActivity : ThemedActivity(), SagerConnection.Callback,
         }
 
     }
+    override fun onStart() {
+        super.onStart()
+        connection.bandwidthTimeout = 1000
+    }
+
+    override fun onStop() {
+        connection.bandwidthTimeout = 0
+        super.onStop()
+    }
 
     override fun stateChanged(state: BaseService.State, profileName: String?, msg: String?) {
         changeState(state, msg, true)
     }
 
     val connection = SagerConnection(true)
-    override fun onServiceConnected(service: ISagerNetService) {
-        try {
-            BaseService.State.values()[service.state]
-        } catch (_: RemoteException) {
-            BaseService.State.Idle
-        }
+    override fun onServiceConnected(service: ISagerNetService) = changeState(
+    try {
+        BaseService.State.values()[service.state]
+    } catch (_: RemoteException) {
+        BaseService.State.Idle
+    }
+    )
+    override fun onServiceDisconnected() = changeState(BaseService.State.Idle)
+    override fun onBinderDied() {
+        connection.disconnect(this)
+        connection.connect(this, this)
     }
 
     private fun changeState(
@@ -156,6 +180,27 @@ class ConnActivity : ThemedActivity(), SagerConnection.Callback,
     private val connect = registerForActivityResult(VpnRequestActivity.StartService()) {
         if (it) snackbar(R.string.vpn_permission_denied).show()
     }
+
+    override fun trafficUpdated(profileId: Long, stats: TrafficStats, isCurrent: Boolean) {
+        if (profileId == 0L) return
+
+        if (isCurrent) binding.stats.updateTraffic(
+            stats.txRateProxy, stats.rxRateProxy
+        )
+
+        runOnDefaultDispatcher {
+            ProfileManager.postTrafficUpdated(profileId, stats)
+        }
+    }
+    override fun snackbarInternal(text: CharSequence): Snackbar {
+        return Snackbar.make(binding.coordinator, text, Snackbar.LENGTH_LONG).apply {
+            if (binding.fab.isShown) {
+                anchorView = binding.fab
+            }
+            // TODO
+        }
+    }
+
 
     fun urlTest(): Int {
         if (!DataStore.serviceState.connected || connection.service == null) {
@@ -271,6 +316,7 @@ class ConnActivity : ThemedActivity(), SagerConnection.Callback,
 
     fun displayFragmentWithId(): Boolean {
         displayFragment(ConfigurationFragment())
+        connection.bandwidthTimeout = connection.bandwidthTimeout
 
     return true
 }

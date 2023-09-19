@@ -174,11 +174,11 @@ class ConfigurationFragment @JvmOverloads constructor(
                 .attach(this)
                 .commit()
         }
-        defaultConfigsViewModel.defaultConfigFlow.observe(this) { state ->
-            state?.let {
-                println(" the ** is $it " )
-            }
-        }
+//        defaultConfigsViewModel.defaultConfigFlow.observe(this) { state ->
+//            state?.let {
+//                println(" the ** is $it " )
+//            }
+//        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

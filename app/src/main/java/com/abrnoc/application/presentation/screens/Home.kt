@@ -95,7 +95,7 @@ private fun Landing(
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Cloudzy VPN",
+                text = "keepitOn VPN",
                 style = MaterialTheme.typography.h3,
                 maxLines = 1,
                 overflow = TextOverflow.Visible,

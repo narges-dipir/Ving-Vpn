@@ -33,14 +33,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.whenStarted
 import com.abrnoc.application.R
 import com.google.android.material.bottomappbar.BottomAppBar
-
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class StatsBar @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null,
-    defStyleAttr: Int = com.google.android.material.R.attr.bottomAppBarStyle,
+    defStyleAttr: Int = R.attr.accentOrTextPrimary,
 ) : BottomAppBar(context, attrs, defStyleAttr) {
     private lateinit var statusText: TextView
     private lateinit var txText: TextView

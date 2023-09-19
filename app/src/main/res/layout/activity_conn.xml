@@ -36,6 +36,12 @@
             app:trackCornerRadius="@dimen/mtrl_progress_track_thickness"
             app:trackThickness="8dp" />
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/test_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_service_active"
+            />
         <com.abrnoc.application.presentation.connection.ServiceButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"

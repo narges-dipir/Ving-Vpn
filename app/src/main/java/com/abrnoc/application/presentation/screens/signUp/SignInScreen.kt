@@ -44,6 +44,7 @@ import androidx.navigation.NavController
 import com.abrnoc.application.R
 import com.abrnoc.application.presentation.components.ButtonGradient
 import com.abrnoc.application.presentation.connection.ConnActivity
+import com.abrnoc.application.presentation.navigation.Navigation
 import com.abrnoc.application.presentation.screens.landing.AnimatedLogo
 import com.abrnoc.application.presentation.ui.theme.AbrnocApplicationTheme
 import com.abrnoc.application.presentation.ui.theme.ApplicationTheme
@@ -207,8 +208,9 @@ fun EmailSignIn(navController: NavController?,
                     if (viewModel.state.isLoading) {
 
                     } else if (viewModel.state.isSuccessful) {
-                        val intent = Intent(context, ConnActivity::class.java)
-                        context.startActivity(intent)
+//                        val intent = Intent(context, ConnActivity::class.java)
+//                        context.startActivity(intent)
+                        navController?.navigate(Navigation.MainConnectionScreen.route)
                     } else {
                         longToast(context, "Your Password Doesn't Match, Try Again")
                     }

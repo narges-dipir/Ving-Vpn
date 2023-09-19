@@ -70,7 +70,7 @@ fun Welcome(navController: NavController?) {
         Spacer(modifier = Modifier.height(32.dp))
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = "Welcome To Cloudzy VPN!",
+                text = "Welcome To keepitOn VPN!",
                 color = Color.White,
                 fontWeight = FontWeight.Bold,
                 fontSize = 28.sp,

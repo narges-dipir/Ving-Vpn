@@ -11,7 +11,7 @@ class ConnectionRepositoryImpl @Inject constructor(
     private val dataStore: AuthDataStore,
 ) : ConnectionRepository {
     override suspend fun getAppConfigs(): List<DefaultConfig> {
-        return connectionApi.getAllConfigs(dataStore.getJwtAuth()).mapToDefaultConfig()
+        return connectionApi.getAllConfigs("Bearer "+dataStore.getJwtAuth()).mapToDefaultConfig()
     }
 
     private fun List<Url>.mapToDefaultConfig(): List<DefaultConfig> {

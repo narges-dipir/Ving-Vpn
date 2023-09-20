@@ -40,8 +40,9 @@ import com.abrnoc.application.presentation.connection.onMainDispatcher
 import com.abrnoc.application.presentation.connection.readableMessage
 import com.abrnoc.application.presentation.connection.runOnDefaultDispatcher
 import com.abrnoc.application.presentation.viewModel.state.DefaultConfigState
-import com.abrnoc.application.repository.IDefaultConfigRepository
-import com.abrnoc.application.repository.model.ResultWrapper
+import com.abrnoc.application.repository.model.DefaultConfig
+import com.abrnoc.domain.common.Result
+import com.abrnoc.domain.connection.GetDefaultConfigUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.nekohasekai.sagernet.aidl.ISagerNetService
 import io.nekohasekai.sagernet.aidl.TrafficStats
@@ -52,19 +53,20 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DefaultConfigViewModel @Inject constructor(
-    private val defaultConfigRepository: IDefaultConfigRepository,
+    private val getDefaultConfigUseCase: GetDefaultConfigUseCase,
     private val context: Context
 ) : ViewModel(), SagerConnection.Callback,
     OnPreferenceDataStoreChangeListener,
     ProfileManager.Listener,
     GroupManager.Listener,
     UndoSnackbarManager.Interface<ProxyEntity> {
-//    private val _state = MutableStateFlow<DefaultConfigState?>(null)
+    //    private val _state = MutableStateFlow<DefaultConfigState?>(null)
 //    val state: StateFlow<DefaultConfigState?> = _state
 //    val defaultConfigFlow: LiveData<DefaultConfigState?> = state.asLiveData()
     var configState by mutableStateOf(DefaultConfigState())
     val connection = SagerConnection(true)
-//    lateinit var proxyGroup: ProxyGroup
+
+    //    lateinit var proxyGroup: ProxyGroup
     var selected = false
     var configurationIdList: MutableList<Long> = mutableListOf()
     val configurationList = HashMap<Long, ProxyEntity>()
@@ -77,32 +79,48 @@ class DefaultConfigViewModel @Inject constructor(
 //        reloadProfiles()
         DataStore.profileCacheStore.registerChangeListener(this)
     }
+
     private fun getAllConfigs() {
         viewModelScope.launch {
-            defaultConfigRepository.getAppConfigs().collect { result ->
+            getDefaultConfigUseCase(Unit).collect { result ->
                 when (result) {
-                    is ResultWrapper.Error -> {
+                    is Result.Error -> {
                         configState = configState.copy(
                             error = result.exception.message ?: "An unexpected error occured",
                         )
                     }
 
-                    ResultWrapper.Loading -> {
+                    Result.Loading -> {
                         configState = configState.copy(isLoading = true)
                     }
 
-                    is ResultWrapper.Success -> {
-                        configState = configState.copy(configs = result.data)
+                    is Result.Success -> {
+                        configState = configState.copy(configs = result.data.map { it ->
+                            DefaultConfig(
+                                it.address,
+                                it.alpn,
+                                it.country,
+                                it.fingerprint,
+                                it.flag,
+                                it.password,
+                                it.port,
+                                it.protocol,
+                                it.security,
+                                it.sni,
+                                it.type,
+                                it.url
+                            )
+                        })
                         result.data.forEach { config ->
-                        try {
-                            val proxies = RawUpdater.parseRaw(config.url)
-                            if (proxies.isNullOrEmpty()) onMainDispatcher {
-                                Timber.e("Error" , "Proxy Not Found")
-                            } else import(proxies)
-                        } catch (e: SubscriptionFoundException) {
-                            importSubscription(Uri.parse(e.link))
+                            try {
+                                val proxies = RawUpdater.parseRaw(config.url)
+                                if (proxies.isNullOrEmpty()) onMainDispatcher {
+                                    Timber.e("Error", "Proxy Not Found")
+                                } else import(proxies)
+                            } catch (e: SubscriptionFoundException) {
+                                importSubscription(Uri.parse(e.link))
+                            }
                         }
-                    }
 //                        reloadProfiles()
                     }
                 }
@@ -126,6 +144,7 @@ class DefaultConfigViewModel @Inject constructor(
         }
 
     }
+
     suspend fun importSubscription(uri: Uri) {
         val group: ProxyGroup
 
@@ -157,7 +176,7 @@ class DefaultConfigViewModel @Inject constructor(
             } catch (e: Exception) {
                 onMainDispatcher {
 //                    alert(e.readableMessage).show()
-                    Timber.i("vpns",e.readableMessage )
+                    Timber.i("vpns", e.readableMessage)
                 }
                 return
             }
@@ -189,7 +208,7 @@ class DefaultConfigViewModel @Inject constructor(
             Key.PROXY_APPS, Key.BYPASS_MODE, Key.INDIVIDUAL -> {
                 if (DataStore.serviceState.canStop) {
 //                    snackbar(getString(R.string.restart)).setAction(R.string.apply) {
-                        SagerNet.reloadService()
+                    SagerNet.reloadService()
 //                    }.show()
                 }
             }
@@ -234,11 +253,13 @@ class DefaultConfigViewModel @Inject constructor(
             else -> {}
         }
     }
+
     override fun onServiceDisconnected() = changeState(BaseService.State.Idle)
     override fun onBinderDied() {
         connection.disconnect(context = context)
         connection.connect(context, this)
     }
+
     private val connect1 = StartService()
     fun onClickConnect(connect: ActivityResultLauncher<Void?>) {
 //         val connect = activityContext.registerForActivityResult(StartService()) {}

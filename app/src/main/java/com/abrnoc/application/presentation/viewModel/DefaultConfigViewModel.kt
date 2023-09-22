@@ -39,6 +39,7 @@ import com.abrnoc.application.presentation.connection.SubscriptionType
 import com.abrnoc.application.presentation.connection.onMainDispatcher
 import com.abrnoc.application.presentation.connection.readableMessage
 import com.abrnoc.application.presentation.connection.runOnDefaultDispatcher
+import com.abrnoc.application.presentation.viewModel.event.ProxyEvent
 import com.abrnoc.application.presentation.viewModel.state.DefaultConfigState
 import com.abrnoc.application.repository.model.DefaultConfig
 import com.abrnoc.domain.common.Result
@@ -54,8 +55,9 @@ import javax.inject.Inject
 @HiltViewModel
 class DefaultConfigViewModel @Inject constructor(
     private val getDefaultConfigUseCase: GetDefaultConfigUseCase,
-    private val context: Context
-) : ViewModel(), SagerConnection.Callback,
+    private val context: Context,
+) : ViewModel(),
+    SagerConnection.Callback,
     OnPreferenceDataStoreChangeListener,
     ProfileManager.Listener,
     GroupManager.Listener,
@@ -80,6 +82,14 @@ class DefaultConfigViewModel @Inject constructor(
         DataStore.profileCacheStore.registerChangeListener(this)
     }
 
+    fun onEvent(event: ProxyEvent) {
+        when (event) {
+            is ProxyEvent.ConfigEvent -> {
+                Timber.i("***", event.defaultConfig.address)
+            }
+        }
+    }
+
     private fun getAllConfigs() {
         viewModelScope.launch {
             getDefaultConfigUseCase(Unit).collect { result ->
@@ -95,28 +105,34 @@ class DefaultConfigViewModel @Inject constructor(
                     }
 
                     is Result.Success -> {
-                        configState = configState.copy(configs = result.data.map { it ->
-                            DefaultConfig(
-                                it.address,
-                                it.alpn,
-                                it.country,
-                                it.fingerprint,
-                                it.flag,
-                                it.password,
-                                it.port,
-                                it.protocol,
-                                it.security,
-                                it.sni,
-                                it.type,
-                                it.url
-                            )
-                        })
+                        configState = configState.copy(
+                            configs = result.data.map { it ->
+                                DefaultConfig(
+                                    it.address,
+                                    it.alpn,
+                                    it.country,
+                                    it.fingerprint,
+                                    it.flag,
+                                    it.password,
+                                    it.port,
+                                    it.protocol,
+                                    it.security,
+                                    it.sni,
+                                    it.type,
+                                    it.url
+                                )
+                            }
+                        )
                         result.data.forEach { config ->
                             try {
                                 val proxies = RawUpdater.parseRaw(config.url)
-                                if (proxies.isNullOrEmpty()) onMainDispatcher {
-                                    Timber.e("Error", "Proxy Not Found")
-                                } else import(proxies)
+                                if (proxies.isNullOrEmpty()) {
+                                    onMainDispatcher {
+                                        Timber.e("Error", "Proxy Not Found")
+                                    }
+                                } else {
+                                    import(proxies)
+                                }
                             } catch (e: SubscriptionFoundException) {
                                 importSubscription(Uri.parse(e.link))
                             }
@@ -142,7 +158,6 @@ class DefaultConfigViewModel @Inject constructor(
 //                )
 //            ).show()
         }
-
     }
 
     suspend fun importSubscription(uri: Uri) {
@@ -164,12 +179,12 @@ class DefaultConfigViewModel @Inject constructor(
                     subscription.type = SubscriptionType.SIP008
                 }
             }
-
         } else {
             val data = uri.encodedQuery.takeIf { !it.isNullOrBlank() } ?: return
             try {
                 group = KryoConverters.deserialize(
-                    ProxyGroup().apply { export = true }, Util.zlibDecompress(Util.b64Decode(data))
+                    ProxyGroup().apply { export = true },
+                    Util.zlibDecompress(Util.b64Decode(data))
                 ).apply {
                     export = false
                 }
@@ -183,18 +198,16 @@ class DefaultConfigViewModel @Inject constructor(
         }
 
         val name = group.name.takeIf { !it.isNullOrBlank() } ?: group.subscription?.link
-        ?: group.subscription?.token
+            ?: group.subscription?.token
         if (name.isNullOrBlank()) return
 
         group.name = group.name.takeIf { !it.isNullOrBlank() }
             ?: ("Subscription #" + System.currentTimeMillis())
 
         onMainDispatcher {
-
 //            displayFragmentWithId(R.id.nav_group)
             finishImportSubscription(group)
         }
-
     }
 
     private suspend fun finishImportSubscription(subscription: ProxyGroup) {
@@ -314,7 +327,7 @@ class DefaultConfigViewModel @Inject constructor(
         }
     }
 
-    /////////
+    // ///////
 //    fun reloadProfiles() {
 //        var newProfiles = SagerDatabase.proxyDao.getByGroup(proxyGroup.id)
 //        val subscription = proxyGroup.subscription
@@ -357,20 +370,19 @@ class DefaultConfigViewModel @Inject constructor(
 //            val selectedProxy = selectedItem?.id ?: DataStore.selectedProxy
 //            selectedProfileIndex = newProfileIds.indexOf(selectedProxy)
 //        }
-////        configurationListView.post {
-////            configurationIdList.clear()
-////            configurationIdList.addAll(newProfileIds)
-////            notifyDataSetChanged()
-////
-////            if (selectedProfileIndex != -1) {
-////                configurationListView.scrollTo(selectedProfileIndex, true)
-////            } else if (newProfiles.isNotEmpty()) {
-////                configurationListView.scrollTo(0, true)
-////            }
-////
-////        }
+// //        configurationListView.post {
+// //            configurationIdList.clear()
+// //            configurationIdList.addAll(newProfileIds)
+// //            notifyDataSetChanged()
+// //
+// //            if (selectedProfileIndex != -1) {
+// //                configurationListView.scrollTo(selectedProfileIndex, true)
+// //            } else if (newProfiles.isNotEmpty()) {
+// //                configurationListView.scrollTo(0, true)
+// //            }
+// //
+// //        }
 //    }
-
 }
 
 class StartService : ActivityResultContract<Void?, Boolean>() {
@@ -380,9 +392,11 @@ class StartService : ActivityResultContract<Void?, Boolean>() {
         context: Context,
         input: Void?,
     ): SynchronousResult<Boolean>? {
-        if (DataStore.serviceMode == Key.MODE_VPN) VpnService.prepare(context)?.let { intent ->
-            cachedIntent = intent
-            return null
+        if (DataStore.serviceMode == Key.MODE_VPN) {
+            VpnService.prepare(context)?.let { intent ->
+                cachedIntent = intent
+                return null
+            }
         }
         SagerNet.startService()
         return SynchronousResult(false)

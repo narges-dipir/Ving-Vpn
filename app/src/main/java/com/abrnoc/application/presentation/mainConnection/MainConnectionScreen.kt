@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -32,6 +33,8 @@ import com.abrnoc.application.presentation.ui.theme.ApplicationTheme
 import com.abrnoc.application.presentation.ui.theme.Blue1
 import com.abrnoc.application.presentation.ui.theme.Neutral3
 import com.abrnoc.application.presentation.viewModel.DefaultConfigViewModel
+import com.abrnoc.application.presentation.viewModel.event.ProxyEvent
+import com.abrnoc.application.repository.model.DefaultConfig
 import dev.olshevski.navigation.reimagined.NavBackHandler
 import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.popAll
@@ -42,14 +45,17 @@ import dev.olshevski.navigation.reimagined.rememberNavController
 fun MainConnectionScreen(
     navControle: NavController?,
     configViewModel: DefaultConfigViewModel = hiltViewModel(),
-    connect: ActivityResultLauncher<Void?>
+    connect: ActivityResultLauncher<Void?>,
 ) {
     val localConnect = connect
     val configState = configViewModel.configState
     val navController = rememberNavController<MainNavigation>(
         startDestination = MainNavigation.HomeScreen
     )
-
+    val currentProxy = remember {
+        mutableStateOf(DefaultConfig())
+//
+    }
     NavBackHandler(navController)
 
     val isBackStackEmpty by remember {
@@ -96,18 +102,18 @@ fun MainConnectionScreen(
     ) {
         Column(modifier = Modifier.padding(it)) {
             Backdrop(modifier = Modifier, onClick = {
-                println(" the click is made **** ")
                 configViewModel.onClickConnect(localConnect)
             })
             Spacer(modifier = Modifier.height(16.dp))
-                LazyColumn {
-                    items(configViewModel.configState.configs!!.size) { i ->
-                        val config = configViewModel.configState.configs!![i]
-                        ConnectionItem(config)
-
-                    }
+            LazyColumn {
+                items(configViewModel.configState.configs!!.size) { i ->
+                    val config = configViewModel.configState.configs!![i]
+                    ConnectionItem(config, onClick = {
+                        currentProxy.value = config
+                        configViewModel.onEvent(ProxyEvent.ConfigEvent(currentProxy.value))
+                    })
                 }
-
+            }
         }
     }
 }

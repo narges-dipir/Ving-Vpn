@@ -1,6 +1,7 @@
 package com.abrnoc.application.presentation.mainConnection.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,11 +37,14 @@ import com.abrnoc.application.presentation.ui.theme.Ocean4
 import com.abrnoc.application.repository.model.DefaultConfig
 
 @Composable
-fun ConnectionItem(defaultConfig: DefaultConfig? = null) {
+fun ConnectionItem(defaultConfig: DefaultConfig? = null, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .clip(RoundedCornerShape(50))
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable {
+                onClick()
+            },
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Row(modifier = Modifier.padding(start = 8.dp)) {
@@ -50,7 +55,8 @@ fun ConnectionItem(defaultConfig: DefaultConfig? = null) {
 //            )
             val parts = defaultConfig?.flag?.split('/')
             val countryCode = parts?.get(2)
-            val svgImageUrl = "https://raw.githubusercontent.com/hampusborgos/country-flags/main/svg/$countryCode.svg"
+            val svgImageUrl =
+                "https://raw.githubusercontent.com/hampusborgos/country-flags/main/svg/$countryCode.svg"
             println(" the image is  url  $svgImageUrl")
             SubcomposeAsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
@@ -58,16 +64,24 @@ fun ConnectionItem(defaultConfig: DefaultConfig? = null) {
                     .decoderFactory(SvgDecoder.Factory())
                     .build(),
                 contentDescription = "flag icon image",
-                modifier = Modifier.clip(CircleShape)
+                modifier = Modifier
+                    .clip(CircleShape)
                     .size(32.dp)
                     .aspectRatio(1f),
+                contentScale = ContentScale.Crop,
                 loading = {
                     CircularProgressIndicator()
                 }
             )
 
-            Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(start = 12.dp)) {
-                Text(text = defaultConfig!!.country, color = ApplicationTheme.colors.textPrimary)
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(start = 12.dp)
+            ) {
+                Text(
+                    text = defaultConfig?.country ?: "",
+                    color = ApplicationTheme.colors.textPrimary
+                )
                 Row {
                     Image(
                         painter = painterResource(id = R.drawable.bar_icon),
@@ -119,6 +133,6 @@ private fun Preview() {
             url = "trojan://3dc90e78b18c5e9c6f382dd3b42891d3@172.86.76.146:443?security=tls&alpn=http/1.1&headerType=none&fp=chrome&type=tcp&sni=zire.ml",
             protocol = "Trojan"
         )
-        ConnectionItem()
+        ConnectionItem(onClick = {})
     }
 }

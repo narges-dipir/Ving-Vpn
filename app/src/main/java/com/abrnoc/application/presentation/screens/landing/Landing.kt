@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -51,8 +50,7 @@ fun Landing(navController: NavController?) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.weight(0.5f))
-        Image(painter = painterResource(id = R.drawable.map_pins)
-            , contentDescription = "map image background")
+        Image(painter = painterResource(id = R.drawable.map_pins), contentDescription = "map image background")
         Spacer(modifier = Modifier.height(32.dp))
         Column(modifier = Modifier.weight(1f)) {
             Text(
@@ -84,14 +82,18 @@ fun Landing(navController: NavController?) {
                 ),
                 shape = RoundedCornerShape(50),
                 colors = ButtonDefaults.buttonColors(containerColor = Color.White),
-                onClick = { navController?.navigate(Navigation.WelcomeScreen.route) }) {
+                onClick = { navController?.navigate(Navigation.WelcomeScreen.route) }
+            ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
-                    Text(text = "Connect Now", color = Ocean11,
-                        fontWeight = FontWeight.Bold)
+                    Text(
+                        text = "Connect Now",
+                        color = Ocean11,
+                        fontWeight = FontWeight.Bold
+                    )
                 }
             }
         }

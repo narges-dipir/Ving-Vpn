@@ -3,11 +3,13 @@ package com.abrnoc.application.presentation.mainConnection.navigation
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
-sealed class MainNavigation: Parcelable {
+sealed class MainNavigation : Parcelable {
     @Parcelize
-    object HomeScreen: MainNavigation()
+    object HomeScreen : MainNavigation()
+
     @Parcelize
-    object HelpScreen: MainNavigation()
+    object HelpScreen : MainNavigation()
+
     @Parcelize
-    object ProfileScreen: MainNavigation()
+    object ProfileScreen : MainNavigation()
 }

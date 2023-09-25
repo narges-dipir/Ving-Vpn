@@ -24,7 +24,6 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import io.nekohasekai.sagernet.aidl.ISagerNetService
 import io.nekohasekai.sagernet.aidl.TrafficStats
-import io.nekohasekai.sagernet.group.GroupInterfaceAdapter
 import io.nekohasekai.sagernet.ktx.alert
 import io.nekohasekai.sagernet.widget.ListHolderListener
 import timber.log.Timber
@@ -84,7 +83,7 @@ class ConnActivity : ThemedActivity(), SagerConnection.Callback,
         changeState(BaseService.State.Idle)
         connection.connect(this, this)
         DataStore.configurationStore.registerChangeListener(this)
-        GroupManager.userInterface = GroupInterfaceAdapter(this)
+//        GroupManager.userInterface = GroupInterfaceAdapter(this)
 
         if (intent?.action == Intent.ACTION_VIEW) {
             onNewIntent(intent)

@@ -39,11 +39,10 @@ data class AppStats(
     var nekoConnectionsJSON: String, // 不要放在这里喵
 ) : Parcelable {
 
-   operator fun plusAssign(stats: StatsEntity) {
-       tcpConnectionsTotal += stats.tcpConnections
-       udpConnectionsTotal += stats.udpConnections
-       uplinkTotal += stats.uplink
-       downlinkTotal += stats.downlink
-   }
-
+    operator fun plusAssign(stats: StatsEntity) {
+        tcpConnectionsTotal += stats.tcpConnections
+        udpConnectionsTotal += stats.udpConnections
+        uplinkTotal += stats.uplink
+        downlinkTotal += stats.downlink
+    }
 }

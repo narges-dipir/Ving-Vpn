@@ -1,24 +1,3 @@
-/******************************************************************************
- *                                                                            *
- * Copyright (C) 2021 by nekohasekai <contact-sagernet@sekai.icu>             *
- * Copyright (C) 2021 by Max Lv <max.c.lv@gmail.com>                          *
- * Copyright (C) 2021 by Mygod Studio <contact-shadowsocks-android@mygod.be>  *
- *                                                                            *
- * This program is free software: you can redistribute it and/or modify       *
- * it under the terms of the GNU General Public License as published by       *
- * the Free Software Foundation, either version 3 of the License, or          *
- *  (at your option) any later version.                                       *
- *                                                                            *
- * This program is distributed in the hope that it will be useful,            *
- * but WITHOUT ANY WARRANTY; without even the implied warranty of             *
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the              *
- * GNU General Public License for more details.                               *
- *                                                                            *
- * You should have received a copy of the GNU General Public License          *
- * along with this program. If not, see <http://www.gnu.org/licenses/>.       *
- *                                                                            *
- ******************************************************************************/
-
 package io.nekohasekai.sagernet
 
 import android.Manifest
@@ -58,7 +37,6 @@ import com.abrnoc.application.presentation.connection.runOnDefaultDispatcher
 import com.abrnoc.application.presentation.connection.tryResume
 import com.abrnoc.application.presentation.connection.tryResumeWithException
 import com.github.shadowsocks.net.ConcurrentLocalSocketListener
-import io.nekohasekai.sagernet.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.runBlocking
@@ -70,7 +48,8 @@ import java.net.InetAddress
 import kotlin.coroutines.suspendCoroutine
 import android.net.VpnService as BaseVpnService
 
-class VpnService : BaseVpnService(),
+class VpnService :
+    BaseVpnService(),
     BaseService.Interface,
     TrafficListener,
     LocalResolver,
@@ -107,7 +86,8 @@ class VpnService : BaseVpnService(),
 
     @Volatile
     override var underlyingNetwork: Network? = null
-        @RequiresApi(Build.VERSION_CODES.LOLLIPOP_MR1) set(value) {
+        @RequiresApi(Build.VERSION_CODES.LOLLIPOP_MR1)
+        set(value) {
             field = value
             if (active && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                 setUnderlyingNetworks(underlyingNetworks)
@@ -115,8 +95,12 @@ class VpnService : BaseVpnService(),
         }
     private val underlyingNetworks
         get() = // clearing underlyingNetworks makes Android 9 consider the network to be metered
-            if (Build.VERSION.SDK_INT == 28 && metered) null else underlyingNetwork?.let {
-                arrayOf(it)
+            if (Build.VERSION.SDK_INT == 28 && metered) {
+                null
+            } else {
+                underlyingNetwork?.let {
+                    arrayOf(it)
+                }
             }
     override var upstreamInterfaceName: String? = null
     private var worker: ProtectWorker? = null
@@ -163,16 +147,20 @@ class VpnService : BaseVpnService(),
             if (prepare(this) != null) {
                 startActivity(
                     Intent(
-                        this, VpnRequestActivity::class.java
+                        this,
+                        VpnRequestActivity::class.java
                     ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 )
-            } else return super<BaseService.Interface>.onStartCommand(intent, flags, startId)
+            } else {
+                return super<BaseService.Interface>.onStartCommand(intent, flags, startId)
+            }
         }
         stopRunner()
         return Service.START_NOT_STICKY
     }
 
-    inner class NullConnectionException : NullPointerException(),
+    inner class NullConnectionException :
+        NullPointerException(),
         BaseService.ExpectedException {
         override fun getLocalizedMessage() = getString(R.string.reboot_required)
     }
@@ -283,7 +271,7 @@ class VpnService : BaseVpnService(),
         }
 
         metered = DataStore.meteredNetwork
-        active = true   // possible race condition here?
+        active = true // possible race condition here?
         if (Build.VERSION.SDK_INT >= 29) builder.setMetered(metered)
         conn = builder.establish() ?: throw NullConnectionException()
 
@@ -320,8 +308,10 @@ class VpnService : BaseVpnService(),
                             // libcore/v2ray.go
                             when {
                                 answer.isNotEmpty() -> {
-                                    continuation.tryResume((answer as Collection<InetAddress?>).mapNotNull { it?.hostAddress }
-                                        .joinToString(","))
+                                    continuation.tryResume(
+                                        (answer as Collection<InetAddress?>).mapNotNull { it?.hostAddress }
+                                            .joinToString(",")
+                                    )
                                 }
                                 rcode == 0 -> {
                                     // fuck AAAA no record
@@ -413,7 +403,6 @@ class VpnService : BaseVpnService(),
             if (toUpdate.isNotEmpty()) {
                 SagerDatabase.statsDao.update(toUpdate)
             }
-
         }
     }
 
@@ -432,12 +421,14 @@ class VpnService : BaseVpnService(),
             if (socket.inputStream.read() == -1) return
             val success = socket.ancillaryFileDescriptors?.single()?.use { fd ->
                 underlyingNetwork.let { network ->
-                    if (network != null) try {
-                        network.bindSocket(fd)
-                        return@let true
-                    } catch (e: IOException) {
-                        Logs.w(e)
-                        return@let false
+                    if (network != null) {
+                        try {
+                            network.bindSocket(fd)
+                            return@let true
+                        } catch (e: IOException) {
+                            Logs.w(e)
+                            return@let false
+                        }
                     }
                     protect(fd.int)
                 }
@@ -445,8 +436,7 @@ class VpnService : BaseVpnService(),
             try {
                 socket.outputStream.write(if (success) 0 else 1)
             } catch (_: IOException) {
-            }        // ignore connection early close
+            } // ignore connection early close
         }
     }
-
 }

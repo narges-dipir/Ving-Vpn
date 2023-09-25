@@ -19,6 +19,7 @@
 
 package io.nekohasekai.sagernet.group
 
+import com.abrnoc.application.MainActivity
 import com.abrnoc.application.R
 import com.abrnoc.application.connection.database.GroupManager
 import com.abrnoc.application.presentation.connection.ProxyGroup
@@ -30,7 +31,7 @@ import kotlinx.coroutines.delay
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class GroupInterfaceAdapter(val context: ThemedActivity) : GroupManager.Interface {
+class GroupInterfaceAdapter(val context: MainActivity) : GroupManager.Interface {
 
     override suspend fun confirm(message: String): Boolean {
         return suspendCoroutine {

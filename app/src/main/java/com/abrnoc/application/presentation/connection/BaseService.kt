@@ -41,6 +41,7 @@ import com.abrnoc.application.connection.neko.Protocols
 import com.abrnoc.application.connection.neko.SagerDatabase
 import com.abrnoc.application.connection.neko.Util
 import com.abrnoc.application.ftm.TAG_SOCKS
+import io.nekohasekai.sagernet.BootReceiver
 import io.nekohasekai.sagernet.VpnService
 import io.nekohasekai.sagernet.aidl.AppStatsList
 import io.nekohasekai.sagernet.aidl.ISagerNetService
@@ -78,7 +79,8 @@ class BaseService {
     }
 
     interface ExpectedException
-    class ExpectedExceptionWrapper(e: Exception) : Exception(e.localizedMessage, e),
+    class ExpectedExceptionWrapper(e: Exception) :
+        Exception(e.localizedMessage, e),
         ExpectedException
 
     class Data internal constructor(private val service: Interface) {
@@ -115,7 +117,8 @@ class BaseService {
         }
     }
 
-    class Binder(private var data: Data? = null) : ISagerNetService.Stub(),
+    class Binder(private var data: Data? = null) :
+        ISagerNetService.Stub(),
         CoroutineScope,
         AutoCloseable,
         TrafficListener {
@@ -131,9 +134,9 @@ class BaseService {
         // bandwidthListeners: only for UI update, don't save data
 
         private val bandwidthListeners =
-            mutableMapOf<IBinder, Long>()  // the binder is the real identifier
+            mutableMapOf<IBinder, Long>() // the binder is the real identifier
         private val statsListeners =
-            mutableMapOf<IBinder, Long>()  // the binder is the real identifier
+            mutableMapOf<IBinder, Long>() // the binder is the real identifier
         override val coroutineContext = Dispatchers.Main.immediate + Job()
         private var looper: Job? = null
         private var statsLooper: Job? = null
@@ -187,18 +190,18 @@ class BaseService {
                             item.trafficUpdated(proxy.profile.id, stats, true)
                             outs.forEach { (profileId, stats) ->
                                 item.trafficUpdated(
-                                    profileId, TrafficStats(
+                                    profileId,
+                                    TrafficStats(
                                         txRateDirect = stats.uplinkTotal,
                                         rxTotal = stats.downlinkTotal
-                                    ), false
+                                    ),
+                                    false
                                 )
                             }
                         }
                     }
                 }
-
             }
-
         }
 
         val appStats = ArrayList<AppStats>()
@@ -222,30 +225,30 @@ class BaseService {
                 appStats.clear()
                 tun.readAppTraffics(this)
 
-                val statsList = AppStatsList(appStats.map {
-                    val uid = if (it.uid >= 10000) it.uid else 1000
-                    val packageName = if (uid != 1000) {
-                        PackageCache.uidMap[it.uid]?.iterator()?.next() ?: "android"
-                    } else {
-                        "android"
+                val statsList = AppStatsList(
+                    appStats.map {
+                        val uid = if (it.uid >= 10000) it.uid else 1000
+                        val packageName = if (uid != 1000) {
+                            PackageCache.uidMap[it.uid]?.iterator()?.next() ?: "android"
+                        } else {
+                            "android"
+                        }
+                        io.nekohasekai.sagernet.aidl.AppStats(
+                            packageName,
+                            uid,
+                            it.tcpConn,
+                            it.udpConn,
+                            it.tcpConnTotal,
+                            it.udpConnTotal,
+                            it.uplink / sinceLastQueryInSeconds,
+                            it.downlink / sinceLastQueryInSeconds,
+                            it.uplinkTotal,
+                            it.downlinkTotal,
+                            it.deactivateAt,
+                            it.nekoConnectionsJSON
+                        )
                     }
-
-
-                    io.nekohasekai.sagernet.aidl.AppStats(
-                        packageName,
-                        uid,
-                        it.tcpConn,
-                        it.udpConn,
-                        it.tcpConnTotal,
-                        it.udpConnTotal,
-                        it.uplink / sinceLastQueryInSeconds,
-                        it.downlink / sinceLastQueryInSeconds,
-                        it.uplinkTotal,
-                        it.downlinkTotal,
-                        it.deactivateAt,
-                        it.nekoConnectionsJSON
-                    )
-                })
+                )
                 if (data?.state == State.Connected && statsListeners.isNotEmpty()) {
                     broadcast { item ->
                         if (statsListeners.contains(item.asBinder())) {
@@ -255,7 +258,6 @@ class BaseService {
                 }
                 delay(delayMs ?: return)
             }
-
         }
 
         override fun startListeningForBandwidth(
@@ -263,9 +265,12 @@ class BaseService {
             timeout: Long,
         ) {
             launch {
-                if (bandwidthListeners.isEmpty() and (bandwidthListeners.put(
-                        cb.asBinder(), timeout
-                    ) == null)
+                if (bandwidthListeners.isEmpty() and (
+                        bandwidthListeners.put(
+                            cb.asBinder(),
+                            timeout
+                        ) == null
+                        )
                 ) {
                     check(looper == null)
                     looper = launch { loop() }
@@ -288,7 +293,7 @@ class BaseService {
         }
 
         override fun unregisterCallback(cb: ISagerNetServiceCallback) {
-            stopListeningForBandwidth(cb)   // saves an RPC, and safer
+            stopListeningForBandwidth(cb) // saves an RPC, and safer
             stopListeningForStats(cb)
             callbacks.unregister(cb)
         }
@@ -299,7 +304,10 @@ class BaseService {
             }
             try {
                 return Libcore.urlTestV2ray(
-                    data!!.proxy!!.v2rayPoint, TAG_SOCKS, DataStore.connectionTestURL, 3000
+                    data!!.proxy!!.v2rayPoint,
+                    TAG_SOCKS,
+                    DataStore.connectionTestURL,
+                    3000
                 )
             } catch (e: Exception) {
                 error(Protocols.genFriendlyMsg(e.readableMessage))
@@ -308,9 +316,12 @@ class BaseService {
 
         override fun startListeningForStats(cb: ISagerNetServiceCallback, timeout: Long) {
             launch {
-                if (statsListeners.isEmpty() and (statsListeners.put(
-                        cb.asBinder(), timeout
-                    ) == null)
+                if (statsListeners.isEmpty() and (
+                        statsListeners.put(
+                            cb.asBinder(),
+                            timeout
+                        ) == null
+                        )
                 ) {
                     check(statsLooper == null)
                     statsLooper = launch { loopStats() }
@@ -389,8 +400,11 @@ class BaseService {
 
         fun startRunner() {
             this as Context
-            if (Build.VERSION.SDK_INT >= 26) startForegroundService(Intent(this, javaClass))
-            else startService(Intent(this, javaClass))
+            if (Build.VERSION.SDK_INT >= 26) {
+                startForegroundService(Intent(this, javaClass))
+            } else {
+                startService(Intent(this, javaClass))
+            }
         }
 
         fun killProcesses() {
@@ -427,7 +441,9 @@ class BaseService {
                 // change the state
                 data.changeState(State.Stopped, msg)
                 // stop the service if nothing has bound to it
-                if (restart) startRunner() else {
+                if (restart) {
+                    startRunner()
+                } else {
                     stopSelf()
                 }
             }
@@ -499,7 +515,6 @@ class BaseService {
         }
 
         fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-
             val data = data
             if (data.state != State.Stopped) return Service.START_NOT_STICKY
             val profile = SagerDatabase.proxyDao.getById(DataStore.selectedProxy)
@@ -512,14 +527,19 @@ class BaseService {
 
             val proxy = ProxyInstance(profile, this)
             data.proxy = proxy
-            io.nekohasekai.sagernet.BootReceiver.enabled = DataStore.persistAcrossReboot
+            BootReceiver.enabled = DataStore.persistAcrossReboot
             if (!data.closeReceiverRegistered) {
-                registerReceiver(data.receiver, IntentFilter().apply {
-                    addAction(Action.RELOAD)
-                    addAction(Intent.ACTION_SHUTDOWN)
-                    addAction(Action.CLOSE)
-                    addAction(Action.RESET_UPSTREAM_CONNECTIONS)
-                }, "$packageName.SERVICE", null)
+                registerReceiver(
+                    data.receiver,
+                    IntentFilter().apply {
+                        addAction(Action.RELOAD)
+                        addAction(Intent.ACTION_SHUTDOWN)
+                        addAction(Action.CLOSE)
+                        addAction(Action.RESET_UPSTREAM_CONNECTIONS)
+                    },
+                    "$packageName.SERVICE",
+                    null
+                )
                 data.closeReceiverRegistered = true
             }
 
@@ -528,7 +548,7 @@ class BaseService {
                 try {
                     data.notification = createNotification(ServiceNotification.genTitle(profile))
 
-                    Executable.killAll()    // clean up old processes
+                    Executable.killAll() // clean up old processes
                     preInit()
                     proxy.init()
                     DataStore.currentProfile = profile.id
@@ -558,7 +578,8 @@ class BaseService {
                 } catch (exc: Throwable) {
                     if (exc is ExpectedException) Logs.d(exc.readableMessage) else Logs.w(exc)
                     stopRunner(
-                        false, "${getString(R.string.service_failed)}: ${exc.readableMessage}"
+                        false,
+                        "${getString(R.string.service_failed)}: ${exc.readableMessage}"
                     )
                 } finally {
                     data.connectingJob = null
@@ -567,5 +588,4 @@ class BaseService {
             return Service.START_NOT_STICKY
         }
     }
-
 }

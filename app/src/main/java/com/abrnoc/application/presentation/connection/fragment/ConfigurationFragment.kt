@@ -119,7 +119,9 @@ import kotlin.collections.set
 
 @AndroidEntryPoint
 class ConfigurationFragment @JvmOverloads constructor(
-    val select: Boolean = false, val selectedItem: ProxyEntity? = null, val titleRes: Int = 0
+    val select: Boolean = false,
+    val selectedItem: ProxyEntity? = null,
+    val titleRes: Int = 0,
 ) : ToolbarFragment(R.layout.layout_group_list),
     PopupMenu.OnMenuItemClickListener,
     Toolbar.OnMenuItemClickListener,
@@ -130,6 +132,7 @@ class ConfigurationFragment @JvmOverloads constructor(
     }
 
     lateinit var adapter: GroupPagerAdapter
+
 //    lateinit var tabLayout: TabLayout
     lateinit var groupPager: ViewPager2
 
@@ -149,7 +152,9 @@ class ConfigurationFragment @JvmOverloads constructor(
 
     val updateSelectedCallback = object : ViewPager2.OnPageChangeCallback() {
         override fun onPageScrolled(
-            position: Int, positionOffset: Float, positionOffsetPixels: Int
+            position: Int,
+            positionOffset: Float,
+            positionOffsetPixels: Int,
         ) {
             if (adapter.groupList.size > position) {
                 DataStore.selectedGroup = adapter.groupList[position].id
@@ -236,12 +241,10 @@ class ConfigurationFragment @JvmOverloads constructor(
                         fragment.configurationListView.scrollTo(selectedProfileIndex, true)
                         return@setOnClickListener
                     }
-
                 }
 
                 fragment.configurationListView.scrollTo(0)
             }
-
         }
 
         DataStore.profileCacheStore.registerChangeListener(this)
@@ -285,46 +288,52 @@ class ConfigurationFragment @JvmOverloads constructor(
     }
 
     val importFile = registerForActivityResult(ActivityResultContracts.GetContent()) { file ->
-        if (file != null) runOnDefaultDispatcher {
-            try {
-                val fileName = requireContext().contentResolver.query(file, null, null, null, null)
-                    ?.use { cursor ->
-                        cursor.moveToFirst()
-                        cursor.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME)
-                            .let(cursor::getString)
-                    }
+        if (file != null) {
+            runOnDefaultDispatcher {
+                try {
+                    val fileName = requireContext().contentResolver.query(file, null, null, null, null)
+                        ?.use { cursor ->
+                            cursor.moveToFirst()
+                            cursor.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME)
+                                .let(cursor::getString)
+                        }
 
-                val proxies = mutableListOf<AbstractBean>()
-                if (fileName != null && fileName.endsWith(".zip")) {
-                    // try parse wireguard zip
+                    val proxies = mutableListOf<AbstractBean>()
+                    if (fileName != null && fileName.endsWith(".zip")) {
+                        // try parse wireguard zip
 
-                    val zip =
-                        ZipInputStream(requireContext().contentResolver.openInputStream(file)!!)
-                    while (true) {
-                        val entry = zip.nextEntry ?: break
-                        if (entry.isDirectory) continue
-                        val fileText = zip.bufferedReader().readText()
+                        val zip =
+                            ZipInputStream(requireContext().contentResolver.openInputStream(file)!!)
+                        while (true) {
+                            val entry = zip.nextEntry ?: break
+                            if (entry.isDirectory) continue
+                            val fileText = zip.bufferedReader().readText()
+                            RawUpdater.parseRaw(fileText)?.let { pl -> proxies.addAll(pl) }
+                            zip.closeEntry()
+                        }
+                        zip.closeQuietly()
+                    } else {
+                        val fileText = requireContext().contentResolver.openInputStream(file)!!.use {
+                            it.bufferedReader().readText()
+                        }
                         RawUpdater.parseRaw(fileText)?.let { pl -> proxies.addAll(pl) }
-                        zip.closeEntry()
                     }
-                    zip.closeQuietly()
-                } else {
-                    val fileText = requireContext().contentResolver.openInputStream(file)!!.use {
-                        it.bufferedReader().readText()
+
+                    if (proxies.isEmpty()) {
+                        onMainDispatcher {
+                            snackbar(getString(R.string.no_proxies_found_in_file)).show()
+                        }
+                    } else {
+                        import(proxies)
                     }
-                    RawUpdater.parseRaw(fileText)?.let { pl -> proxies.addAll(pl) }
-                }
+                } catch (e: SubscriptionFoundException) {
+                    (requireActivity() as ConnActivity).importSubscription(Uri.parse(e.link))
+                } catch (e: Exception) {
+                    Logs.w(e)
 
-                if (proxies.isEmpty()) onMainDispatcher {
-                    snackbar(getString(R.string.no_proxies_found_in_file)).show()
-                } else import(proxies)
-            } catch (e: SubscriptionFoundException) {
-                (requireActivity() as ConnActivity).importSubscription(Uri.parse(e.link))
-            } catch (e: Exception) {
-                Logs.w(e)
-
-                onMainDispatcher {
-                    snackbar(e.readableMessage).show()
+                    onMainDispatcher {
+                        snackbar(e.readableMessage).show()
+                    }
                 }
             }
         }
@@ -339,11 +348,12 @@ class ConfigurationFragment @JvmOverloads constructor(
             DataStore.editingGroup = targetId
             snackbar(
                 requireContext().resources.getQuantityString(
-                    R.plurals.added, proxies.size, proxies.size
+                    R.plurals.added,
+                    proxies.size,
+                    proxies.size
                 )
             ).show()
         }
-
     }
 
     override fun onMenuItemClick(item: MenuItem): Boolean {
@@ -429,7 +439,6 @@ class ConfigurationFragment @JvmOverloads constructor(
                 binding.progress.text = "${finishedN.addAndGet(1)} / $proxyN"
             }
         }
-
     }
 
     fun stopService() {
@@ -472,116 +481,122 @@ class ConfigurationFragment @JvmOverloads constructor(
                 "Connection test pool"
             )
             repeat(DataStore.connectionTestConcurrent) {
-                testJobs.add(launch(testPool) {
-                    while (isActive) {
-                        val profile = profiles.poll() ?: break
+                testJobs.add(
+                    launch(testPool) {
+                        while (isActive) {
+                            val profile = profiles.poll() ?: break
 
-                        if (icmpPing) {
-                            if (!profile.requireBean().canICMPing()) {
-                                profile.status = -1
-                                profile.error =
-                                    app.getString(R.string.connection_test_icmp_ping_unavailable)
-                                test.insert(profile)
-                                continue
-                            }
-                        } else {
-                            if (!profile.requireBean().canTCPing()) {
-                                profile.status = -1
-                                profile.error =
-                                    app.getString(R.string.connection_test_tcp_ping_unavailable)
-                                test.insert(profile)
-                                continue
-                            }
-                        }
-
-                        profile.status = 0
-                        test.insert(profile)
-                        var address = profile.requireBean().serverAddress
-                        if (!address.isIpAddress()) {
-                            try {
-                                InetAddress.getAllByName(address).apply {
-                                    if (isNotEmpty()) {
-                                        address = this[0].hostAddress
-                                    }
-                                }
-                            } catch (ignored: UnknownHostException) {
-                            }
-                        }
-                        if (!isActive) break
-                        if (!address.isIpAddress()) {
-                            profile.status = 2
-                            profile.error = app.getString(R.string.connection_test_domain_not_found)
-                            test.update(profile)
-                            continue
-                        }
-                        try {
                             if (icmpPing) {
-                                val result = Libcore.icmpPing(
-                                    address, 3000
-                                )
-                                if (!isActive) break
-                                if (result != -1) {
-                                    profile.status = 1
-                                    profile.ping = result
-                                } else {
-                                    profile.status = 2
-                                    profile.error = getString(R.string.connection_test_unreachable)
+                                if (!profile.requireBean().canICMPing()) {
+                                    profile.status = -1
+                                    profile.error =
+                                        app.getString(R.string.connection_test_icmp_ping_unavailable)
+                                    test.insert(profile)
+                                    continue
                                 }
-                                test.update(profile)
                             } else {
-                                val socket = Socket()
+                                if (!profile.requireBean().canTCPing()) {
+                                    profile.status = -1
+                                    profile.error =
+                                        app.getString(R.string.connection_test_tcp_ping_unavailable)
+                                    test.insert(profile)
+                                    continue
+                                }
+                            }
+
+                            profile.status = 0
+                            test.insert(profile)
+                            var address = profile.requireBean().serverAddress
+                            if (!address.isIpAddress()) {
                                 try {
-                                    socket.soTimeout = 3000
-                                    socket.bind(InetSocketAddress(0))
-                                    val start = SystemClock.elapsedRealtime()
-                                    socket.connect(
-                                        InetSocketAddress(
-                                            address, profile.requireBean().serverPort
-                                        ), 3000
+                                    InetAddress.getAllByName(address).apply {
+                                        if (isNotEmpty()) {
+                                            address = this[0].hostAddress
+                                        }
+                                    }
+                                } catch (ignored: UnknownHostException) {
+                                }
+                            }
+                            if (!isActive) break
+                            if (!address.isIpAddress()) {
+                                profile.status = 2
+                                profile.error = app.getString(R.string.connection_test_domain_not_found)
+                                test.update(profile)
+                                continue
+                            }
+                            try {
+                                if (icmpPing) {
+                                    val result = Libcore.icmpPing(
+                                        address,
+                                        3000
                                     )
                                     if (!isActive) break
-                                    profile.status = 1
-                                    profile.ping = (SystemClock.elapsedRealtime() - start).toInt()
+                                    if (result != -1) {
+                                        profile.status = 1
+                                        profile.ping = result
+                                    } else {
+                                        profile.status = 2
+                                        profile.error = getString(R.string.connection_test_unreachable)
+                                    }
                                     test.update(profile)
-                                } finally {
-                                    socket.closeQuietly()
+                                } else {
+                                    val socket = Socket()
+                                    try {
+                                        socket.soTimeout = 3000
+                                        socket.bind(InetSocketAddress(0))
+                                        val start = SystemClock.elapsedRealtime()
+                                        socket.connect(
+                                            InetSocketAddress(
+                                                address,
+                                                profile.requireBean().serverPort
+                                            ),
+                                            3000
+                                        )
+                                        if (!isActive) break
+                                        profile.status = 1
+                                        profile.ping = (SystemClock.elapsedRealtime() - start).toInt()
+                                        test.update(profile)
+                                    } finally {
+                                        socket.closeQuietly()
+                                    }
                                 }
-                            }
-                        } catch (e: Exception) {
-                            if (!isActive) break
-                            val message = e.readableMessage
+                            } catch (e: Exception) {
+                                if (!isActive) break
+                                val message = e.readableMessage
 
-                            if (icmpPing) {
-                                profile.status = 2
-                                profile.error = getString(R.string.connection_test_unreachable)
-                            } else {
-                                profile.status = 2
-                                when {
-                                    !message.contains("failed:") -> profile.error =
-                                        getString(R.string.connection_test_timeout)
-
-                                    else -> when {
-                                        message.contains("ECONNREFUSED") -> {
+                                if (icmpPing) {
+                                    profile.status = 2
+                                    profile.error = getString(R.string.connection_test_unreachable)
+                                } else {
+                                    profile.status = 2
+                                    when {
+                                        !message.contains("failed:") ->
                                             profile.error =
-                                                getString(R.string.connection_test_refused)
-                                        }
+                                                getString(R.string.connection_test_timeout)
 
-                                        message.contains("ENETUNREACH") -> {
-                                            profile.error =
-                                                getString(R.string.connection_test_unreachable)
-                                        }
+                                        else -> when {
+                                            message.contains("ECONNREFUSED") -> {
+                                                profile.error =
+                                                    getString(R.string.connection_test_refused)
+                                            }
 
-                                        else -> {
-                                            profile.status = 3
-                                            profile.error = message
+                                            message.contains("ENETUNREACH") -> {
+                                                profile.error =
+                                                    getString(R.string.connection_test_unreachable)
+                                            }
+
+                                            else -> {
+                                                profile.status = 3
+                                                profile.error = message
+                                            }
                                         }
                                     }
                                 }
+                                test.update(profile)
                             }
-                            test.update(profile)
                         }
                     }
-                })
+                )
             }
 
             testJobs.joinAll()
@@ -641,27 +656,29 @@ class ConfigurationFragment @JvmOverloads constructor(
             val urlTest = UrlTest() // note: this is NOT in bg process
 
             repeat(DataStore.connectionTestConcurrent) {
-                testJobs.add(launch {
-                    while (isActive) {
-                        val profile = profiles.poll() ?: break
-                        profile.status = 0
-                        test.insert(profile)
+                testJobs.add(
+                    launch {
+                        while (isActive) {
+                            val profile = profiles.poll() ?: break
+                            profile.status = 0
+                            test.insert(profile)
 
-                        try {
-                            val result = urlTest.doTest(profile)
-                            profile.status = 1
-                            profile.ping = result
-                        } catch (e: PluginManager.PluginNotFoundException) {
-                            profile.status = 2
-                            profile.error = e.readableMessage
-                        } catch (e: Exception) {
-                            profile.status = 3
-                            profile.error = e.readableMessage
+                            try {
+                                val result = urlTest.doTest(profile)
+                                profile.status = 1
+                                profile.ping = result
+                            } catch (e: PluginManager.PluginNotFoundException) {
+                                profile.status = 2
+                                profile.error = e.readableMessage
+                            } catch (e: Exception) {
+                                profile.status = 3
+                                profile.error = e.readableMessage
+                            }
+
+                            test.update(profile)
                         }
-
-                        test.update(profile)
                     }
-                })
+                )
             }
 
             testJobs.joinAll()
@@ -688,7 +705,8 @@ class ConfigurationFragment @JvmOverloads constructor(
         }
     }
 
-    inner class GroupPagerAdapter : FragmentStateAdapter(this),
+    inner class GroupPagerAdapter :
+        FragmentStateAdapter(this),
         ProfileManager.Listener,
         GroupManager.Listener {
 
@@ -697,7 +715,6 @@ class ConfigurationFragment @JvmOverloads constructor(
         var groupFragments: HashMap<Long, GroupFragment> = HashMap()
 
         fun reload(now: Boolean = false) {
-
             if (!select) {
                 groupPager.unregisterOnPageChangeCallback(updateSelectedCallback)
             }
@@ -955,11 +972,11 @@ class ConfigurationFragment @JvmOverloads constructor(
             configurationListView.setItemViewCacheSize(20)
 
             if (!select) {
-
                 undoManager = UndoSnackbarManager(activity as ConnActivity, adapter)
 
                 ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
-                    ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.START
+                    ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+                    ItemTouchHelper.START
                 ) {
                     override fun getSwipeDirs(
                         recyclerView: RecyclerView,
@@ -978,10 +995,12 @@ class ConfigurationFragment @JvmOverloads constructor(
 
                     override fun onMove(
                         recyclerView: RecyclerView,
-                        viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder,
+                        viewHolder: RecyclerView.ViewHolder,
+                        target: RecyclerView.ViewHolder,
                     ): Boolean {
                         adapter.move(
-                            viewHolder.bindingAdapterPosition, target.bindingAdapterPosition
+                            viewHolder.bindingAdapterPosition,
+                            target.bindingAdapterPosition
                         )
                         return true
                     }
@@ -994,9 +1013,7 @@ class ConfigurationFragment @JvmOverloads constructor(
                         adapter.commitMove()
                     }
                 }).attachToRecyclerView(configurationListView)
-
             }
-
         }
 
         override fun onDestroy() {
@@ -1011,7 +1028,8 @@ class ConfigurationFragment @JvmOverloads constructor(
             undoManager.flush()
         }
 
-        inner class ConfigurationAdapter : RecyclerView.Adapter<ConfigurationHolder>(),
+        inner class ConfigurationAdapter :
+            RecyclerView.Adapter<ConfigurationHolder>(),
             ProfileManager.Listener,
             GroupManager.Listener,
             UndoSnackbarManager.Interface<ProxyEntity> {
@@ -1070,20 +1088,27 @@ class ConfigurationFragment @JvmOverloads constructor(
                 }
                 configurationIdList.clear()
                 val lower = name.lowercase()
-                configurationIdList.addAll(configurationList.filter {
-                    it.value.displayName().lowercase().contains(lower) ||
+                configurationIdList.addAll(
+                    configurationList.filter {
+                        it.value.displayName().lowercase().contains(lower) ||
                             it.value.displayType().lowercase().contains(lower) ||
                             it.value.displayAddress().lowercase().contains(lower)
-                }.keys)
+                    }.keys
+                )
                 notifyDataSetChanged()
             }
 
             fun move(from: Int, to: Int) {
                 val first = getItemAt(from)
                 var previousOrder = first.userOrder
-                val (step, range) = if (from < to) Pair(1, from until to) else Pair(
-                    -1, to + 1 downTo from
-                )
+                val (step, range) = if (from < to) {
+                    Pair(1, from until to)
+                } else {
+                    Pair(
+                        -1,
+                        to + 1 downTo from
+                    )
+                }
                 for (i in range) {
                     val next = getItemAt(i + step)
                     val order = next.userOrder
@@ -1227,7 +1252,6 @@ class ConfigurationFragment @JvmOverloads constructor(
                 when (proxyGroup.order) {
                     GroupOrder.BY_NAME -> {
                         newProfiles = newProfiles.sortedBy { it.displayName() }
-
                     }
 
                     GroupOrder.BY_DELAY -> {
@@ -1257,16 +1281,15 @@ class ConfigurationFragment @JvmOverloads constructor(
                     } else if (newProfiles.isNotEmpty()) {
                         configurationListView.scrollTo(0, true)
                     }
-
                 }
             }
-
         }
 
         val profileAccess = Mutex()
         val reloadAccess = Mutex()
 
-        inner class ConfigurationHolder(val view: View) : RecyclerView.ViewHolder(view),
+        inner class ConfigurationHolder(val view: View) :
+            RecyclerView.ViewHolder(view),
             PopupMenu.OnMenuItemClickListener {
 
             lateinit var entity: ProxyEntity
@@ -1296,6 +1319,7 @@ class ConfigurationFragment @JvmOverloads constructor(
                 } else {
                     view.setOnClickListener {
                         runOnDefaultDispatcher {
+
                             var update: Boolean
                             var lastSelected: Long
                             profileAccess.withLock {
@@ -1321,7 +1345,6 @@ class ConfigurationFragment @JvmOverloads constructor(
                                 }
                             }
                         }
-
                     }
                 }
 
@@ -1393,7 +1416,8 @@ class ConfigurationFragment @JvmOverloads constructor(
                 editButton.setOnClickListener {
                     it.context.startActivity(
                         proxyEntity.settingIntent(
-                            it.context, proxyGroup.type == GroupType.SUBSCRIPTION
+                            it.context,
+                            proxyGroup.type == GroupType.SUBSCRIPTION
                         )
                     )
                 }
@@ -1450,10 +1474,11 @@ class ConfigurationFragment @JvmOverloads constructor(
                     }
 
                     if (!(select || proxyEntity.type == ProxyEntity.TYPE_CHAIN)) {
-
                         val validateResult = if (pf.securityAdvisory) {
                             proxyEntity.requireBean().isInsecure()
-                        } else ResultLocal
+                        } else {
+                            ResultLocal
+                        }
 
                         when (validateResult) {
                             is ResultInsecure, is ResultInsecureText -> onMainDispatcher {
@@ -1496,9 +1521,11 @@ class ConfigurationFragment @JvmOverloads constructor(
 
                                 shareLayout.setOnClickListener {
                                     MaterialAlertDialogBuilder(requireContext()).setTitle(R.string.deprecated)
-                                        .setMessage(resources.openRawResource(validateResult.textRes)
-                                            .bufferedReader()
-                                            .use { it.readText() })
+                                        .setMessage(
+                                            resources.openRawResource(validateResult.textRes)
+                                                .bufferedReader()
+                                                .use { it.readText() }
+                                        )
                                         .setPositiveButton("ok") { _, _ ->
                                             showShare(it)
                                         }
@@ -1525,7 +1552,6 @@ class ConfigurationFragment @JvmOverloads constructor(
                         }
                     }
                 }
-
             }
 
             var currentName = ""
@@ -1567,7 +1593,6 @@ class ConfigurationFragment @JvmOverloads constructor(
                 return true
             }
         }
-
     }
 
     private val exportConfig =
@@ -1589,9 +1614,7 @@ class ConfigurationFragment @JvmOverloads constructor(
                             snackbar(e.readableMessage).show()
                         }
                     }
-
                 }
             }
         }
-
 }

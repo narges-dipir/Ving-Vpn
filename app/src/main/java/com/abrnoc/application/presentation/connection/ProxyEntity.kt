@@ -86,10 +86,12 @@ import com.esotericsoftware.kryo.io.ByteBufferOutput
 import io.nekohasekai.sagernet.aidl.TrafficStats
 
 @Entity(
-    tableName = "proxy_entities", indices = [Index("groupId", name = "groupId")]
+    tableName = "proxy_entities",
+    indices = [Index("groupId", name = "groupId")]
 )
 data class ProxyEntity(
-    @PrimaryKey(autoGenerate = true) var id: Long = 0L,
+    @PrimaryKey(autoGenerate = true)
+    var id: Long = 0L,
     var groupId: Long = 0L,
     var type: Int = 0,
     var userOrder: Long = 0L,
@@ -206,7 +208,6 @@ data class ProxyEntity(
 
         dirty = input.readBoolean()
     }
-
 
     fun putByteArray(byteArray: ByteArray) {
         when (type) {
@@ -471,7 +472,8 @@ data class ProxyEntity(
 
     fun settingIntent(ctx: Context, isSubscription: Boolean): Intent {
         return Intent(
-            ctx, when (type) {
+            ctx,
+            when (type) {
                 TYPE_SOCKS -> SocksSettingsActivity::class.java
                 TYPE_HTTP -> HttpSettingsActivity::class.java
                 TYPE_SS -> ShadowsocksSettingsActivity::class.java
@@ -519,6 +521,12 @@ data class ProxyEntity(
         @Query("SELECT * FROM proxy_entities WHERE id = :proxyId")
         fun getById(proxyId: Long): ProxyEntity?
 
+        @Query("DELETE FROM proxy_entities")
+        fun deleteAllProxyEntities()
+
+        @Query("DELETE FROM sqlite_sequence WHERE name = 'proxy_entities'")
+        fun clearPrimaryKey()
+
         @Query("DELETE FROM proxy_entities WHERE id IN (:proxyId)")
         fun deleteById(proxyId: Long): Int
 
@@ -551,7 +559,6 @@ data class ProxyEntity(
 
         @Query("DELETE FROM proxy_entities")
         fun reset()
-
     }
 
     override fun describeContents(): Int {

@@ -22,6 +22,7 @@ class ConnectionRepositoryImpl @Inject constructor(
                 country = url.country,
                 fingerprint = url.fingerprint ?: "",
                 flag = url.flag,
+                username = url.username ?: "",
                 password = url.password,
                 port = url.port,
                 protocol = url.protocol,

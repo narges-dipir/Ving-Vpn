@@ -6,6 +6,7 @@ data class DefaultConfigResult(
     val country: String,
     val fingerprint: String,
     val flag: String,
+    val username: String?,
     val password: String,
     val port: Int,
     val protocol: String,

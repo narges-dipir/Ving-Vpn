@@ -28,6 +28,10 @@ data class Url(
     @SerializedName("port")
     @Expose
     val port: Int,
+    @SerializedName("username")
+    @Expose
+    @Nullable
+    val username: String?,
     @SerializedName("protocol")
     @Expose
     val protocol: String,

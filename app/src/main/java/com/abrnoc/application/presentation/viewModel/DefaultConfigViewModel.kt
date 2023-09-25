@@ -1,13 +1,9 @@
 package com.abrnoc.application.presentation.viewModel
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
-import android.net.VpnService
 import android.os.RemoteException
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -26,7 +22,6 @@ import com.abrnoc.application.presentation.connection.BaseService
 import com.abrnoc.application.presentation.connection.DataStore
 import com.abrnoc.application.presentation.connection.GroupType
 import com.abrnoc.application.presentation.connection.Key
-import com.abrnoc.application.presentation.connection.Logs
 import com.abrnoc.application.presentation.connection.OnPreferenceDataStoreChangeListener
 import com.abrnoc.application.presentation.connection.PackageCache.reload
 import com.abrnoc.application.presentation.connection.ProxyEntity
@@ -49,6 +44,8 @@ import io.nekohasekai.sagernet.aidl.ISagerNetService
 import io.nekohasekai.sagernet.aidl.TrafficStats
 import io.nekohasekai.sagernet.widget.UndoSnackbarManager
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -83,9 +80,26 @@ class DefaultConfigViewModel @Inject constructor(
     }
 
     fun onEvent(event: ProxyEvent) {
+        var selectedProfileIndex = -1
         when (event) {
             is ProxyEvent.ConfigEvent -> {
-                Timber.i("***", event.defaultConfig.address)
+                val profileAccess = Mutex()
+                val selectedProxy = event.defaultConfig.id ?: DataStore.selectedProxy
+                var update: Boolean
+                var lastSelected: Long
+                // (ConfigurationFragment.SelectCallback).returnProfile(selectedItem?.id ?: 1L)
+                runOnDefaultDispatcher {
+                    profileAccess.withLock {
+                        update = DataStore.selectedProxy != event.defaultConfig.id
+                        lastSelected = DataStore.selectedProxy
+                        Timber.i("^^", "timber workes")
+                        DataStore.selectedProxy = event.defaultConfig.id ?: 1L
+                        println(" ^^^^ ${DataStore.selectedProxy}")
+//                    onMainDispatcher {
+//                        selectedView.visibility = View.VISIBLE
+//                    }
+                    }
+                }
             }
         }
     }
@@ -105,9 +119,41 @@ class DefaultConfigViewModel @Inject constructor(
                     }
 
                     is Result.Success -> {
+                        var id = 1
+                        SagerDatabase.proxyDao.reset()
+                        SagerDatabase.proxyDao.deleteAllProxyEntities()
+                        SagerDatabase.proxyDao.clearPrimaryKey()
+                        result.data.forEach { config ->
+                            try {
+                                val proxies = RawUpdater.parseRaw(config.url)
+                                if (proxies.isNullOrEmpty()) {
+                                    onMainDispatcher {
+                                        Timber.e("Error", "Proxy Not Found")
+                                    }
+                                } else {
+                                    if (config.protocol == "SSH") {
+                                        DataStore.profileName = config.url
+                                        DataStore.serverAddress = config.url
+                                        DataStore.serverPort = config.port
+                                        DataStore.serverUsername = config.username ?: ""
+                                        DataStore.serverAuthType = 1
+                                        DataStore.serverPassword = config.password
+                                        DataStore.serverPrivateKey = ""
+                                        DataStore.serverPassword1 = ""
+                                        DataStore.serverCertificates = ""
+                                    } else {
+                                        import(proxies)
+                                    }
+                                }
+                            } catch (e: SubscriptionFoundException) {
+                                importSubscription(Uri.parse(e.link))
+                            }
+//                        reloadProfiles()
+                        }
                         configState = configState.copy(
                             configs = result.data.map { it ->
                                 DefaultConfig(
+                                    (id++).toLong(),
                                     it.address,
                                     it.alpn,
                                     it.country,
@@ -123,21 +169,6 @@ class DefaultConfigViewModel @Inject constructor(
                                 )
                             }
                         )
-                        result.data.forEach { config ->
-                            try {
-                                val proxies = RawUpdater.parseRaw(config.url)
-                                if (proxies.isNullOrEmpty()) {
-                                    onMainDispatcher {
-                                        Timber.e("Error", "Proxy Not Found")
-                                    }
-                                } else {
-                                    import(proxies)
-                                }
-                            } catch (e: SubscriptionFoundException) {
-                                importSubscription(Uri.parse(e.link))
-                            }
-                        }
-//                        reloadProfiles()
                     }
                 }
             }
@@ -160,6 +191,17 @@ class DefaultConfigViewModel @Inject constructor(
         }
     }
 
+    private fun getItem(profileId: Long): ProxyEntity {
+        var profile = configurationList[profileId]
+        if (profile == null) {
+            profile = ProfileManager.getProfile(profileId)
+            if (profile != null) {
+                configurationList[profileId] = profile
+            }
+        }
+        return profile!!
+    }
+    private fun getItemAt(index: Int) = getItem(configurationIdList[index])
     suspend fun importSubscription(uri: Uri) {
         val group: ProxyGroup
 
@@ -273,7 +315,6 @@ class DefaultConfigViewModel @Inject constructor(
         connection.connect(context, this)
     }
 
-    private val connect1 = StartService()
     fun onClickConnect(connect: ActivityResultLauncher<Void?>) {
 //         val connect = activityContext.registerForActivityResult(StartService()) {}
         connect.launch(null)
@@ -383,34 +424,4 @@ class DefaultConfigViewModel @Inject constructor(
 // //
 // //        }
 //    }
-}
-
-class StartService : ActivityResultContract<Void?, Boolean>() {
-    private var cachedIntent: Intent? = null
-
-    override fun getSynchronousResult(
-        context: Context,
-        input: Void?,
-    ): SynchronousResult<Boolean>? {
-        if (DataStore.serviceMode == Key.MODE_VPN) {
-            VpnService.prepare(context)?.let { intent ->
-                cachedIntent = intent
-                return null
-            }
-        }
-        SagerNet.startService()
-        return SynchronousResult(false)
-    }
-
-    override fun createIntent(context: Context, input: Void?) =
-        cachedIntent!!.also { cachedIntent = null }
-
-    override fun parseResult(resultCode: Int, intent: Intent?) =
-        if (resultCode == Activity.RESULT_OK) {
-            SagerNet.startService()
-            false
-        } else {
-            Logs.e("Failed to start VpnService: $intent")
-            true
-        }
 }

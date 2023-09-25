@@ -10,6 +10,7 @@ fun DefaultConfig.mapToDomainConfig(): DefaultConfigResult {
         country,
         fingerprint,
         flag,
+        username,
         password,
         port,
         protocol,

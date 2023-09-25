@@ -44,13 +44,12 @@ import com.abrnoc.application.presentation.connection.Logs
 import com.abrnoc.application.presentation.connection.SagerNet
 import com.abrnoc.application.presentation.connection.listenForPackageChanges
 import com.abrnoc.application.presentation.connection.signaturesCompat
-
 import java.io.File
 import java.io.FileNotFoundException
 
 object PluginManager {
     class PluginNotFoundException(val plugin: String) : FileNotFoundException(plugin),
-            BaseService.ExpectedException {
+        BaseService.ExpectedException {
         override fun getLocalizedMessage() = SagerNet.application.getString(R.string.plugin_unknown, plugin)
     }
 
@@ -66,7 +65,7 @@ object PluginManager {
     val trustedSignatures by lazy {
         SagerNet.packageInfo.signaturesCompat.toSet() +
                 Signature(Base64.decode(  // @Mygod
-                """
+                    """
                     |MIIDWzCCAkOgAwIBAgIEUzfv8DANBgkqhkiG9w0BAQsFADBdMQswCQYDVQQGEwJD
                     |TjEOMAwGA1UECBMFTXlnb2QxDjAMBgNVBAcTBU15Z29kMQ4wDAYDVQQKEwVNeWdv
                     |ZDEOMAwGA1UECxMFTXlnb2QxDjAMBgNVBAMTBU15Z29kMCAXDTE0MDUwMjA5MjQx
@@ -87,7 +86,7 @@ object PluginManager {
                     |1WS67kDqeJiiQZvrxvyW6CZZ/MIGI+uAkkj3DqJpaZirkwPgvpcOIrjZy0uFvQM=
                   """, Base64.DEFAULT)) +
                 Signature(Base64.decode( // @madeye
-                """
+                    """
                     |MIICQzCCAaygAwIBAgIETV9OhjANBgkqhkiG9w0BAQUFADBmMQswCQYDVQQGEwJjbjERMA8GA1UE
                     |CBMIU2hhbmdoYWkxDzANBgNVBAcTBlB1ZG9uZzEUMBIGA1UEChMLRnVkYW4gVW5pdi4xDDAKBgNV
                     |BAsTA1BQSTEPMA0GA1UEAxMGTWF4IEx2MB4XDTExMDIxOTA1MDA1NFoXDTM2MDIxMzA1MDA1NFow
@@ -123,10 +122,10 @@ object PluginManager {
     }
 
     private fun buildUri(id: String) = Uri.Builder()
-            .scheme(PluginContract.SCHEME)
-            .authority(PluginContract.AUTHORITY)
-            .path("/$id")
-            .build()
+        .scheme(PluginContract.SCHEME)
+        .authority(PluginContract.AUTHORITY)
+        .path("/$id")
+        .build()
     fun buildIntent(id: String, action: String): Intent = Intent(action, buildUri(id))
 
     data class InitResult(
@@ -159,8 +158,8 @@ object PluginManager {
             flags = flags or PackageManager.MATCH_DIRECT_BOOT_UNAWARE or PackageManager.MATCH_DIRECT_BOOT_AWARE
         }
         val providers = SagerNet.application.packageManager.queryIntentContentProviders(
-                Intent(PluginContract.ACTION_NATIVE_PLUGIN, buildUri(configuration.selected)), flags)
-                .filter { it.providerInfo.exported }
+            Intent(PluginContract.ACTION_NATIVE_PLUGIN, buildUri(configuration.selected)), flags)
+            .filter { it.providerInfo.exported }
         if (providers.isEmpty()) return null
         if (providers.size > 1) {
             val message = "Conflicting plugins found from: ${providers.joinToString { it.providerInfo.packageName }}"
@@ -170,7 +169,7 @@ object PluginManager {
         val provider = providers.single().providerInfo
         val options = configuration.getOptions { provider.loadString(PluginContract.METADATA_KEY_DEFAULT_CONFIG) }
         val isV2 = provider.applicationInfo.metaData?.getString(PluginContract.METADATA_KEY_VERSION)
-                ?.substringBefore('.')?.toIntOrNull() ?: 0 >= 2
+            ?.substringBefore('.')?.toIntOrNull() ?: 0 >= 2
         var failure: Throwable? = null
         try {
             initNativeFaster(provider)?.also { return InitResult(it, options, isV2) }
@@ -209,7 +208,7 @@ object PluginManager {
 
     private fun initNativeFast(cr: ContentResolver, options: PluginOptions, uri: Uri): String? {
         return cr.call(uri, PluginContract.METHOD_GET_EXECUTABLE, null,
-                bundleOf(PluginContract.EXTRA_OPTIONS to options.id))?.getString(PluginContract.EXTRA_ENTRY)?.also {
+            bundleOf(PluginContract.EXTRA_OPTIONS to options.id))?.getString(PluginContract.EXTRA_ENTRY)?.also {
             check(File(it).canExecute())
         }
     }
@@ -220,7 +219,7 @@ object PluginManager {
         fun entryNotFound(): Nothing = throw IndexOutOfBoundsException("Plugin entry binary not found")
         val pluginDir = File(SagerNet.deviceStorage.noBackupFilesDir, "plugin")
         (cr.query(uri, arrayOf(PluginContract.COLUMN_PATH, PluginContract.COLUMN_MODE), null, null, null)
-                ?: return null).use { cursor ->
+            ?: return null).use { cursor ->
             if (!cursor.moveToFirst()) entryNotFound()
             pluginDir.deleteRecursively()
             if (!pluginDir.mkdirs()) throw FileNotFoundException("Unable to create plugin directory")

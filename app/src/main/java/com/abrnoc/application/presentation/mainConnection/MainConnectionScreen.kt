@@ -20,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,6 +40,7 @@ import dev.olshevski.navigation.reimagined.NavBackHandler
 import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.popAll
 import dev.olshevski.navigation.reimagined.rememberNavController
+import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,7 +59,7 @@ fun MainConnectionScreen(
 //
     }
     NavBackHandler(navController)
-
+    val context = LocalContext.current
     val isBackStackEmpty by remember {
         derivedStateOf {
             navController.backstack.entries.size == 1
@@ -109,8 +111,11 @@ fun MainConnectionScreen(
                 items(configViewModel.configState.configs!!.size) { i ->
                     val config = configViewModel.configState.configs!![i]
                     ConnectionItem(config, onClick = {
+                        println("** im here")
+                        Timber.i("***", "im here ")
                         currentProxy.value = config
-                        configViewModel.onEvent(ProxyEvent.ConfigEvent(currentProxy.value))
+                        configViewModel.onEvent(ProxyEvent.ConfigEvent(defaultConfig = currentProxy.value,
+                            context))
                     })
                 }
             }

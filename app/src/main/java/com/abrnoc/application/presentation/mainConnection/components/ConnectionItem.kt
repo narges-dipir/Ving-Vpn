@@ -57,7 +57,6 @@ fun ConnectionItem(defaultConfig: DefaultConfig? = null, onClick: () -> Unit) {
             val countryCode = parts?.get(2)
             val svgImageUrl =
                 "https://raw.githubusercontent.com/hampusborgos/country-flags/main/svg/$countryCode.svg"
-            println(" the image is  url  $svgImageUrl")
             SubcomposeAsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(svgImageUrl)

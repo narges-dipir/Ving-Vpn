@@ -1,6 +1,7 @@
 package com.abrnoc.application.repository.model
 
 data class DefaultConfig(
+    val id: Long? = 0L,
     val address: String? = "",
     val alpn: String? = "",
     val country: String? = "",

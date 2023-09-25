@@ -6,11 +6,12 @@ data class DefaultConfig(
     val country: String,
     val fingerprint: String,
     val flag: String,
+    val username: String?,
     val password: String,
     val port: Int,
     val protocol: String,
     val security: String,
     val sni: String,
     val type: String,
-    val url: String
+    val url: String,
 )

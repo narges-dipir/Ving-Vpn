@@ -107,6 +107,7 @@ fun MainConnectionScreen(
             }
         }
     ) {
+
         Column(modifier = Modifier.padding(it)) {
             Backdrop(modifier = Modifier, onClick = {
                 configViewModel.onClickConnect(localConnect)
@@ -115,6 +116,7 @@ fun MainConnectionScreen(
                 state = state)
             Spacer(modifier = Modifier.height(16.dp))
             LazyColumn {
+                configViewModel.getAllConfigs()
                 items(configViewModel.configState.configs!!.size) { i ->
                     val config = configViewModel.configState.configs!![i]
                     ConnectionItem(config, onClick = {

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -27,11 +28,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -71,6 +74,7 @@ fun EmailSignUp(
     var text by rememberSaveable {
         mutableStateOf("")
     }
+    var showDialog by remember { mutableStateOf(false) }
     val keyboardController = LocalSoftwareKeyboardController.current
     Column(
         modifier = Modifier
@@ -113,10 +117,10 @@ fun EmailSignUp(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(32.dp))
-            OutlinedTextField(value = text,
+            OutlinedTextField(
+                value = text,
                 onValueChange = {
                     text = it
-                    viewModel.onEvent(SendCodeEvent.EmailQuery(it))
                 },
                 shape = RoundedCornerShape(30.dp),
                 leadingIcon = {
@@ -140,7 +144,8 @@ fun EmailSignUp(
                 ),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = Lavender8,
-                    unfocusedLabelColor = Violate0
+                    unfocusedLabelColor = Violate0,
+                    textColor = ApplicationTheme.colors.textPrimary
                 ),
                 modifier = Modifier.fillMaxWidth(0.9f),
                 keyboardActions = KeyboardActions(
@@ -156,7 +161,9 @@ fun EmailSignUp(
                 nameButton = "Next",
                 roundedCornerShape = RoundedCornerShape(30.dp)
             ) {
-                if (viewModel.state.email != "") {
+                viewModel.onEvent(SendCodeEvent.EmailQuery(text))
+
+                if (viewModel.state.isValid) {
                     if (!viewModel.state.isValid) {
                         longToast(context, " The email Is Not Valid, Try Again!")
                     } else if (viewModel.state.isAlreadyRegistered) {
@@ -167,7 +174,7 @@ fun EmailSignUp(
                     } else {
                         longToast(context, viewModel.state.message)
                     }
-            }
+                }
             }
 
             Spacer(modifier = Modifier.padding(10.dp))
@@ -187,11 +194,13 @@ fun EmailSignUp(
                 ),
                 border = BorderStroke(2.dp, Color.LightGray),
                 shape = RoundedCornerShape(50),
-                colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.White)
+                colors = ButtonDefaults.outlinedButtonColors(backgroundColor = ApplicationTheme.colors.uiBackground)
             ) {
                 Box(Modifier.fillMaxWidth()) {
                     Image(
-                        modifier = Modifier.align(Alignment.CenterStart),
+                        modifier = Modifier
+                            .align(Alignment.CenterStart)
+                            .clip(CircleShape),
                         painter = painterResource(id = R.drawable.google_icon),
                         contentDescription = null
                     )

@@ -54,7 +54,6 @@ import com.abrnoc.application.presentation.ui.theme.Sky1
 import com.abrnoc.application.presentation.ui.theme.Violate0
 import com.abrnoc.application.presentation.utiles.Visibility
 import com.abrnoc.application.presentation.utiles.VisibilityOff
-import com.abrnoc.application.presentation.utiles.longToast
 import com.abrnoc.application.presentation.viewModel.SignInViewModel
 import com.abrnoc.application.presentation.viewModel.event.SignInEvent
 
@@ -140,7 +139,8 @@ fun EmailSignIn(navController: NavController?,
                 ),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = Lavender8,
-                    unfocusedLabelColor = Violate0
+                    unfocusedLabelColor = Violate0,
+                    textColor = ApplicationTheme.colors.textPrimary
                 ),
                 modifier = Modifier.fillMaxWidth(0.9f),
                 keyboardActions = KeyboardActions(
@@ -168,7 +168,8 @@ fun EmailSignIn(navController: NavController?,
                 ),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = ApplicationTheme.colors.textPrimary,
-                    unfocusedBorderColor = MaterialTheme.colorScheme.primary),
+                    unfocusedBorderColor = MaterialTheme.colorScheme.primary,
+                    textColor = ApplicationTheme.colors.textPrimary),
                 trailingIcon = {
                     IconButton(onClick = { passwordHidden = !passwordHidden }) {
                         val visibilityIcon =
@@ -209,9 +210,10 @@ fun EmailSignIn(navController: NavController?,
 //                        val intent = Intent(context, ConnActivity::class.java)
 //                        context.startActivity(intent)
                         navController?.navigate(Navigation.MainConnectionScreen.route)
-                    } else {
-                        longToast(context, "Your Password Doesn't Match, Try Again")
                     }
+//                    else {
+//                        longToast(context, "Your Password Doesn't Match, Try Again")
+//                    }
             }
             }
 

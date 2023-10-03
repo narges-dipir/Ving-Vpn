@@ -104,7 +104,7 @@ class DefaultConfigViewModel @Inject constructor(
         }
     }
 
-    private fun getAllConfigs() {
+     fun getAllConfigs() {
         viewModelScope.launch {
             getDefaultConfigUseCase(Unit).collect { result ->
                 when (result) {

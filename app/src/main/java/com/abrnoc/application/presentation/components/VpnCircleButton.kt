@@ -124,9 +124,7 @@ fun VpnConnectButton(
                         color = Color.DarkGray
                         text = "Connecting.. "
                         progress = 300
-                        delay(1500)
                         progress = 325
-                        delay(5000)
                         progress = 360
                         text = "Connected"
                         color = Color(0xFF008B48)

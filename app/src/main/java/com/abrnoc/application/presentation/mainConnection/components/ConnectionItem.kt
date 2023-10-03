@@ -87,7 +87,7 @@ fun ConnectionItem(defaultConfig: DefaultConfig? = null, onClick: () -> Unit) {
                         contentDescription = ""
                     )
                     Text(
-                        text = "0.ms",
+                        text = defaultConfig?.protocol ?: "",
                         modifier = Modifier.padding(start = 32.dp),
                         color = ApplicationTheme.colors.textSecondry
                     )

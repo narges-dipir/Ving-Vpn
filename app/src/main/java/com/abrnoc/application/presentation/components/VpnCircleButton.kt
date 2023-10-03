@@ -1,5 +1,6 @@
 package com.abrnoc.application.presentation.components
 
+import android.content.Context
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.core.tween
@@ -34,14 +35,22 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.abrnoc.application.R
+import com.abrnoc.application.presentation.connection.BaseService
+import com.abrnoc.application.presentation.connection.DataStore
 import com.abrnoc.application.presentation.ui.theme.Neutral0
 import com.abrnoc.application.presentation.ui.theme.Sky0
+import com.google.android.material.progressindicator.BaseProgressIndicator
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+
+// private val iconStopping by lazy { AnimatedState(R.drawable.ic_service_stopping) }
+private var checked = false
+private var delayedAnimation: Job? = null
+private lateinit var progress: BaseProgressIndicator<*>
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -49,8 +58,9 @@ fun VpnConnectButton(
     outStrokeWidth: Float = 8f,
     thumbStrokeWidth: Float = 6f,
     onClick: () -> Unit,
+    context: Context,
+    state: BaseService.State,
 ) {
-
     var connected by remember {
         mutableStateOf(false)
     }
@@ -88,112 +98,107 @@ fun VpnConnectButton(
     }
 
 //    Surface {
-        Column(
-            Modifier
-                .padding(10.dp)
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
+    Column(
+        Modifier
+            .padding(10.dp)
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Spacer(modifier = Modifier.height(12.dp))
+        Text(
+            text = titleText,
+            color = Neutral0,
+            fontSize = 20.sp
+        )
+        Spacer(modifier = Modifier.height(24.dp))
+        Surface(
+            shape = CircleShape,
+            color = Color.White,
+            elevation = 3.dp,
+            onClick = {
+                onClick()
+                changeState(state, DataStore.serviceState, context)
+                scope.launch {
+                    if (!connected) {
+                        connected = true
+                        color = Color.DarkGray
+                        text = "Connecting.. "
+                        progress = 300
+                        delay(1500)
+                        progress = 325
+                        delay(5000)
+                        progress = 360
+                        text = "Connected"
+                        color = Color(0xFF008B48)
+                        titleText = "You are connected"
+                    } else {
+                        text = "Tap To Connect"
+                        color = Color.DarkGray
+                        progress = 0
+                        connected = false
+                    }
+                }
+            }
         ) {
-            Spacer(modifier = Modifier.height(12.dp))
-            Text(
-                text = titleText,
-                color = Neutral0,
-                fontSize = 20.sp
-            )
-            Spacer(modifier = Modifier.height(24.dp))
-            Surface(
-                shape = CircleShape,
-                color = Color.White,
-                elevation = 3.dp,
-                onClick = {
-                    onClick()
-                    scope.launch {
-                        if (!connected) {
-                            connected = true
-                            color = Color.DarkGray
-                            text = "Connecting.. "
-                            progress = 300
-                            delay(1500)
-                            progress = 325
-                            delay(5000)
-                            progress = 360
-                            text = "Connected"
-                            color = Color(0xFF008B48)
-                            titleText = "You are connected"
-
-                        } else {
-                            text = "Tap To Connect"
-                            color = Color.DarkGray
-                            progress = 0
-                            connected = false
-                        }
-
-                    }
-                }
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.background(Color.White),
             ) {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier.background(Color.White),
+                Canvas(
+                    Modifier
+                        .size(50.dp)
+                        .padding(10.dp)
                 ) {
+                    drawThumb(
+                        color = animateColor,
+                        thumbStrokeWidth = thumbStrokeWidth
+                    )
+                }
 
-                    Canvas(
-                        Modifier
-                            .size(50.dp)
-                            .padding(10.dp)
-                    ) {
-                        drawThumb(
-                            color = animateColor,
-                            thumbStrokeWidth = thumbStrokeWidth
-                        )
-                    }
-
-                    Canvas(
-                        Modifier
-                            .size(150.dp)
-                            .padding(10.dp)
-                    ) {
-                        drawCircleProgressBar(
-                            color = animateColor,
-                            progressStrokeWidth = outStrokeWidth,
-                            sweepAngle = animateProgress.toFloat()
-                        )
-                    }
+                Canvas(
+                    Modifier
+                        .size(150.dp)
+                        .padding(10.dp)
+                ) {
+                    drawCircleProgressBar(
+                        color = animateColor,
+                        progressStrokeWidth = outStrokeWidth,
+                        sweepAngle = animateProgress.toFloat()
+                    )
                 }
             }
-            Spacer(modifier = Modifier.height(15.dp))
+        }
+        Spacer(modifier = Modifier.height(15.dp))
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.wrapContentSize()
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.tap_icon),
-                    contentDescription = "connection description text",
-                    modifier = Modifier.padding(12.dp)
-                )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.wrapContentSize()
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.tap_icon),
+                contentDescription = "connection description text",
+                modifier = Modifier.padding(12.dp)
+            )
 
-                Text(
-                    text = text,
-                    color = Neutral0,
-                    fontSize = 16.sp,
-                )
-
-            }
+            Text(
+                text = text,
+                color = Neutral0,
+                fontSize = 16.sp,
+            )
+        }
 //            Text(
 //                text = text,
 //                style = MaterialTheme.typography.overline.copy(
 //                    fontSize = 16.sp
 //                )
 //            )
-        }
+    }
 //    }
-
-
 }
 
 fun DrawScope.drawThumb(
     thumbStrokeWidth: Float,
-    color: Color = Color(0xFFA30022)
+    color: Color = Color(0xFFA30022),
 ) {
     drawArc(
         color = color,
@@ -249,8 +254,35 @@ fun DrawScope.drawCircleProgressBar(
     )
 }
 
-@Preview
-@Composable
-private fun Preview() {
-    VpnConnectButton(onClick = {})
+// @Preview
+// @Composable
+// private fun Preview() {
+//    VpnConnectButton(onClick = {}, context = LocalContext.current, state = BaseService.State)
+// }
+
+fun changeState(
+    state: BaseService.State,
+    previousState: BaseService.State,
+    context: Context,
+) {
+    when (state) {
+        BaseService.State.Connecting -> println(" $$$$ its connecting ") // / changeState(iconConnecting, animate)
+        BaseService.State.Connected -> println(" $$$$ its connected ") // /changeState(iconConnected, animate)
+        BaseService.State.Stopping -> println(" $$$$ its Stopped ...  ")
+        else -> println(" $$$$ its confused ")
+    }
+    checked = state == BaseService.State.Connected
+    val description = context.getText(if (state.canStop) R.string.stop else R.string.connect)
+//    contentDescription = description
+//    TooltipCompat.setTooltipText(this, description)
+    val enabled = state.canStop || state == BaseService.State.Stopped
+//    isEnabled = enabled
+//    if (Build.VERSION.SDK_INT >= 24) pointerIcon = PointerIcon.getSystemIcon(
+//        context,
+//        if (enabled) PointerIcon.TYPE_HAND else PointerIcon.TYPE_WAIT
+//    )
+}
+
+private fun hideProgress() {
+    delayedAnimation?.cancel()
 }

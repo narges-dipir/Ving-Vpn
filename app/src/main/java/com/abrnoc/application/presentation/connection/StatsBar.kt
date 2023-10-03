@@ -31,6 +31,7 @@ import androidx.appcompat.widget.TooltipCompat
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.whenStarted
+import com.abrnoc.application.MainActivity
 import com.abrnoc.application.R
 import com.google.android.material.bottomappbar.BottomAppBar
 import kotlinx.coroutines.Dispatchers
@@ -98,7 +99,7 @@ class StatsBar @JvmOverloads constructor(
     }
 
     fun changeState(state: BaseService.State) {
-        val activity = context as ConnActivity
+        val activity = context as MainActivity
         fun postWhenStarted(what: () -> Unit) = activity.lifecycleScope.launch(Dispatchers.Main) {
             delay(100L)
             activity.whenStarted { what() }
@@ -140,38 +141,38 @@ class StatsBar @JvmOverloads constructor(
     }
 
     fun testConnection() {
-        val activity = context as ConnActivity
+        val activity = context as MainActivity
         isEnabled = false
         setStatus(app.getText(R.string.connection_test_testing))
         runOnDefaultDispatcher {
-            try {
-                val elapsed = activity.urlTest()
-                onMainDispatcher {
-                    isEnabled = true
-                    setStatus(
-                        app.getString(
-                            if (DataStore.connectionTestURL.startsWith("https://")) {
-                                R.string.connection_test_available
-                            } else {
-                                R.string.connection_test_available_http
-                            }, elapsed
-                        )
-                    )
-                }
-
-            } catch (e: Exception) {
-                Logs.w(e.toString())
-                onMainDispatcher {
-                    isEnabled = true
-                    setStatus(app.getText(R.string.connection_test_testing))
-
-                    activity.snackbar(
-                        app.getString(
-                            R.string.connection_test_error, e.readableMessage
-                        )
-                    ).show()
-                }
-            }
+//            try {
+//                val elapsed = activity.urlTest()
+//                onMainDispatcher {
+//                    isEnabled = true
+//                    setStatus(
+//                        app.getString(
+//                            if (DataStore.connectionTestURL.startsWith("https://")) {
+//                                R.string.connection_test_available
+//                            } else {
+//                                R.string.connection_test_available_http
+//                            }, elapsed
+//                        )
+//                    )
+//                }
+//
+//            } catch (e: Exception) {
+//                Logs.w(e.toString())
+//                onMainDispatcher {
+//                    isEnabled = true
+//                    setStatus(app.getText(R.string.connection_test_testing))
+//
+//                    activity.snackbar(
+//                        app.getString(
+//                            R.string.connection_test_error, e.readableMessage
+//                        )
+//                    ).show()
+//                }
+//            }
         }
     }
 

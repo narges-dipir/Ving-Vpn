@@ -1,6 +1,5 @@
 package com.abrnoc.application.presentation.screens.signUp
 
-import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -43,7 +42,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.abrnoc.application.R
 import com.abrnoc.application.presentation.components.ButtonGradient
-import com.abrnoc.application.presentation.connection.ConnActivity
 import com.abrnoc.application.presentation.navigation.Navigation
 import com.abrnoc.application.presentation.screens.landing.AnimatedLogo
 import com.abrnoc.application.presentation.ui.theme.AbrnocApplicationTheme

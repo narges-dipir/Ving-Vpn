@@ -19,13 +19,10 @@
 
 package com.abrnoc.application.connection.ktx
 
-import android.app.ProgressDialog.show
 import android.graphics.Rect
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abrnoc.application.MainActivity
-import com.abrnoc.application.presentation.connection.ConnActivity
 import com.abrnoc.application.presentation.connection.DataStore
 
 
@@ -51,7 +48,7 @@ class FixedLinearLayoutManager(val recyclerView: RecyclerView) :
         // SagerNet Style
         val scrollRange = super.scrollVerticallyBy(dx, recycler, state)
         if (listenerDisabled) return scrollRange
-        val activity = recyclerView.context as? ConnActivity
+        val activity = recyclerView.context as? MainActivity
         if (activity == null) {
             listenerDisabled = true
             return scrollRange
@@ -63,17 +60,17 @@ class FixedLinearLayoutManager(val recyclerView: RecyclerView) :
                 (recyclerView.findViewHolderForAdapterPosition(findLastVisibleItemPosition())
                     ?: return scrollRange).itemView
             val itemLocation = Rect().also { view.getGlobalVisibleRect(it) }
-            val fabLocation = Rect().also { activity.binding.fab.getGlobalVisibleRect(it) }
-            if (!itemLocation.contains(fabLocation.left, fabLocation.top) && !itemLocation.contains(
-                    fabLocation.right,
-                    fabLocation.bottom
-                )
-            ) {
-                return scrollRange
-            }
-            activity.binding.fab.apply {
-                if (isShown) hide()
-            }
+//            val fabLocation = Rect().also { activity.binding.fab.getGlobalVisibleRect(it) }
+//            if (!itemLocation.contains(fabLocation.left, fabLocation.top) && !itemLocation.contains(
+//                    fabLocation.right,
+//                    fabLocation.bottom
+//                )
+//            ) {
+//                return scrollRange
+//            }
+//            activity.binding.fab.apply {
+//                if (isShown) hide()
+//            }
         } else {
             /*val screen = Rect().also { activity.window.decorView.getGlobalVisibleRect(it) }
             val location = Rect().also { activity.stats.getGlobalVisibleRect(it) }
@@ -87,9 +84,9 @@ class FixedLinearLayoutManager(val recyclerView: RecyclerView) :
                 return scrollRange
             }*/
 
-            activity.binding.fab.apply {
-                if (!isShown) show()
-            }
+//            activity.binding.fab.apply {
+//                if (!isShown) show()
+//            }
         }
         return scrollRange
     }

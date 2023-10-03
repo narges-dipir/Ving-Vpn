@@ -208,7 +208,6 @@ class BaseService {
         override fun updateStats(t: AppStats) {
             appStats.add(t)
         }
-
         private suspend fun loopStats() {
             var lastQueryTime = 0L
             val tun = (data?.proxy?.service as? VpnService)?.getTun() ?: return

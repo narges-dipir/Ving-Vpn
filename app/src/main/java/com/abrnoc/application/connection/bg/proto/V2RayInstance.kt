@@ -60,7 +60,7 @@ import org.json.JSONObject
 import java.io.File
 
 abstract class V2RayInstance(
-    val profile: ProxyEntity
+    val profile: ProxyEntity,
 ) : io.nekohasekai.sagernet.AbstractInstance {
 
     lateinit var config: V2rayBuildResult
@@ -110,7 +110,8 @@ abstract class V2RayInstance(
                         initPlugin("hysteria-plugin")
                         pluginConfigs[port] = profile.type to bean.buildHysteriaConfig(port) {
                             File(
-                                app.cacheDir, "hysteria_" + SystemClock.elapsedRealtime() + ".ca"
+                                app.cacheDir,
+                                "hysteria_" + SystemClock.elapsedRealtime() + ".ca"
                             ).apply {
                                 parentFile?.mkdirs()
                                 cacheFiles.add(this)
@@ -167,21 +168,25 @@ abstract class V2RayInstance(
                     }
                     bean is TrojanGoBean -> {
                         val configFile = File(
-                            cache, "trojan_go_" + SystemClock.elapsedRealtime() + ".json"
+                            cache,
+                            "trojan_go_" + SystemClock.elapsedRealtime() + ".json"
                         )
                         configFile.parentFile?.mkdirs()
                         configFile.writeText(config)
                         cacheFiles.add(configFile)
 
                         val commands = mutableListOf(
-                            initPlugin("trojan-go-plugin").path, "-config", configFile.absolutePath
+                            initPlugin("trojan-go-plugin").path,
+                            "-config",
+                            configFile.absolutePath
                         )
 
                         processes.start(commands)
                     }
                     bean is NaiveBean -> {
                         val configFile = File(
-                            cache, "naive_" + SystemClock.elapsedRealtime() + ".json"
+                            cache,
+                            "naive_" + SystemClock.elapsedRealtime() + ".json"
                         )
 
                         configFile.parentFile?.mkdirs()
@@ -192,7 +197,8 @@ abstract class V2RayInstance(
 
                         if (bean.certificates.isNotBlank()) {
                             val certFile = File(
-                                cache, "naive_" + SystemClock.elapsedRealtime() + ".crt"
+                                cache,
+                                "naive_" + SystemClock.elapsedRealtime() + ".crt"
                             )
 
                             certFile.parentFile?.mkdirs()
@@ -203,14 +209,16 @@ abstract class V2RayInstance(
                         }
 
                         val commands = mutableListOf(
-                            initPlugin("naive-plugin").path, configFile.absolutePath
+                            initPlugin("naive-plugin").path,
+                            configFile.absolutePath
                         )
 
                         processes.start(commands, envMap)
                     }
                     bean is HysteriaBean -> {
                         val configFile = File(
-                            cache, "hysteria_" + SystemClock.elapsedRealtime() + ".json"
+                            cache,
+                            "hysteria_" + SystemClock.elapsedRealtime() + ".json"
                         )
 
                         configFile.parentFile?.mkdirs()
@@ -235,7 +243,8 @@ abstract class V2RayInstance(
                     }
                     bean is WireGuardBean -> {
                         val configFile = File(
-                            cache, "wg_" + SystemClock.elapsedRealtime() + ".conf"
+                            cache,
+                            "wg_" + SystemClock.elapsedRealtime() + ".conf"
                         )
 
                         configFile.parentFile?.mkdirs()
@@ -343,13 +352,11 @@ abstract class V2RayInstance(
                         super.onPageFinished(view, url)
 
                         Logs.d("WebView loaded: ${view.title}")
-
                     }
                 }
                 wsForwarder.loadUrl(url)
             }
         }
-
     }
 
     @Suppress("EXPERIMENTAL_API_USAGE")
@@ -377,5 +384,4 @@ abstract class V2RayInstance(
             v2rayPoint.close()
         }
     }
-
 }

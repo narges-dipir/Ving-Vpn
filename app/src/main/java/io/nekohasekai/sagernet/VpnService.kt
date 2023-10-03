@@ -40,7 +40,15 @@ import com.github.shadowsocks.net.ConcurrentLocalSocketListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.runBlocking
-import libcore.*
+import libcore.AppStats
+import libcore.ErrorHandler
+import libcore.Libcore
+import libcore.LocalResolver
+import libcore.Protector
+import libcore.TrafficListener
+import libcore.Tun2ray
+import libcore.TunConfig
+import timber.log.Timber
 import java.io.File
 import java.io.FileDescriptor
 import java.io.IOException
@@ -292,6 +300,8 @@ class VpnService :
             localResolver = this@VpnService
             fdProtector = this@VpnService
         }
+        Timber.i("^^^^", config.toString())
+        println("^^^^ the config is ${config.toString()}")
 
         tun = Libcore.newTun2ray(config)
     }

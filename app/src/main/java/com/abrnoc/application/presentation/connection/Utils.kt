@@ -43,6 +43,7 @@ import androidx.preference.Preference
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.abrnoc.application.BuildConfig
+import com.abrnoc.application.MainActivity
 import com.abrnoc.application.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -219,8 +220,8 @@ fun View.crossFadeFrom(other: View) {
 }
 
 
-fun Fragment.snackbar(textId: Int) = (requireActivity() as ConnActivity).snackbar(textId)
-fun Fragment.snackbar(text: CharSequence) = (requireActivity() as ConnActivity).snackbar(text)
+fun Fragment.snackbar(textId: Int) = (requireActivity() as MainActivity).snackbar(textId)
+fun Fragment.snackbar(text: CharSequence) = (requireActivity() as MainActivity).snackbar(text)
 
 //fun ThemedActivity.startFilesForResult(
 //    launcher: ActivityResultLauncher<String>, input: String

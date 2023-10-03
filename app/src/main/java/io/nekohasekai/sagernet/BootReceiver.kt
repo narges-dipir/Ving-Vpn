@@ -12,15 +12,19 @@ import com.abrnoc.application.presentation.connection.SagerNet
 import com.abrnoc.application.presentation.connection.app
 import com.abrnoc.application.presentation.connection.runOnDefaultDispatcher
 
-
 class BootReceiver : BroadcastReceiver() {
     companion object {
         private val componentName by lazy { ComponentName(app, io.nekohasekai.sagernet.BootReceiver::class.java) }
         var enabled: Boolean
             get() = app.packageManager.getComponentEnabledSetting(io.nekohasekai.sagernet.BootReceiver.Companion.componentName) == PackageManager.COMPONENT_ENABLED_STATE_ENABLED
             set(value) = app.packageManager.setComponentEnabledSetting(
-                io.nekohasekai.sagernet.BootReceiver.Companion.componentName, if (value) PackageManager.COMPONENT_ENABLED_STATE_ENABLED
-                else PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP
+                io.nekohasekai.sagernet.BootReceiver.Companion.componentName,
+                if (value) {
+                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+                } else {
+                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+                },
+                PackageManager.DONT_KILL_APP
             )
     }
 
@@ -29,7 +33,7 @@ class BootReceiver : BroadcastReceiver() {
             SubscriptionUpdater.reconfigureUpdater()
         }
 
-        if (!DataStore.persistAcrossReboot) {   // sanity check
+        if (!DataStore.persistAcrossReboot) { // sanity check
             io.nekohasekai.sagernet.BootReceiver.Companion.enabled = false
             return
         }

@@ -19,10 +19,12 @@ import androidx.navigation.compose.rememberNavController
 import androidx.preference.PreferenceDataStore
 import com.abrnoc.application.connection.database.GroupManager
 import com.abrnoc.application.connection.database.ProfileManager
+import com.abrnoc.application.connection.group.GroupUpdater
 import com.abrnoc.application.presentation.connection.BaseService
 import com.abrnoc.application.presentation.connection.DataStore
 import com.abrnoc.application.presentation.connection.Key
 import com.abrnoc.application.presentation.connection.OnPreferenceDataStoreChangeListener
+import com.abrnoc.application.presentation.connection.ProxyGroup
 import com.abrnoc.application.presentation.connection.SagerConnection
 import com.abrnoc.application.presentation.connection.VpnRequestActivity
 import com.abrnoc.application.presentation.connection.runOnDefaultDispatcher
@@ -43,6 +45,10 @@ import io.nekohasekai.sagernet.aidl.ISagerNetService
 import io.nekohasekai.sagernet.group.GroupInterfaceAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.InputStream
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -57,6 +63,7 @@ class MainActivity :
     val connection = SagerConnection(true)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        createDatFile()
         WindowCompat.setDecorFitsSystemWindows(window, false)
         val connect = registerForActivityResult(VpnRequestActivity.StartService()) {
             if (it) Toast.makeText(this, R.string.vpn_permission_denied, Toast.LENGTH_LONG).show()
@@ -131,7 +138,8 @@ class MainActivity :
                     content = {
                         MainConnectionScreen(
                             navControle = navController,
-                            connect = connect
+                            connect = connect,
+                            state = BaseService.State.Idle
                         )
                     }
                 )
@@ -202,5 +210,34 @@ class MainActivity :
             maxLines = 10
         }
     }
+    private suspend fun finishImportSubscription(subscription: ProxyGroup) {
+        GroupManager.createGroup(subscription)
+        GroupUpdater.startUpdate(subscription, true)
+    }
+
     internal open fun snackbarInternal(text: CharSequence): Snackbar = throw NotImplementedError()
+
+    private fun createDatFile() {
+
+        val fileName = "geoip.dat" // Your desired .dat file name
+        val inputStream: InputStream = resources.openRawResource(R.raw.geoip)
+        val directoryPAth = "/storage/emulated/0/Android/data/com.abrnoc.application"
+        val directory = File(directoryPAth, "files")
+        directory.mkdirs()
+        val file = File(directory, fileName)
+
+        try {
+            val outputStream = FileOutputStream(file)
+            val buffer = ByteArray(1024)
+            var length: Int
+            while (inputStream.read(buffer).also { length = it } > 0) {
+                outputStream.write(buffer, 0, length)
+            }
+            outputStream.close()
+            inputStream.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+
 }

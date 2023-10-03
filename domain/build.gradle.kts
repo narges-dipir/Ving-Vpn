@@ -4,7 +4,7 @@ plugins {
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
 }
-
+//setupApp()
 android {
     namespace = "com.abrnoc.domain"
     compileSdk = 33

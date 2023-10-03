@@ -38,6 +38,7 @@ import android.os.UserManager
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
+import com.abrnoc.application.MainActivity
 import com.abrnoc.application.R
 import dagger.hilt.android.HiltAndroidApp
 import go.Seq
@@ -63,6 +64,7 @@ class SagerNet :
 
     val externalAssets by lazy { getExternalFilesDir(null) ?: filesDir }
     val process = JavaUtil.getProcessName()
+
 //    val isMainProcess = process == BuildConfig.APPLICATION_ID
     val isBgProcess = process.endsWith(":bg")
 
@@ -162,7 +164,8 @@ class SagerNet :
         if (Build.VERSION.SDK_INT >= 28) {
             PackageManager.GET_SIGNING_CERTIFICATES
         } else {
-            @Suppress("DEPRECATION") PackageManager.GET_SIGNATURES
+            @Suppress("DEPRECATION")
+            PackageManager.GET_SIGNATURES
         },
     )!!
 
@@ -204,7 +207,7 @@ class SagerNet :
                     0,
                     Intent(
                         application,
-                        ConnActivity::class.java,
+                        MainActivity::class.java,
                     ).setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT),
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_IMMUTABLE else 0,
                 )
@@ -232,10 +235,11 @@ class SagerNet :
             Logs.w(e)
             false
         }
+
         @RequiresApi(26)
         fun updateNotificationChannels() {
             if (Build.VERSION.SDK_INT >= 26) {
-                 run {
+                run {
                     notification.createNotificationChannels(
                         listOf(
                             NotificationChannel(
@@ -275,7 +279,5 @@ class SagerNet :
             application.sendBroadcast(Intent(Action.CLOSE).setPackage(application.packageName))
 
         var underlyingNetwork: Network? = null
-
     }
-
 }

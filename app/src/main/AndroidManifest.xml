@@ -3,7 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:installLocation="internalOnly">
 
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-sdk tools:overrideLibrary="com.google.zxing.client.android" />
+
+    <permission
+        android:name="${applicationId}.SERVICE"
+        android:protectionLevel="signature" />
+
     <uses-permission android:name="${applicationId}.SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
@@ -12,6 +17,10 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="29" />
 
     <uses-permission
         android:name="android.permission.QUERY_ALL_PACKAGES"
@@ -41,88 +50,41 @@
         android:allowBackup="true"
         android:autoRevokePermissions="allowed"
         android:dataExtractionRules="@xml/data_extraction_rules"
-        android:fullBackupContent="@xml/backup_rules"
-        android:fullBackupOnly="true"
         android:extractNativeLibs="true"
+        android:fullBackupContent="@xml/backup_descriptor"
+        android:fullBackupOnly="true"
         android:hardwareAccelerated="true"
         android:hasFragileUserData="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:banner="@mipmap/ic_launcher"
         android:theme="@style/Theme.AbrnocApplication"
-        android:networkSecurityConfig="@xml/network_security_config"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity
-            android:name=".presentation.connection.ConnActivity"
-            android:exported="true" >
 
-            <intent-filter>
-                <action android:name="android.service.quicksettings.action.QS_TILE_PREFERENCES" />
-            </intent-filter>
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-2318700711963667~7062247500" />
 
-            <intent-filter android:label="@string/subscription_import">
-                <action android:name="android.intent.action.VIEW" />
+        <meta-data
+            android:name="android.app.shortcuts"
+            android:resource="@xml/shortcuts" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="subscription"
-                    android:scheme="sn" />
-
-            </intent-filter>
-
-            <intent-filter android:label="@string/subscription_import">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="install-config"
-                    android:scheme="clash" />
-            </intent-filter>
-
-            <intent-filter android:label="@string/profile_import">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="sn" />
-                <data android:scheme="ss" />
-                <data android:scheme="ssr" />
-                <data android:scheme="socks" />
-                <data android:scheme="socks4" />
-                <data android:scheme="socksa" />
-                <data android:scheme="sock5" />
-                <data android:scheme="vmess" />
-                <data android:scheme="trojan" />
-                <data android:scheme="trojan-go" />
-                <data android:scheme="naive+https" />
-                <data android:scheme="naive+quic" />
-                <data android:scheme="hysteria" />
-
-            </intent-filter>
-
-            <meta-data
-                android:name="android.app.shortcuts"
-                android:resource="@xml/shortcuts" />
-        </activity>
         <activity
             android:name=".MainActivity"
+            android:configChanges="uiMode"
             android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.AbrnocApplication">
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -231,6 +193,9 @@
             android:launchMode="singleInstance"
             android:theme="@style/Theme.SagerNet.Dialog"
             />
+        <activity
+            android:name=".presentation.uiActivity.AssetsActivity"
+            android:configChanges="uiMode" />
 <!--        <activity-->
 <!--            android:name="moe.matsuri.nya.neko.NekoSettingActivity"-->
 <!--            android:configChanges="uiMode" />-->
@@ -246,6 +211,40 @@
 <!--        <activity-->
 <!--            android:name="io.nekohasekai.sagernet.ui.AppListActivity"-->
 <!--            android:configChanges="uiMode" />-->
+
+        <service
+            android:name="io.nekohasekai.sagernet.ProxyService"
+            android:exported="false"
+            android:process=":bg" />
+
+        <service
+            android:name="io.nekohasekai.sagernet.VpnService"
+            android:exported="false"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_VPN_SERVICE"
+            android:process=":bg">
+
+            <intent-filter>
+                <action android:name="android.net.VpnService" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="io.nekohasekai.TileService"
+            android:exported="true"
+            android:icon="@drawable/main_icon"
+            android:label="@string/tile_title"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
+            android:process=":bg"
+            tools:targetApi="n">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="true" />
+        </service>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.cache"
@@ -255,6 +254,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/cache_paths" />
         </provider>
+
         <receiver
             android:name="io.nekohasekai.sagernet.BootReceiver"
             android:enabled="false"
@@ -266,10 +266,12 @@
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
             </intent-filter>
         </receiver>
+
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
             tools:node="remove" />
+
         <receiver
             android:name="io.nekohasekai.sagernet.BootReceiver"
             android:enabled="false"
@@ -281,9 +283,11 @@
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
             </intent-filter>
         </receiver>
+
         <service
             android:name="androidx.room.MultiInstanceInvalidationService"
             android:process=":bg" />
+
     </application>
 
 </manifest>

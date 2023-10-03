@@ -34,7 +34,6 @@ import com.abrnoc.application.connection.ktx.stringToInt
 import com.abrnoc.application.connection.ktx.stringToIntIfExists
 import com.abrnoc.application.connection.moe.nb4a.TempDatabase
 import com.abrnoc.application.connection.neko.SagerDatabase
-
 object DataStore : OnPreferenceDataStoreChangeListener {
 
     // share service state in main process
@@ -49,6 +48,7 @@ object DataStore : OnPreferenceDataStoreChangeListener {
             SagerNet.application.moveDatabaseFrom(SagerNet.deviceStorage, Key.DB_PUBLIC)
         }
     }
+
     // last used, but may not be running
     var currentProfile by configurationStore.long(Key.PROFILE_CURRENT)
 

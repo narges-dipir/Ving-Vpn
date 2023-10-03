@@ -19,6 +19,9 @@
 
 package com.abrnoc.application.presentation.connection
 
+import com.abrnoc.application.connection.neko.NekoJSInterface
+import com.abrnoc.application.connection.neko.NekoPluginManager
+import com.abrnoc.application.connection.neko.Util
 import com.abrnoc.application.connection.neko.parseShareLink
 import com.abrnoc.application.ftm.AbstractBean
 import com.abrnoc.application.ftm.Serializable
@@ -30,13 +33,11 @@ import com.abrnoc.application.ftm.parseUniversal
 import com.abrnoc.application.ftm.shadowsocks.parseShadowsocks
 import com.abrnoc.application.ftm.shadowsocksr.parseShadowsocksR
 import com.abrnoc.application.ftm.socks.parseSOCKS
+import com.abrnoc.application.ftm.ssh.parseShh
 import com.abrnoc.application.ftm.trojan.parseTrojan
 import com.abrnoc.application.ftm.trojan_go.parseTrojanGo
 import com.abrnoc.application.ftm.v2ray.parseV2Ray
 import com.google.gson.JsonParser
-import com.abrnoc.application.connection.neko.NekoJSInterface
-import com.abrnoc.application.connection.neko.NekoPluginManager
-import com.abrnoc.application.connection.neko.Util
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -197,7 +198,16 @@ suspend fun parseProxies(text: String): List<AbstractBean> {
             }.onFailure {
                 Logs.w(it)
             }
-        } else if (startsWith("naive+")) {
+        }
+        else if (startsWith("ssh://")) {
+            Logs.d("Try parse ssh link: $this")
+            runCatching {
+                entities.add(parseShh(this))
+            }.onFailure {
+                Logs.w(it)
+            }
+        }
+        else if (startsWith("naive+")) {
             Logs.d("Try parse naive link: $this")
             runCatching {
                 entities.add(parseNaive(this))

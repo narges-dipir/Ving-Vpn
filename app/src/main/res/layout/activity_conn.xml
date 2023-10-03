@@ -40,7 +40,7 @@
             android:id="@+id/test_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_service_active"
+            app:srcCompat="@drawable/main_icon"
             />
         <com.abrnoc.application.presentation.connection.ServiceButton
             android:id="@+id/fab"

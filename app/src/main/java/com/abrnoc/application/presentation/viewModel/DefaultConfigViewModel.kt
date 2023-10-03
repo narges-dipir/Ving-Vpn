@@ -125,25 +125,26 @@ class DefaultConfigViewModel @Inject constructor(
                         SagerDatabase.proxyDao.clearPrimaryKey()
                         result.data.forEach { config ->
                             try {
-                                val proxies = RawUpdater.parseRaw(config.url)
+                                var url = ""
+                                if (config.protocol == "SSH") {
+                                    val stringBuilder = StringBuilder()
+                                    stringBuilder.append("ssh://")
+                                    stringBuilder.append("&address=").append(config.address)
+                                    stringBuilder.append("&port=").append(config.port)
+                                    stringBuilder.append("&username=").append(config.username)
+                                    stringBuilder.append("&password=").append(config.password)
+                                    url = stringBuilder.toString()
+                                } else{
+                                    url = config.url
+                                }
+                                val proxies = RawUpdater.parseRaw(url)
+                                println(" the proxies are : $proxies")
                                 if (proxies.isNullOrEmpty()) {
                                     onMainDispatcher {
                                         Timber.e("Error", "Proxy Not Found")
                                     }
                                 } else {
-                                    if (config.protocol == "SSH") {
-                                        DataStore.profileName = config.url
-                                        DataStore.serverAddress = config.url
-                                        DataStore.serverPort = config.port
-                                        DataStore.serverUsername = config.username ?: ""
-                                        DataStore.serverAuthType = 1
-                                        DataStore.serverPassword = config.password
-                                        DataStore.serverPrivateKey = ""
-                                        DataStore.serverPassword1 = ""
-                                        DataStore.serverCertificates = ""
-                                    } else {
-                                        import(proxies)
-                                    }
+                                    import(proxies)
                                 }
                             } catch (e: SubscriptionFoundException) {
                                 importSubscription(Uri.parse(e.link))
@@ -201,6 +202,7 @@ class DefaultConfigViewModel @Inject constructor(
         }
         return profile!!
     }
+
     private fun getItemAt(index: Int) = getItem(configurationIdList[index])
     suspend fun importSubscription(uri: Uri) {
         val group: ProxyGroup
@@ -240,7 +242,7 @@ class DefaultConfigViewModel @Inject constructor(
         }
 
         val name = group.name.takeIf { !it.isNullOrBlank() } ?: group.subscription?.link
-            ?: group.subscription?.token
+        ?: group.subscription?.token
         if (name.isNullOrBlank()) return
 
         group.name = group.name.takeIf { !it.isNullOrBlank() }
@@ -317,7 +319,10 @@ class DefaultConfigViewModel @Inject constructor(
 
     fun onClickConnect(connect: ActivityResultLauncher<Void?>) {
 //         val connect = activityContext.registerForActivityResult(StartService()) {}
-        connect.launch(null)
+        if (DataStore.serviceState.canStop) SagerNet.stopService() else connect.launch(
+            null
+        )
+//        connect.launch(null)
     }
 
     override suspend fun groupAdd(group: ProxyGroup) = Unit

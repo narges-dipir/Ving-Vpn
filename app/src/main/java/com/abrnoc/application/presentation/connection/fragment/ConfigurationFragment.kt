@@ -20,7 +20,6 @@
 package com.abrnoc.application.presentation.connection.fragment
 
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import android.os.SystemClock
 import android.provider.OpenableColumns
@@ -70,7 +69,6 @@ import com.abrnoc.application.databinding.LayoutProfileListBinding
 import com.abrnoc.application.databinding.LayoutProgressListBinding
 import com.abrnoc.application.ftm.AbstractBean
 import com.abrnoc.application.presentation.connection.BaseService
-import com.abrnoc.application.presentation.connection.ConnActivity
 import com.abrnoc.application.presentation.connection.DataStore
 import com.abrnoc.application.presentation.connection.GroupOrder
 import com.abrnoc.application.presentation.connection.GroupType
@@ -327,7 +325,7 @@ class ConfigurationFragment @JvmOverloads constructor(
                         import(proxies)
                     }
                 } catch (e: SubscriptionFoundException) {
-                    (requireActivity() as ConnActivity).importSubscription(Uri.parse(e.link))
+//                    (requireActivity() as MainActivity).importSubscription(Uri.parse(e.link))
                 } catch (e: Exception) {
                     Logs.w(e)
 
@@ -972,7 +970,7 @@ class ConfigurationFragment @JvmOverloads constructor(
             configurationListView.setItemViewCacheSize(20)
 
             if (!select) {
-                undoManager = UndoSnackbarManager(activity as ConnActivity, adapter)
+//                undoManager = UndoSnackbarManager(activity as MainActivity, adapter)
 
                 ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
                     ItemTouchHelper.UP or ItemTouchHelper.DOWN,
@@ -1561,7 +1559,7 @@ class ConfigurationFragment @JvmOverloads constructor(
 
             fun export(link: String) {
                 val success = SagerNet.trySetPrimaryClip(link)
-                (activity as ConnActivity).snackbar(if (success) R.string.action_export_msg else R.string.action_export_err)
+                (activity as MainActivity).snackbar(if (success) R.string.action_export_msg else R.string.action_export_err)
                     .show()
             }
 
@@ -1587,7 +1585,7 @@ class ConfigurationFragment @JvmOverloads constructor(
 //                    }
                 } catch (e: Exception) {
                     Logs.w(e)
-                    (activity as ConnActivity).snackbar(e.readableMessage).show()
+                    (activity as MainActivity).snackbar(e.readableMessage).show()
                     return true
                 }
                 return true

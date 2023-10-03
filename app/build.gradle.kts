@@ -5,15 +5,23 @@ plugins {
     id("dagger.hilt.android.plugin")
     id("kotlin-parcelize")
 }
-
+//setupApp()
 android {
+    compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+    }
     namespace = "com.abrnoc.application"
     compileSdk = 33
+
+    kapt.arguments {
+        arg("room.incremental", true)
+        arg("room.schemaLocation", "$projectDir/schemas")
+    }
 
     defaultConfig {
         applicationId = "com.abrnoc.application"
         minSdk = 26
-        targetSdk = 33
+        targetSdk = 32
         versionCode = 1
         versionName = "1.0"
 
@@ -51,10 +59,20 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "**/*.kotlin_*"
+            excludes += "/META-INF/*.version"
+            excludes += "/META-INF/native/**"
+            excludes += "/META-INF/native-image/**"
+            excludes += "/META-INF/INDEX.LIST"
+            excludes += "DebugProbesKt.bin"
+            excludes += "com/**"
+            excludes += "org/**"
+            excludes += "**/*.java"
+            excludes += "**/*.proto"
+            excludes += "okhttp3/**"
         }
     }
 }
-
 dependencies {
 
     implementation(fileTree("libs"))
@@ -139,5 +157,6 @@ dependencies {
     implementation("io.coil-kt:coil:2.4.0")
     implementation("io.coil-kt:coil-compose:2.4.0")
     implementation("io.coil-kt:coil-svg:2.2.2")
-    // flags
+    // desugaring
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
 }

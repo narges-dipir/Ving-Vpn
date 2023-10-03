@@ -1,5 +1,6 @@
 package com.abrnoc.application.presentation.mainConnection
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -18,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,6 +27,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.abrnoc.application.R
 import com.abrnoc.application.presentation.components.VpnConnectButton
+import com.abrnoc.application.presentation.connection.BaseService
 import com.abrnoc.application.presentation.mainConnection.components.BottomArcShape
 import com.abrnoc.application.presentation.ui.theme.AbrnocApplicationTheme
 import com.abrnoc.application.presentation.ui.theme.ApplicationTheme
@@ -38,8 +41,12 @@ fun MainConnectionScreen2() {
             .verticalScroll(rememberScrollState())
 
     ) {
-
-        Backdrop(modifier = Modifier, onClick = {})
+        Backdrop(
+            modifier = Modifier,
+            onClick = {},
+            context = LocalContext.current,
+            state = null
+        )
         val iconSize = 150.dp
         Spacer(modifier = Modifier)
 //        LazyColumn(modifier = Modifier.constrainAs(locations) {
@@ -48,12 +55,16 @@ fun MainConnectionScreen2() {
 //        }) {
 //
 //        }
-
     }
 }
 
 @Composable
-fun Backdrop(modifier: Modifier,  onClick: () -> Unit) {
+fun Backdrop(
+    modifier: Modifier,
+    onClick: () -> Unit,
+    context: Context,
+    state: BaseService.State?,
+) {
     Card(
         elevation = 16.dp,
         shape = BottomArcShape(arcHeight = (120.dp).dpToPx()),
@@ -75,12 +86,11 @@ fun Backdrop(modifier: Modifier,  onClick: () -> Unit) {
         Box(
             modifier = Modifier
                 .background(color = Color.Transparent)
-
                 .wrapContentSize()
                 .aspectRatio(1f),
             contentAlignment = Alignment.Center
         ) {
-            VpnConnectButton(onClick = onClick)
+            VpnConnectButton(onClick = onClick, context = context, state = state!!)
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.abrnoc.application.presentation.screens.signUp
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -14,15 +15,18 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -31,20 +35,40 @@ import com.abrnoc.application.presentation.components.ButtonGradient
 import com.abrnoc.application.presentation.components.SmsCodeView
 import com.abrnoc.application.presentation.navigation.Navigation
 import com.abrnoc.application.presentation.screens.landing.AnimatedLogo
+import com.abrnoc.application.presentation.ui.theme.AbrnocApplicationTheme
 import com.abrnoc.application.presentation.ui.theme.ApplicationTheme
 import com.abrnoc.application.presentation.ui.theme.Blue0
 import com.abrnoc.application.presentation.ui.theme.Blue1
+import com.abrnoc.application.presentation.ui.theme.Neutral3
+import com.abrnoc.application.presentation.ui.theme.Neutral7
 import com.abrnoc.application.presentation.ui.theme.Sky0
 import com.abrnoc.application.presentation.ui.theme.Sky1
 import com.abrnoc.application.presentation.utiles.longToast
 import com.abrnoc.application.presentation.viewModel.VerificationCodeViewModel
 import com.abrnoc.application.presentation.viewModel.event.SendVerificationEvent
+import kotlinx.coroutines.delay
 
 @Composable
-fun VerificationSignUp(navController: NavController?,
-                       verificationCodeViewModel: VerificationCodeViewModel = hiltViewModel()) {
+fun VerificationSignUp(
+    navController: NavController?,
+    verificationCodeViewModel: VerificationCodeViewModel? = hiltViewModel()
+) {
     val context = LocalContext.current
     val otpValue = remember { mutableStateOf("") }
+    var resend by remember {
+        mutableStateOf(false)
+    }
+    var timer by remember { mutableStateOf(120) }
+    LaunchedEffect(key1 = timer) {
+        if (timer > 0) {
+            delay(1_000)
+            timer -= 1
+            resend = false
+        } else {
+            resend = true
+        }
+    }
+
     var smsCodeNumber by remember {
         mutableStateOf("")
     }
@@ -77,7 +101,7 @@ fun VerificationSignUp(navController: NavController?,
             textAlign = TextAlign.Center
         )
         Text(
-            text = "Enter the verification code sent to user@mail.com to ensure secure account access.",
+            text = "Enter the verification code sent to ${verificationCodeViewModel?.email ?: "email" } to ensure secure account access.",
             color = ApplicationTheme.colors.textSecondry,
             modifier = Modifier.padding(8.dp),
             textAlign = TextAlign.Center,
@@ -95,7 +119,14 @@ fun VerificationSignUp(navController: NavController?,
 
             SmsCodeView(
                 smsCodeLength = 6,
-                textFieldColors = TextFieldDefaults.textFieldColors(),
+                textFieldColors = TextFieldDefaults.outlinedTextFieldColors(
+                    textColor = Neutral7,
+                    unfocusedLabelColor = Neutral3,
+                    placeholderColor = Color.White,
+                    focusedBorderColor = Blue0,
+                    unfocusedBorderColor = Blue0,
+                    backgroundColor = Sky0
+                ),
                 textStyle = MaterialTheme.typography.h6,
                 smsFulled = {
                     smsCodeNumber = it
@@ -130,28 +161,45 @@ fun VerificationSignUp(navController: NavController?,
                 roundedCornerShape = RoundedCornerShape(30.dp)
             ) {
                 if (smsCodeNumber.length == 6) {
-                verificationCodeViewModel.onEvent(
-                    SendVerificationEvent.SignInQuery(
-                        email = verificationCodeViewModel.state.email,
-                        password = verificationCodeViewModel.state.password,
-                        code = smsCodeNumber
+                    verificationCodeViewModel!!.onEvent(
+                        SendVerificationEvent.SignInQuery(
+                            email = verificationCodeViewModel.state.email,
+                            password = verificationCodeViewModel.state.password,
+                            code = smsCodeNumber
+                        )
                     )
-                )
                     if (verificationCodeViewModel.state.isSuccessful) {
 //                        val intent = Intent(context, ConnActivity::class.java)
 //                        context.startActivity(intent)
                         navController?.navigate(Navigation.MainConnectionScreen.route)
                     } else {
-                        longToast(context, verificationCodeViewModel.state.error ?: "400 Bad Request")
+                        longToast(
+                            context,
+                            verificationCodeViewModel.state.error ?: "400 Bad Request"
+                        )
                     }
                 }
 
             }
             Spacer(modifier = Modifier.padding(10.dp))
             Text(
-                text = "Resend Code in 01:32",
+                text = "Resend Code in ${timer / 60} : ${timer % 60}",
                 color = Blue1,
-                modifier = Modifier.padding(start = 32.dp),
+                modifier = Modifier
+                    .padding(start = 32.dp)
+                    .clickable {
+                        if (resend) {
+                            verificationCodeViewModel?.onEvent(
+                                SendVerificationEvent.EmailQuery
+                            )
+                            timer = 120
+                        } else {
+                            longToast(
+                                context,
+                                "Wait for the count down"
+                            )
+                        }
+                    },
                 textAlign = TextAlign.Right,
                 fontSize = 18.sp
             )
@@ -159,10 +207,10 @@ fun VerificationSignUp(navController: NavController?,
     }
 }
 
-//@Composable
-//@Preview
-//private fun Preview() {
-//    AbrnocApplicationTheme {
-//        VerificationSignUp(null, null)
-//    }
-//}
+@Composable
+@Preview
+private fun Preview() {
+    AbrnocApplicationTheme {
+        VerificationSignUp(null, null)
+    }
+}

@@ -301,7 +301,6 @@ class VpnService :
             fdProtector = this@VpnService
         }
         Timber.i("^^^^", config.toString())
-        println("^^^^ the config is ${config.toString()}")
 
         tun = Libcore.newTun2ray(config)
     }

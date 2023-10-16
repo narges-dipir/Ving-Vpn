@@ -263,12 +263,12 @@ fun changeState(
     previousState: BaseService.State,
     context: Context,
 ) {
-    when (state) {
-        BaseService.State.Connecting -> println(" $$$$ its connecting ") // / changeState(iconConnecting, animate)
-        BaseService.State.Connected -> println(" $$$$ its connected ") // /changeState(iconConnected, animate)
-        BaseService.State.Stopping -> println(" $$$$ its Stopped ...  ")
-        else -> println(" $$$$ its confused ")
-    }
+//    when (state) {
+//        BaseService.State.Connecting -> println(" $$$$ its connecting ") // / changeState(iconConnecting, animate)
+//        BaseService.State.Connected -> println(" $$$$ its connected ") // /changeState(iconConnected, animate)
+//        BaseService.State.Stopping -> println(" $$$$ its Stopped ...  ")
+//        else -> println(" $$$$ its confused ")
+//    }
     checked = state == BaseService.State.Connected
     val description = context.getText(if (state.canStop) R.string.stop else R.string.connect)
 //    contentDescription = description

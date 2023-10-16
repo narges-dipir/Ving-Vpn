@@ -26,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -48,10 +49,10 @@ import com.abrnoc.application.presentation.ui.theme.AbrnocApplicationTheme
 import com.abrnoc.application.presentation.ui.theme.ApplicationTheme
 import com.abrnoc.application.presentation.ui.theme.Blue0
 import com.abrnoc.application.presentation.ui.theme.Blue1
-import com.abrnoc.application.presentation.ui.theme.Lavender8
+import com.abrnoc.application.presentation.ui.theme.Neutral2
+import com.abrnoc.application.presentation.ui.theme.Neutral3
 import com.abrnoc.application.presentation.ui.theme.Sky0
 import com.abrnoc.application.presentation.ui.theme.Sky1
-import com.abrnoc.application.presentation.ui.theme.Violate0
 import com.abrnoc.application.presentation.utiles.Visibility
 import com.abrnoc.application.presentation.utiles.VisibilityOff
 import com.abrnoc.application.presentation.viewModel.SignInViewModel
@@ -59,8 +60,9 @@ import com.abrnoc.application.presentation.viewModel.event.SignInEvent
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun EmailSignIn(navController: NavController?,
-                viewModel: SignInViewModel = hiltViewModel()
+fun EmailSignIn(
+    navController: NavController?,
+    viewModel: SignInViewModel = hiltViewModel()
 ) {
     var text by rememberSaveable {
         mutableStateOf("")
@@ -121,7 +123,8 @@ fun EmailSignIn(navController: NavController?,
                 leadingIcon = {
                     Icon(
                         painter = painterResource(id = R.drawable.mail_icon),
-                        contentDescription = "mail icon"
+                        contentDescription = "mail icon",
+                        tint = Neutral2
                     )
                 },
                 singleLine = true,
@@ -138,9 +141,11 @@ fun EmailSignIn(navController: NavController?,
                     keyboardType = KeyboardType.Email
                 ),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = Lavender8,
-                    unfocusedLabelColor = Violate0,
-                    textColor = ApplicationTheme.colors.textPrimary
+                    textColor = ApplicationTheme.colors.textPrimary,
+                    unfocusedLabelColor = Neutral3,
+                    placeholderColor = Color.White,
+                    focusedBorderColor = Neutral2,
+                    unfocusedBorderColor = Neutral2
                 ),
                 modifier = Modifier.fillMaxWidth(0.9f),
                 keyboardActions = KeyboardActions(
@@ -155,10 +160,12 @@ fun EmailSignIn(navController: NavController?,
                 onValueChange = { password = it },
                 shape = RoundedCornerShape(30.dp),
                 label = {
-                    Text("Password",
+                    Text(
+                        "Password",
                         color = MaterialTheme.colorScheme.primary,
                         style = MaterialTheme.typography.labelMedium,
-                    ) },
+                    )
+                },
                 visualTransformation =
                 if (passwordHidden) PasswordVisualTransformation() else VisualTransformation.None,
                 //  keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -167,9 +174,12 @@ fun EmailSignIn(navController: NavController?,
                     keyboardType = KeyboardType.Password
                 ),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = ApplicationTheme.colors.textPrimary,
-                    unfocusedBorderColor = MaterialTheme.colorScheme.primary,
-                    textColor = ApplicationTheme.colors.textPrimary),
+                    textColor = ApplicationTheme.colors.textPrimary,
+                    unfocusedLabelColor = Neutral3,
+                    placeholderColor = Color.White,
+                    focusedBorderColor = Neutral2,
+                    unfocusedBorderColor = Neutral2
+                ),
                 trailingIcon = {
                     IconButton(onClick = { passwordHidden = !passwordHidden }) {
                         val visibilityIcon =
@@ -180,7 +190,11 @@ fun EmailSignIn(navController: NavController?,
                     }
                 },
                 leadingIcon = {
-                    Icon(painter = painterResource(id = R.drawable.key_icon), contentDescription = "password icon")
+                    Icon(
+                        painter = painterResource(id = R.drawable.key_icon),
+                        contentDescription = "password icon",
+                        tint = Neutral2
+                    )
                 },
                 modifier = Modifier.fillMaxWidth(0.92f),
                 keyboardActions = KeyboardActions(
@@ -203,7 +217,7 @@ fun EmailSignIn(navController: NavController?,
                         password = password
                     )
                 )
-                if (viewModel.state.isRequestSend){
+                if (viewModel.state.isRequestSend) {
                     if (viewModel.state.isLoading) {
 
                     } else if (viewModel.state.isSuccessful) {
@@ -214,7 +228,7 @@ fun EmailSignIn(navController: NavController?,
 //                    else {
 //                        longToast(context, "Your Password Doesn't Match, Try Again")
 //                    }
-            }
+                }
             }
 
         }

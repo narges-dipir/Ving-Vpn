@@ -237,11 +237,9 @@ object RawUpdater : GroupUpdater() {
     suspend fun parseRaw(text: String): List<AbstractBean>? {
 
         val proxies = mutableListOf<AbstractBean>()
-        println(" *** im here  $text ")
 //        if (text.contains("proxies:")) {
 
             try {
-                println(" $$$ im here ")
                 // clash
                 for (proxy in (Yaml().apply {
                     addTypeDescription(TypeDescription(String::class.java, "str"))
@@ -249,7 +247,6 @@ object RawUpdater : GroupUpdater() {
                     app.getString(R.string.no_proxies_found_in_file)
                 ))) {
                     // Note: YAML numbers parsed as "Long"
-                        println("$$$$ proxy yamle $proxy")
                     when (proxy["type"] as String) {
                         "socks5" -> {
                             proxies.add(SOCKSBean().apply {
@@ -432,11 +429,8 @@ object RawUpdater : GroupUpdater() {
                                         }
                                     }
                                 }
-                                println("$$$ opt is $opt")
                             }
                             bean.allowInsecure = true
-                            println("$$$$$ bean is $bean")
-                            println("$$$$ bean ${bean.allowInsecure}")
                             proxies.add(bean)
                         }
 

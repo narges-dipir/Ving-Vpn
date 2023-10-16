@@ -10,6 +10,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
@@ -96,7 +98,10 @@ class MainActivity :
                     setContent {
                         AbrnocApplicationTheme {
                             if (result.data) {
-                                LoginApplication(defaultRoute = Navigation.MainConnectionScreen.route, connect)
+                                LoginApplication(
+                                    defaultRoute = Navigation.MainConnectionScreen.route,
+                                    connect
+                                )
                             } else {
                                 LoginApplication(Navigation.LandingScreen.route, connect)
                             }
@@ -117,24 +122,168 @@ class MainActivity :
             startDestination = defaultRoute,
             builder = {
                 composable(
-                    Navigation.LandingScreen.route,
-                    content = { Landing(navController = navController) }
+                    route = Navigation.LandingScreen.route,
+                    enterTransition = {
+                        slideIntoContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Left,
+                            animationSpec = tween(700)
+                        )
+                    },
+                    exitTransition = {
+                        slideOutOfContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Companion.Left,
+                            animationSpec = tween(700)
+                        )
+                    },
+                    popEnterTransition = {
+                        slideIntoContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
+                            animationSpec = tween(700)
+                        )
+                    },
+                    popExitTransition = {
+                        slideOutOfContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
+                            animationSpec = tween(700)
+                        )
+                    },
+                    content = { Landing(navController = navController) },
                 )
-                composable(Navigation.WelcomeScreen.route, content = { Welcome(navController) })
+                composable(Navigation.WelcomeScreen.route,
+                    enterTransition = {
+                        slideIntoContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Left,
+                            animationSpec = tween(700)
+                        )
+                    },
+                    exitTransition = {
+                        slideOutOfContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Companion.Left,
+                            animationSpec = tween(700)
+                        )
+                    },
+                    popEnterTransition = {
+                        slideIntoContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
+                            animationSpec = tween(700)
+                        )
+                    },
+                    popExitTransition = {
+                        slideOutOfContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
+                            animationSpec = tween(700)
+                        )
+                    }, content = { Welcome(navController) })
                 composable(
                     Navigation.EmailSignUpScreen.route,
+                    enterTransition = {
+                        slideIntoContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Left,
+                            animationSpec = tween(700)
+                        )
+                    },
+                    exitTransition = {
+                        slideOutOfContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Companion.Left,
+                            animationSpec = tween(700)
+                        )
+                    },
+                    popEnterTransition = {
+                        slideIntoContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
+                            animationSpec = tween(700)
+                        )
+                    },
+                    popExitTransition = {
+                        slideOutOfContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
+                            animationSpec = tween(700)
+                        )
+                    },
                     content = { EmailSignUp(navController = navController) }
                 )
                 composable(
                     Navigation.PasswordScreen.route + "/{email}",
+                    enterTransition = {
+                        slideIntoContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Left,
+                            animationSpec = tween(700)
+                        )
+                    },
+                    exitTransition = {
+                        slideOutOfContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Companion.Left,
+                            animationSpec = tween(700)
+                        )
+                    },
+                    popEnterTransition = {
+                        slideIntoContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
+                            animationSpec = tween(700)
+                        )
+                    },
+                    popExitTransition = {
+                        slideOutOfContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
+                            animationSpec = tween(700)
+                        )
+                    },
                     content = { PasswordSignUp(navController = navController) }
                 )
                 composable(
                     Navigation.VerificationCodeScreen.route + "/{email}" + "/{password}",
+                    enterTransition = {
+                        slideIntoContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Left,
+                            animationSpec = tween(700)
+                        )
+                    },
+                    exitTransition = {
+                        slideOutOfContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Companion.Left,
+                            animationSpec = tween(700)
+                        )
+                    },
+                    popEnterTransition = {
+                        slideIntoContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
+                            animationSpec = tween(700)
+                        )
+                    },
+                    popExitTransition = {
+                        slideOutOfContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
+                            animationSpec = tween(700)
+                        )
+                    },
                     content = { VerificationSignUp(navController) }
                 )
                 composable(
                     Navigation.MainConnectionScreen.route,
+                    enterTransition = {
+                        slideIntoContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Left,
+                            animationSpec = tween(700)
+                        )
+                    },
+                    exitTransition = {
+                        slideOutOfContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Companion.Left,
+                            animationSpec = tween(700)
+                        )
+                    },
+                    popEnterTransition = {
+                        slideIntoContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
+                            animationSpec = tween(700)
+                        )
+                    },
+                    popExitTransition = {
+                        slideOutOfContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
+                            animationSpec = tween(700)
+                        )
+                    },
                     content = {
                         MainConnectionScreen(
                             navControle = navController,
@@ -145,11 +294,37 @@ class MainActivity :
                 )
                 composable(
                     Navigation.EmailSignInScreen.route,
+                    enterTransition = {
+                        slideIntoContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Left,
+                            animationSpec = tween(700)
+                        )
+                    },
+                    exitTransition = {
+                        slideOutOfContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Companion.Left,
+                            animationSpec = tween(700)
+                        )
+                    },
+                    popEnterTransition = {
+                        slideIntoContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
+                            animationSpec = tween(700)
+                        )
+                    },
+                    popExitTransition = {
+                        slideOutOfContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
+                            animationSpec = tween(700)
+                        )
+                    },
                     content = { EmailSignIn(navController = navController) }
                 )
             }
         )
+
     }
+
     private fun changeState(
         state: BaseService.State,
         msg: String? = null,
@@ -162,11 +337,9 @@ class MainActivity :
         }
 
 //        binding.fab.changeState(state, DataStore.serviceState, animate)
-        println("change state : $state and ${DataStore.serviceMode}")
 //        binding.stats.changeState(state)
         if (msg != null) {
             // snackbar(getString(R.string.vpn_error, msg)).show()
-            println(" %%% MainActivity $msg")
         }
         when (state) {
             BaseService.State.Stopped -> {
@@ -204,12 +377,14 @@ class MainActivity :
             }
         }
     }
+
     fun snackbar(@StringRes resId: Int): Snackbar = snackbar("").setText(resId)
     fun snackbar(text: CharSequence): Snackbar = snackbarInternal(text).apply {
         view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).apply {
             maxLines = 10
         }
     }
+
     private suspend fun finishImportSubscription(subscription: ProxyGroup) {
         GroupManager.createGroup(subscription)
         GroupUpdater.startUpdate(subscription, true)

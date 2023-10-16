@@ -1,5 +1,6 @@
 package com.abrnoc.application.presentation.screens.signUp
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -26,6 +27,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -45,6 +47,8 @@ import com.abrnoc.application.presentation.screens.landing.AnimatedLogo
 import com.abrnoc.application.presentation.ui.theme.ApplicationTheme
 import com.abrnoc.application.presentation.ui.theme.Blue0
 import com.abrnoc.application.presentation.ui.theme.Blue1
+import com.abrnoc.application.presentation.ui.theme.Neutral2
+import com.abrnoc.application.presentation.ui.theme.Neutral3
 import com.abrnoc.application.presentation.ui.theme.Sky0
 import com.abrnoc.application.presentation.ui.theme.Sky1
 import com.abrnoc.application.presentation.utiles.Visibility
@@ -55,8 +59,9 @@ import com.abrnoc.application.presentation.viewModel.PasswordViewModel
 @Composable
 fun PasswordSignUp(navController: NavController?,
                    passwordViewModel: PasswordViewModel = hiltViewModel()) {
-    var text by rememberSaveable {
-        mutableStateOf("")
+    BackHandler() {
+        // Handle the back press here
+        navController?.popBackStack()
     }
     val keyboardController = LocalSoftwareKeyboardController.current
     var password by rememberSaveable {
@@ -122,8 +127,11 @@ fun PasswordSignUp(navController: NavController?,
                     keyboardType = KeyboardType.Password
                 ),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = MaterialTheme.colorScheme.primary,
-                    unfocusedBorderColor = MaterialTheme.colorScheme.primary),
+                    textColor = ApplicationTheme.colors.textPrimary,
+                    unfocusedLabelColor = Neutral3,
+                    placeholderColor = Color.White,
+                    focusedBorderColor = Neutral2,
+                    unfocusedBorderColor = Neutral2),
                 trailingIcon = {
                     IconButton(onClick = { passwordHidden = !passwordHidden }) {
                         val visibilityIcon =
@@ -134,7 +142,10 @@ fun PasswordSignUp(navController: NavController?,
                     }
                 },
                 leadingIcon = {
-                              Icon(painter = painterResource(id = R.drawable.key_icon), contentDescription = "password icon")
+                              Icon(painter = painterResource(id = R.drawable.key_icon),
+                                  contentDescription = "password icon",
+                                  tint = Neutral2
+                              )
                 },
                 modifier = Modifier.fillMaxWidth(0.92f),
                 keyboardActions = KeyboardActions(
@@ -162,8 +173,11 @@ fun PasswordSignUp(navController: NavController?,
                     keyboardType = KeyboardType.Password
                 ),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = MaterialTheme.colorScheme.primary,
-                    unfocusedBorderColor = MaterialTheme.colorScheme.primary),
+                    textColor = ApplicationTheme.colors.textPrimary,
+                    unfocusedLabelColor = Neutral3,
+                    placeholderColor = Color.White,
+                    focusedBorderColor = Neutral2,
+                    unfocusedBorderColor = Neutral2),
                 trailingIcon = {
                     IconButton(onClick = { passwordHidden = !passwordHidden }) {
                         val visibilityIcon =
@@ -174,7 +188,8 @@ fun PasswordSignUp(navController: NavController?,
                     }
                 },
                 leadingIcon = {
-                    Icon(painter = painterResource(id = R.drawable.key_icon), contentDescription = "password icon")
+                    Icon(painter = painterResource(id = R.drawable.key_icon), contentDescription = "password icon",
+                        tint = Neutral2)
                 },
                 modifier = Modifier.fillMaxWidth(0.92f),
                 keyboardActions = KeyboardActions(

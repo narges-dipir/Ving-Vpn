@@ -1,16 +1,15 @@
 package com.abrnoc.application.presentation.viewModel
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.abrnoc.application.presentation.utiles.validateSignInRequest
 import com.abrnoc.application.presentation.viewModel.event.SendCodeEvent
 import com.abrnoc.application.presentation.viewModel.state.SendCodeState
 import com.abrnoc.domain.auth.SendVerificationCodeUseCase
 import com.abrnoc.domain.common.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,14 +17,19 @@ import javax.inject.Inject
 class AuthenticationViewModel @Inject constructor(
     private val sendCodeVerificationUseCase: SendVerificationCodeUseCase
 ) : ViewModel() {
-    var state by mutableStateOf(SendCodeState())
-    private var searchJob: Job? = null
+    private val _state = MutableStateFlow(SendCodeState())
+    val state: StateFlow<SendCodeState> = _state
     fun onEvent(event: SendCodeEvent) {
         when (event) {
             is SendCodeEvent.EmailQuery -> {
-                state = state.copy(email = event.email)
+                _state.value = SendCodeState(isLoading = true)
+                val isValid = validateSignInRequest(event.email)
+                _state.value = SendCodeState(isValid = isValid.isValid, message = isValid.message, isLoading = true)
+                if (isValid.isValid) {
+                    _state.value = SendCodeState(email = event.email, message = isValid.message, isLoading = true)
 //                    if (isValidEmail(state.email)) {
-                sendVerificationCode()
+                    sendVerificationCode()
+                }
 
             }
         }
@@ -33,36 +37,41 @@ class AuthenticationViewModel @Inject constructor(
 
     private fun sendVerificationCode() {
         viewModelScope.launch {
-            when (val result = sendCodeVerificationUseCase(state.email)) {
+            when (val result = sendCodeVerificationUseCase(_state.value.email)) {
                 is Result.Error -> {
-                    state =
-                        state.copy(isLoading = false, isValid = false, isAlreadyRegistered = false)
+                    println("** im in error")
+                    _state.value =
+                        SendCodeState(isLoading = false, isValid = false, isAlreadyRegistered = false, message = "send email task failed")
                 }
 
                 Result.Loading -> {
-                    state = state.copy(isLoading = true)
+                    println("** im in loading")
+                    _state.value = SendCodeState(isLoading = true, message = "email was sent")
                 }
 
                 is Result.Success -> {
+                    println("** im in success ")
                     when (result.data) {
                         400 -> {
-                            state = state.copy(
+                            _state.value = SendCodeState(
                                 isLoading = false,
                                 isValid = true,
-                                isAlreadyRegistered = true
+                                isAlreadyRegistered = true,
+                                message = "server error, check your network"
                             )
                         }
 
                         200 -> {
-                            state = state.copy(
+                            _state.value = SendCodeState(
                                 isLoading = false,
                                 isValid = true,
-                                isAlreadyRegistered = false
+                                isAlreadyRegistered = false,
+                                message = "email accepted"
                             )
                         }
 
                         0 -> {
-                            state = state.copy(
+                            _state.value = SendCodeState(
                                 isLoading = false,
                                 isValid = false,
                                 isAlreadyRegistered = false,
@@ -71,10 +80,11 @@ class AuthenticationViewModel @Inject constructor(
                         }
 
                         else -> {
-                            state = state.copy(
+                            _state.value = SendCodeState(
                                 isLoading = false,
                                 isValid = false,
-                                isAlreadyRegistered = false
+                                isAlreadyRegistered = false,
+                                message = "task failed"
                             )
                         }
                     }

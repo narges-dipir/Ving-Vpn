@@ -8,4 +8,5 @@ sealed class Navigation(val route: String) {
     object PasswordScreen: Navigation("password_screen")
     object VerificationCodeScreen: Navigation("verification_code_screen")
     object MainConnectionScreen: Navigation("main_connection_screen")
+    object PurchasePlanScreen: Navigation("purchase_plan_screen")
 }

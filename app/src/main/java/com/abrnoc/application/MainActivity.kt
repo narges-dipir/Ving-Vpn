@@ -31,6 +31,7 @@ import com.abrnoc.application.presentation.connection.SagerConnection
 import com.abrnoc.application.presentation.connection.VpnRequestActivity
 import com.abrnoc.application.presentation.connection.runOnDefaultDispatcher
 import com.abrnoc.application.presentation.mainConnection.MainConnectionScreen
+import com.abrnoc.application.presentation.mainConnection.bottomScreens.PurchaseScreen
 import com.abrnoc.application.presentation.navigation.Navigation
 import com.abrnoc.application.presentation.screens.landing.Landing
 import com.abrnoc.application.presentation.screens.landing.Welcome
@@ -319,6 +320,34 @@ class MainActivity :
                         )
                     },
                     content = { EmailSignIn(navController = navController) }
+                )
+                composable(
+                    Navigation.PurchasePlanScreen.route,
+                    enterTransition = {
+                        slideIntoContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Left,
+                            animationSpec = tween(700)
+                        )
+                    },
+                    exitTransition = {
+                        slideOutOfContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Companion.Left,
+                            animationSpec = tween(700)
+                        )
+                    },
+                    popEnterTransition = {
+                        slideIntoContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
+                            animationSpec = tween(700)
+                        )
+                    },
+                    popExitTransition = {
+                        slideOutOfContainer(
+                            towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
+                            animationSpec = tween(700)
+                        )
+                    },
+                    content = { PurchaseScreen(navController = navController) }
                 )
             }
         )

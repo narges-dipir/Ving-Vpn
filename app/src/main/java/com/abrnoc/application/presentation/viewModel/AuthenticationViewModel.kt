@@ -39,18 +39,15 @@ class AuthenticationViewModel @Inject constructor(
         viewModelScope.launch {
             when (val result = sendCodeVerificationUseCase(_state.value.email)) {
                 is Result.Error -> {
-                    println("** im in error")
                     _state.value =
                         SendCodeState(isLoading = false, isValid = false, isAlreadyRegistered = false, message = "send email task failed")
                 }
 
                 Result.Loading -> {
-                    println("** im in loading")
                     _state.value = SendCodeState(isLoading = true, message = "email was sent")
                 }
 
                 is Result.Success -> {
-                    println("** im in success ")
                     when (result.data) {
                         400 -> {
                             _state.value = SendCodeState(

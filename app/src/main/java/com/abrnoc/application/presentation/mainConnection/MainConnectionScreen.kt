@@ -1,6 +1,5 @@
 package com.abrnoc.application.presentation.mainConnection
 
-import android.content.Context
 import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -8,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -16,10 +16,13 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -27,7 +30,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.abrnoc.application.R
 import com.abrnoc.application.presentation.connection.BaseService
 import com.abrnoc.application.presentation.mainConnection.components.BottomNavigationItem
 import com.abrnoc.application.presentation.mainConnection.components.ConnectionItem
@@ -36,6 +38,7 @@ import com.abrnoc.application.presentation.ui.theme.AbrnocApplicationTheme
 import com.abrnoc.application.presentation.ui.theme.ApplicationTheme
 import com.abrnoc.application.presentation.ui.theme.Blue1
 import com.abrnoc.application.presentation.ui.theme.Neutral3
+import com.abrnoc.application.presentation.ui.theme.Purple40
 import com.abrnoc.application.presentation.viewModel.DefaultConfigViewModel
 import com.abrnoc.application.presentation.viewModel.event.ProxyEvent
 import com.abrnoc.application.repository.model.DefaultConfig
@@ -46,6 +49,7 @@ import dev.olshevski.navigation.reimagined.rememberNavController
 
 
 private var checked = false
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainConnectionScreen(
@@ -55,7 +59,7 @@ fun MainConnectionScreen(
     state: BaseService.State
 ) {
     val localConnect = connect
-    val configState = configViewModel.configState
+    val configState by configViewModel.configState.collectAsState()
     val navController = rememberNavController<MainNavigation>(
         startDestination = MainNavigation.HomeScreen
     )
@@ -65,6 +69,9 @@ fun MainConnectionScreen(
     }
     NavBackHandler(navController)
     val context = LocalContext.current
+    var loadingVisibility by remember { mutableStateOf(false) }
+    var isConfigFetched by remember { mutableStateOf(false) }
+    var configs by remember { mutableStateOf(listOf(DefaultConfig())) }
     val isBackStackEmpty by remember {
         derivedStateOf {
             navController.backstack.entries.size == 1
@@ -73,6 +80,16 @@ fun MainConnectionScreen(
     val currentDestination by remember {
         derivedStateOf {
             navController.backstack.entries.first().destination
+        }
+    }
+
+    LaunchedEffect(key1 = configState) {
+        if (configState.isLoading) {
+            loadingVisibility = true
+        } else if (configState.configs!!.isNotEmpty()) {
+            loadingVisibility = false
+            configs = configState.configs!!
+            isConfigFetched = true
         }
     }
     Scaffold(
@@ -109,54 +126,40 @@ fun MainConnectionScreen(
     ) {
 
         Column(modifier = Modifier.padding(it)) {
-            Backdrop(modifier = Modifier, onClick = {
-                configViewModel.onClickConnect(localConnect)
-            },
+            Backdrop(
+                modifier = Modifier, onClick = {
+                    configViewModel.onClickConnect(localConnect)
+                },
                 context = context,
-                state = state)
+                state = state,
+                currentProxy
+            )
             Spacer(modifier = Modifier.height(16.dp))
-            LazyColumn {
-                configViewModel.getAllConfigs()
-                items(configViewModel.configState.configs!!.size) { i ->
-                    val config = configViewModel.configState.configs!![i]
-                    ConnectionItem(config, onClick = {
-                        currentProxy.value = config
-                        configViewModel.onEvent(
-                            ProxyEvent.ConfigEvent(
-                                defaultConfig = currentProxy.value,
-                                context
-                            )
-                        )
-                    })
+            if (loadingVisibility) {
+                CircularProgressIndicator(color = Purple40)
+            }
+            if (isConfigFetched) {
+                LazyColumn {
+                    if (!loadingVisibility) {
+                        items(configs.size) { i ->
+                            val config = configs[i]
+                            ConnectionItem(config, onClick = {
+                                currentProxy.value = config
+                                configViewModel.onEvent(
+                                    ProxyEvent.ConfigEvent(
+                                        defaultConfig = currentProxy.value,
+                                        context
+                                    )
+                                )
+                            })
+                        }
+                    }
                 }
             }
         }
     }
 }
 
-fun changeState(
-    state: BaseService.State,
-    previousState: BaseService.State,
-    animate: Boolean,
-    context: Context,
-) {
-//    when (state) {
-//        BaseService.State.Connecting -> println(" $$$$ its connecting ") // / changeState(iconConnecting, animate)
-//        BaseService.State.Connected -> println(" $$$$ its connected ") // /changeState(iconConnected, animate)
-//        BaseService.State.Stopping -> println(" $$$$ its Stopped ...  ")
-//        else -> println(" $$$$ its confused ")
-//    }
-    checked = state == BaseService.State.Connected
-    val description = context.getText(if (state.canStop) R.string.stop else R.string.connect)
-//    contentDescription = description
-//    TooltipCompat.setTooltipText(this, description)
-    val enabled = state.canStop || state == BaseService.State.Stopped
-//    isEnabled = enabled
-//    if (Build.VERSION.SDK_INT >= 24) pointerIcon = PointerIcon.getSystemIcon(
-//        context,
-//        if (enabled) PointerIcon.TYPE_HAND else PointerIcon.TYPE_WAIT
-//    )
-}
 @Preview
 @Composable
 private fun Preview() {

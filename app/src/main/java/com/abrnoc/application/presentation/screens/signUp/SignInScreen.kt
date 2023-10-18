@@ -17,10 +17,14 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -51,10 +55,12 @@ import com.abrnoc.application.presentation.ui.theme.Blue0
 import com.abrnoc.application.presentation.ui.theme.Blue1
 import com.abrnoc.application.presentation.ui.theme.Neutral2
 import com.abrnoc.application.presentation.ui.theme.Neutral3
+import com.abrnoc.application.presentation.ui.theme.Purple40
 import com.abrnoc.application.presentation.ui.theme.Sky0
 import com.abrnoc.application.presentation.ui.theme.Sky1
 import com.abrnoc.application.presentation.utiles.Visibility
 import com.abrnoc.application.presentation.utiles.VisibilityOff
+import com.abrnoc.application.presentation.utiles.longToast
 import com.abrnoc.application.presentation.viewModel.SignInViewModel
 import com.abrnoc.application.presentation.viewModel.event.SignInEvent
 
@@ -75,6 +81,25 @@ fun EmailSignIn(
         mutableStateOf(true)
     }
     val context = LocalContext.current
+    var loadingVisibility by remember { mutableStateOf(false) }
+    val state by viewModel.state.collectAsState()
+    LaunchedEffect(key1 = state) {
+        if (state.isRequestSend) {
+            if (state.isLoading) {
+                loadingVisibility = true
+            } else if (state.isSuccessful) {
+                loadingVisibility = false
+//                        val intent = Intent(context, ConnActivity::class.java)
+//                        context.startActivity(intent)
+                navController?.navigate(Navigation.MainConnectionScreen.route)
+            } else if (state.error.isNotEmpty()) {
+                loadingVisibility = false
+                longToast(context, "Oops, Try Again!")
+            } else {
+                loadingVisibility = false
+            }
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -211,26 +236,18 @@ fun EmailSignIn(
                 nameButton = "Next",
                 roundedCornerShape = RoundedCornerShape(30.dp)
             ) {
+                loadingVisibility = true
                 viewModel.onEvent(
                     SignInEvent.SignInQuery(
                         email = text,
                         password = password
                     )
                 )
-                if (viewModel.state.isRequestSend) {
-                    if (viewModel.state.isLoading) {
 
-                    } else if (viewModel.state.isSuccessful) {
-//                        val intent = Intent(context, ConnActivity::class.java)
-//                        context.startActivity(intent)
-                        navController?.navigate(Navigation.MainConnectionScreen.route)
-                    }
-//                    else {
-//                        longToast(context, "Your Password Doesn't Match, Try Again")
-//                    }
-                }
             }
-
+            if (loadingVisibility) {
+                CircularProgressIndicator(color = Purple40)
+            }
         }
     }
 }

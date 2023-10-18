@@ -23,6 +23,7 @@ val Shadow2 = Color(0xffc8bbfd)
 val Shadow1 = Color(0xffded6fe)
 val Shadow0 = Color(0xfff4f2ff)
 
+val Ocean13 = Color(0xFF005673)
 val Ocean12 = Color(0xFF0988D7)
 val Ocean11 = Color(0xff005687)
 val Ocean10 = Color(0xff006d9e)

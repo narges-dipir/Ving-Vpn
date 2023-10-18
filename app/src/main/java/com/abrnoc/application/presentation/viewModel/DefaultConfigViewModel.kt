@@ -4,9 +4,6 @@ import android.content.Context
 import android.net.Uri
 import android.os.RemoteException
 import androidx.activity.result.ActivityResultLauncher
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceDataStore
@@ -43,6 +40,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.nekohasekai.sagernet.aidl.ISagerNetService
 import io.nekohasekai.sagernet.aidl.TrafficStats
 import io.nekohasekai.sagernet.widget.UndoSnackbarManager
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -62,7 +61,8 @@ class DefaultConfigViewModel @Inject constructor(
     //    private val _state = MutableStateFlow<DefaultConfigState?>(null)
 //    val state: StateFlow<DefaultConfigState?> = _state
 //    val defaultConfigFlow: LiveData<DefaultConfigState?> = state.asLiveData()
-    var configState by mutableStateOf(DefaultConfigState())
+    private var _configState = MutableStateFlow(DefaultConfigState())
+    val configState: StateFlow<DefaultConfigState> = _configState
     val connection = SagerConnection(true)
 
     //    lateinit var proxyGroup: ProxyGroup
@@ -94,7 +94,6 @@ class DefaultConfigViewModel @Inject constructor(
                         lastSelected = DataStore.selectedProxy
                         Timber.i("^^", "timber workes")
                         DataStore.selectedProxy = event.defaultConfig.id ?: 1L
-                        println(" ^^^^ ${DataStore.selectedProxy}")
 //                    onMainDispatcher {
 //                        selectedView.visibility = View.VISIBLE
 //                    }
@@ -104,18 +103,18 @@ class DefaultConfigViewModel @Inject constructor(
         }
     }
 
-     fun getAllConfigs() {
+    private fun getAllConfigs() {
         viewModelScope.launch {
             getDefaultConfigUseCase(Unit).collect { result ->
                 when (result) {
                     is Result.Error -> {
-                        configState = configState.copy(
+                        _configState.value = DefaultConfigState(
                             error = result.exception.message ?: "An unexpected error occured",
                         )
                     }
 
                     Result.Loading -> {
-                        configState = configState.copy(isLoading = true)
+                        _configState.value = DefaultConfigState(isLoading = true)
                     }
 
                     is Result.Success -> {
@@ -134,7 +133,7 @@ class DefaultConfigViewModel @Inject constructor(
                                     stringBuilder.append("&username=").append(config.username)
                                     stringBuilder.append("&password=").append(config.password)
                                     url = stringBuilder.toString()
-                                } else{
+                                } else {
                                     url = config.url
                                 }
                                 val proxies = RawUpdater.parseRaw(url)
@@ -151,7 +150,7 @@ class DefaultConfigViewModel @Inject constructor(
                             }
 //                        reloadProfiles()
                         }
-                        configState = configState.copy(
+                        _configState.value = DefaultConfigState(
                             configs = result.data.map { it ->
                                 DefaultConfig(
                                     (id++).toLong(),

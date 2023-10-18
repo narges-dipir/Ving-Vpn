@@ -37,7 +37,8 @@ import com.abrnoc.application.presentation.ui.theme.Ocean4
 import com.abrnoc.application.repository.model.DefaultConfig
 
 @Composable
-fun ConnectionItem(defaultConfig: DefaultConfig? = null, onClick: () -> Unit) {
+fun ConnectionItem(defaultConfig: DefaultConfig? = null,
+                   onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .clip(RoundedCornerShape(50))

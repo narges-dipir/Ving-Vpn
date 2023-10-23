@@ -22,7 +22,7 @@
 package com.github.shadowsocks.plugin
 
 import com.abrnoc.application.R
-import com.abrnoc.application.presentation.connection.SagerNet
+import io.nekohasekai.sagernet.SagerNet
 
 
 object NoPlugin : Plugin() {

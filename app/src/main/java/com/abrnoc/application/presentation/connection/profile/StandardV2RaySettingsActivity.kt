@@ -23,21 +23,21 @@ import android.os.Bundle
 import androidx.preference.EditTextPreference
 import androidx.preference.PreferenceCategory
 import com.abrnoc.application.R
-import com.abrnoc.application.connection.preference.EditTextPreferenceModifiers
-import com.abrnoc.application.ftm.trojan.TrojanBean
-import com.abrnoc.application.ftm.v2ray.StandardV2RayBean
-import com.abrnoc.application.ftm.v2ray.VMessBean
-import com.abrnoc.application.presentation.connection.DataStore
-import com.abrnoc.application.presentation.connection.Key
-import com.abrnoc.application.presentation.connection.app
 import com.takisoft.preferencex.PreferenceFragmentCompat
 import com.takisoft.preferencex.SimpleMenuPreference
+import io.nekohasekai.sagernet.Key
+import io.nekohasekai.sagernet.database.DataStore
+import io.nekohasekai.sagernet.database.preference.EditTextPreferenceModifiers
+import io.nekohasekai.sagernet.ftm.trojan.TrojanBean
+import io.nekohasekai.sagernet.ftm.v2ray.StandardV2RayBean
+import io.nekohasekai.sagernet.ftm.v2ray.VMessBean
+import io.nekohasekai.sagernet.ktx.app
 
 abstract class StandardV2RaySettingsActivity : ProfileSettingsActivity<StandardV2RayBean>() {
 
-    var bean: StandardV2RayBean? = null
+    var bean:  StandardV2RayBean? = null
 
-    override fun StandardV2RayBean.init() {
+    override fun  StandardV2RayBean.init() {
         bean = this
 
         DataStore.profileName = name
@@ -81,17 +81,17 @@ abstract class StandardV2RaySettingsActivity : ProfileSettingsActivity<StandardV
 
     }
 
-    override fun StandardV2RayBean.serialize() {
+    override fun  StandardV2RayBean.serialize() {
         name = DataStore.profileName
         serverAddress = DataStore.serverAddress
         serverPort = DataStore.serverPort
-        if (this is TrojanBean) {
+        if (this is  TrojanBean) {
             password = DataStore.serverUserId
         } else {
             uuid = DataStore.serverUserId
             encryption = DataStore.serverEncryption
         }
-        if (this is VMessBean) {
+        if (this is  VMessBean) {
             alterId = DataStore.serverAlterId
             experimentalAuthenticatedLength = DataStore.serverVMessExperimentalAuthenticatedLength
             experimentalNoTerminationSignal = DataStore.serverVMessExperimentalNoTerminationSignal
@@ -168,7 +168,7 @@ abstract class StandardV2RaySettingsActivity : ProfileSettingsActivity<StandardV
         val uuid = findPreference<EditTextPreference>(Key.SERVER_USER_ID)!!
         uuid.summaryProvider = PasswordSummaryProvider
 
-        if (bean is TrojanBean) {
+        if (bean is  TrojanBean) {
             uuid.title = resources.getString(R.string.password)
             encryption.isVisible = false
             alterId.isVisible = false
@@ -187,7 +187,7 @@ abstract class StandardV2RaySettingsActivity : ProfileSettingsActivity<StandardV
         }
 
         vmessExperimentsCategory = findPreference(Key.SERVER_VMESS_EXPERIMENTS_CATEGORY)!!
-        vmessExperimentsCategory.isVisible = bean is VMessBean
+        vmessExperimentsCategory.isVisible = bean is  VMessBean
     }
 
     val tcpHeadersValue = app.resources.getStringArray(R.array.tcp_headers_value)
@@ -195,7 +195,7 @@ abstract class StandardV2RaySettingsActivity : ProfileSettingsActivity<StandardV
     val quicSecurityValue = app.resources.getStringArray(R.array.quic_security_value)
 
     fun updateView(network: String) {
-        if (bean is StandardV2RayBean) {
+        if (bean is  StandardV2RayBean) {
             when (network) {
                 "tcp", "kcp" -> {
                     security.setEntries(R.array.transport_layer_encryption_entry)

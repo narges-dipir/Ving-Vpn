@@ -23,21 +23,21 @@ import com.abrnoc.application.connection.neko.NekoJSInterface
 import com.abrnoc.application.connection.neko.NekoPluginManager
 import com.abrnoc.application.connection.neko.Util
 import com.abrnoc.application.connection.neko.parseShareLink
-import com.abrnoc.application.ftm.AbstractBean
-import com.abrnoc.application.ftm.Serializable
-import com.abrnoc.application.ftm.gson.gson
-import com.abrnoc.application.ftm.http.parseHttp
-import com.abrnoc.application.ftm.hysteria.parseHysteria
-import com.abrnoc.application.ftm.naive.parseNaive
-import com.abrnoc.application.ftm.parseUniversal
-import com.abrnoc.application.ftm.shadowsocks.parseShadowsocks
-import com.abrnoc.application.ftm.shadowsocksr.parseShadowsocksR
-import com.abrnoc.application.ftm.socks.parseSOCKS
-import com.abrnoc.application.ftm.ssh.parseShh
-import com.abrnoc.application.ftm.trojan.parseTrojan
-import com.abrnoc.application.ftm.trojan_go.parseTrojanGo
-import com.abrnoc.application.ftm.v2ray.parseV2Ray
 import com.google.gson.JsonParser
+import io.nekohasekai.sagernet.ftm.AbstractBean
+import io.nekohasekai.sagernet.ftm.Serializable
+import io.nekohasekai.sagernet.ftm.gson.gson
+import io.nekohasekai.sagernet.ftm.http.parseHttp
+import io.nekohasekai.sagernet.ftm.hysteria.parseHysteria
+import io.nekohasekai.sagernet.ftm.naive.parseNaive
+import io.nekohasekai.sagernet.ftm.parseUniversal
+import io.nekohasekai.sagernet.ftm.shadowsocks.parseShadowsocks
+import io.nekohasekai.sagernet.ftm.shadowsocksr.parseShadowsocksR
+import io.nekohasekai.sagernet.ftm.socks.parseSOCKS
+import io.nekohasekai.sagernet.ftm.ssh.parseShh
+import io.nekohasekai.sagernet.ftm.trojan.parseTrojan
+import io.nekohasekai.sagernet.ftm.trojan_go.parseTrojanGo
+import io.nekohasekai.sagernet.ftm.v2ray.parseV2Ray
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -131,10 +131,10 @@ suspend fun parseProxies(text: String): List<AbstractBean> {
     val links = text.split('\n').flatMap { it.trim().split(' ') }
     val linksByLine = text.split('\n').map { it.trim() }
 
-    val entities = ArrayList<AbstractBean>()
-    val entitiesByLine = ArrayList<AbstractBean>()
+    val entities = ArrayList< AbstractBean>()
+    val entitiesByLine = ArrayList< AbstractBean>()
 
-    suspend fun String.parseLink(entities: ArrayList<AbstractBean>) {
+    suspend fun String.parseLink(entities: ArrayList< AbstractBean>) {
         if (startsWith("clash://install-config?") || startsWith("sn://subscription?")) {
             throw SubscriptionFoundException(this)
         }

@@ -2,12 +2,12 @@ package com.abrnoc.application.presentation.connection.ui
 
 import android.os.Bundle
 import com.abrnoc.application.R
-import com.abrnoc.application.connection.database.ProfileManager
-import com.abrnoc.application.presentation.connection.DataStore
-import com.abrnoc.application.presentation.connection.SagerNet
 import com.abrnoc.application.presentation.connection.fragment.ConfigurationFragment
 import com.abrnoc.application.presentation.connection.profile.ThemedActivity
 import com.abrnoc.application.presentation.connection.runOnMainDispatcher
+import io.nekohasekai.sagernet.SagerNet
+import io.nekohasekai.sagernet.database.DataStore
+import com.github.shadowsocks.plugin.ProfileManager
 
 class SwitchActivity :
     ThemedActivity(R.layout.layout_empty),

@@ -3,8 +3,8 @@ package com.abrnoc.application.connection.moe.nb4a
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.abrnoc.application.connection.database.prefrence.KeyValuePair
-import com.abrnoc.application.presentation.connection.SagerNet
+import io.nekohasekai.sagernet.database.preference.KeyValuePair
+import io.nekohasekai.sagernet.SagerNet
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 

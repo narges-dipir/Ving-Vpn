@@ -50,10 +50,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.abrnoc.application.MainActivity
 import com.abrnoc.application.R
-import com.abrnoc.application.connection.database.GroupManager
-import com.abrnoc.application.connection.database.ProfileManager
-import com.abrnoc.application.connection.group.RawUpdater
-import com.abrnoc.application.connection.ktx.FixedLinearLayoutManager
 import com.abrnoc.application.connection.neko.NekoJSInterface
 import com.abrnoc.application.connection.neko.Protocols
 import com.abrnoc.application.connection.neko.Protocols.getProtocolColor
@@ -61,44 +57,42 @@ import com.abrnoc.application.connection.neko.ResultDeprecated
 import com.abrnoc.application.connection.neko.ResultInsecure
 import com.abrnoc.application.connection.neko.ResultInsecureText
 import com.abrnoc.application.connection.neko.ResultLocal
-import com.abrnoc.application.connection.neko.SagerDatabase
 import com.abrnoc.application.connection.neko.canShare
 import com.abrnoc.application.connection.neko.isInsecure
 import com.abrnoc.application.connection.neko.isIpAddress
 import com.abrnoc.application.databinding.LayoutProfileListBinding
 import com.abrnoc.application.databinding.LayoutProgressListBinding
-import com.abrnoc.application.ftm.AbstractBean
-import com.abrnoc.application.presentation.connection.BaseService
-import com.abrnoc.application.presentation.connection.DataStore
-import com.abrnoc.application.presentation.connection.GroupOrder
-import com.abrnoc.application.presentation.connection.GroupType
-import com.abrnoc.application.presentation.connection.Key
 import com.abrnoc.application.presentation.connection.Logs
-import com.abrnoc.application.presentation.connection.OnPreferenceDataStoreChangeListener
-import com.abrnoc.application.presentation.connection.ProxyEntity
-import com.abrnoc.application.presentation.connection.ProxyGroup
-import com.abrnoc.application.presentation.connection.SagerNet
 import com.abrnoc.application.presentation.connection.SubscriptionFoundException
-import com.abrnoc.application.presentation.connection.SubscriptionType
-import com.abrnoc.application.presentation.connection.app
-import com.abrnoc.application.presentation.connection.getColorAttr
-import com.abrnoc.application.presentation.connection.getColour
 import com.abrnoc.application.presentation.connection.onMainDispatcher
-import com.abrnoc.application.presentation.connection.readableMessage
 import com.abrnoc.application.presentation.connection.runOnDefaultDispatcher
 import com.abrnoc.application.presentation.connection.runOnMainDispatcher
-import com.abrnoc.application.presentation.connection.scrollTo
-import com.abrnoc.application.presentation.connection.snackbar
 import com.abrnoc.application.presentation.viewModel.DefaultConfigViewModel
 import com.github.shadowsocks.plugin.PluginManager
+import com.github.shadowsocks.plugin.ProfileManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import io.nekohasekai.sagernet.*
 import io.nekohasekai.sagernet.aidl.TrafficStats
+import io.nekohasekai.sagernet.bg.BaseService
+import io.nekohasekai.sagernet.bg.test.UrlTest
+import io.nekohasekai.sagernet.database.DataStore
+import io.nekohasekai.sagernet.database.GroupManager
+import io.nekohasekai.sagernet.database.ProxyEntity
+import io.nekohasekai.sagernet.database.ProxyGroup
+import io.nekohasekai.sagernet.database.SagerDatabase
+import io.nekohasekai.sagernet.database.preference.OnPreferenceDataStoreChangeListener
+import io.nekohasekai.sagernet.ftm.AbstractBean
+import io.nekohasekai.sagernet.group.RawUpdater
+import io.nekohasekai.sagernet.ktx.FixedLinearLayoutManager
 import io.nekohasekai.sagernet.ktx.alert
+import io.nekohasekai.sagernet.ktx.app
 import io.nekohasekai.sagernet.ktx.dp2px
+import io.nekohasekai.sagernet.ktx.getColorAttr
+import io.nekohasekai.sagernet.ktx.getColour
+import io.nekohasekai.sagernet.ktx.readableMessage
+import io.nekohasekai.sagernet.ktx.snackbar
 import io.nekohasekai.sagernet.ktx.tryToShow
-import io.nekohasekai.sagernet.test.UrlTest
 import io.nekohasekai.sagernet.widget.UndoSnackbarManager
 import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Mutex
@@ -236,12 +230,12 @@ class ConfigurationFragment @JvmOverloads constructor(
                     val last = layoutManager.findLastVisibleItemPosition()
 
                     if (selectedProfileIndex !in first..last) {
-                        fragment.configurationListView.scrollTo(selectedProfileIndex, true)
+//                        fragment.configurationListView.scrollTo(selectedProfileIndex, true)
                         return@setOnClickListener
                     }
                 }
 
-                fragment.configurationListView.scrollTo(0)
+//                fragment.configurationListView.scrollTo(0)
             }
         }
 
@@ -337,7 +331,7 @@ class ConfigurationFragment @JvmOverloads constructor(
         }
     }
 
-    suspend fun import(proxies: List<AbstractBean>) {
+    suspend fun import(proxies: List< AbstractBean>) {
         val targetId = DataStore.selectedGroupForImport()
         for (proxy in proxies) {
             ProfileManager.createProfile(targetId, proxy)
@@ -1275,9 +1269,9 @@ class ConfigurationFragment @JvmOverloads constructor(
                     notifyDataSetChanged()
 
                     if (selectedProfileIndex != -1) {
-                        configurationListView.scrollTo(selectedProfileIndex, true)
+//                        configurationListView.scrollTo(selectedProfileIndex, true)
                     } else if (newProfiles.isNotEmpty()) {
-                        configurationListView.scrollTo(0, true)
+//                        configurationListView.scrollTo(0, true)
                     }
                 }
             }

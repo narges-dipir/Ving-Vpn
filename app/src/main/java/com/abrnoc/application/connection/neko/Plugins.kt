@@ -7,10 +7,10 @@ import android.content.pm.ProviderInfo
 import android.net.Uri
 import android.os.Build
 import android.widget.Toast
-import com.abrnoc.application.connection.neko.PluginManager.loadString
-import com.abrnoc.application.presentation.connection.DataStore
-import com.abrnoc.application.presentation.connection.PackageCache
-import com.abrnoc.application.presentation.connection.SagerNet
+import com.github.shadowsocks.plugin.PluginManager.loadString
+import io.nekohasekai.sagernet.database.DataStore
+import io.nekohasekai.sagernet.utils.PackageCache
+import io.nekohasekai.sagernet.SagerNet
 
 
 object Plugins {

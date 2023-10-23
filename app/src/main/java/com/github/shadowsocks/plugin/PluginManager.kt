@@ -39,11 +39,11 @@ import androidx.core.os.bundleOf
 import com.abrnoc.application.R
 import com.abrnoc.application.connection.neko.PluginConfiguration
 import com.abrnoc.application.connection.neko.PluginOptions
-import com.abrnoc.application.presentation.connection.BaseService
 import com.abrnoc.application.presentation.connection.Logs
-import com.abrnoc.application.presentation.connection.SagerNet
-import com.abrnoc.application.presentation.connection.listenForPackageChanges
-import com.abrnoc.application.presentation.connection.signaturesCompat
+import io.nekohasekai.sagernet.SagerNet
+import io.nekohasekai.sagernet.bg.BaseService
+import io.nekohasekai.sagernet.ktx.listenForPackageChanges
+import io.nekohasekai.sagernet.ktx.signaturesCompat
 import java.io.File
 import java.io.FileNotFoundException
 
@@ -64,7 +64,8 @@ object PluginManager {
      */
     val trustedSignatures by lazy {
         SagerNet.packageInfo.signaturesCompat.toSet() +
-                Signature(Base64.decode(  // @Mygod
+                Signature(
+                    Base64.decode(  // @Mygod
                     """
                     |MIIDWzCCAkOgAwIBAgIEUzfv8DANBgkqhkiG9w0BAQsFADBdMQswCQYDVQQGEwJD
                     |TjEOMAwGA1UECBMFTXlnb2QxDjAMBgNVBAcTBU15Z29kMQ4wDAYDVQQKEwVNeWdv
@@ -85,7 +86,8 @@ object PluginManager {
                     |wkGeOtzcj1DlbUTvt1s5GlnwBTGUmkbLx+YUje+n+IBgMbohLUDYBtUHylRVgMsc
                     |1WS67kDqeJiiQZvrxvyW6CZZ/MIGI+uAkkj3DqJpaZirkwPgvpcOIrjZy0uFvQM=
                   """, Base64.DEFAULT)) +
-                Signature(Base64.decode( // @madeye
+                Signature(
+                    Base64.decode( // @madeye
                     """
                     |MIICQzCCAaygAwIBAgIETV9OhjANBgkqhkiG9w0BAQUFADBmMQswCQYDVQQGEwJjbjERMA8GA1UE
                     |CBMIU2hhbmdoYWkxDzANBgNVBAcTBlB1ZG9uZzEUMBIGA1UEChMLRnVkYW4gVW5pdi4xDDAKBgNV
@@ -208,7 +210,8 @@ object PluginManager {
 
     private fun initNativeFast(cr: ContentResolver, options: PluginOptions, uri: Uri): String? {
         return cr.call(uri, PluginContract.METHOD_GET_EXECUTABLE, null,
-            bundleOf(PluginContract.EXTRA_OPTIONS to options.id))?.getString(PluginContract.EXTRA_ENTRY)?.also {
+            bundleOf(PluginContract.EXTRA_OPTIONS to options.id)
+        )?.getString(PluginContract.EXTRA_ENTRY)?.also {
             check(File(it).canExecute())
         }
     }
@@ -250,3 +253,4 @@ object PluginManager {
         else -> error("meta-data $key has invalid type ${value.javaClass}")
     }
 }
+

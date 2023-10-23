@@ -32,12 +32,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.abrnoc.application.R
 import com.abrnoc.application.presentation.components.VpnConnectButton
-import com.abrnoc.application.presentation.connection.BaseService
+import io.nekohasekai.sagernet.bg.BaseService
 import com.abrnoc.application.presentation.mainConnection.components.BottomArcShape
 import com.abrnoc.application.presentation.ui.theme.AbrnocApplicationTheme
 import com.abrnoc.application.presentation.ui.theme.ApplicationTheme
 import com.abrnoc.application.presentation.ui.theme.Neutral0
-import com.abrnoc.application.repository.model.DefaultConfig
+import com.abrnoc.application.presentation.viewModel.model.DefaultConfig
 
 @Composable
 fun MainConnectionScreen2() {

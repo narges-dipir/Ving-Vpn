@@ -23,11 +23,11 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.core.widget.addTextChangedListener
 import com.abrnoc.application.R
-import com.abrnoc.application.presentation.connection.readableMessage
 import com.google.android.material.textfield.TextInputLayout
 import com.takisoft.preferencex.EditTextPreference
 import io.nekohasekai.sagernet.ktx.getIntNya
 import io.nekohasekai.sagernet.ktx.getStr
+import io.nekohasekai.sagernet.ktx.readableMessage
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.json.JSONObject
 

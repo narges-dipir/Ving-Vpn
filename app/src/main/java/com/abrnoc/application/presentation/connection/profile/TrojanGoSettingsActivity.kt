@@ -36,15 +36,7 @@ import androidx.preference.PreferenceCategory
 import com.abrnoc.application.R
 import com.abrnoc.application.connection.neko.PluginConfiguration
 import com.abrnoc.application.connection.neko.PluginOptions
-import com.abrnoc.application.connection.preference.EditTextPreferenceModifiers
-import com.abrnoc.application.ftm.trojan_go.TrojanGoBean
-import com.abrnoc.application.presentation.connection.DataStore
-import com.abrnoc.application.presentation.connection.Key
-import com.abrnoc.application.presentation.connection.app
-import com.abrnoc.application.presentation.connection.listenForPackageChanges
-import com.abrnoc.application.presentation.connection.readableMessage
 import com.abrnoc.application.presentation.connection.runOnDefaultDispatcher
-import com.abrnoc.application.presentation.connection.showAllowingStateLoss
 import com.github.shadowsocks.plugin.AlertDialogFragment
 import com.github.shadowsocks.plugin.Empty
 import com.github.shadowsocks.plugin.NoPlugin
@@ -57,6 +49,14 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.takisoft.preferencex.PreferenceFragmentCompat
 import com.takisoft.preferencex.SimpleMenuPreference
+import io.nekohasekai.sagernet.Key
+import io.nekohasekai.sagernet.database.DataStore
+import io.nekohasekai.sagernet.database.preference.EditTextPreferenceModifiers
+import io.nekohasekai.sagernet.ftm.trojan_go.TrojanGoBean
+import io.nekohasekai.sagernet.ktx.app
+import io.nekohasekai.sagernet.ktx.listenForPackageChanges
+import io.nekohasekai.sagernet.ktx.readableMessage
+import io.nekohasekai.sagernet.ktx.showAllowingStateLoss
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -70,7 +70,7 @@ class TrojanGoSettingsActivity : ProfileSettingsActivity<TrojanGoBean>(),
     private lateinit var pluginConfiguration: PluginConfiguration
     private lateinit var receiver: BroadcastReceiver
 
-    override fun TrojanGoBean.init() {
+    override fun  TrojanGoBean.init() {
         DataStore.profileName = name
         DataStore.serverAddress = serverAddress
         DataStore.serverPort = serverPort
@@ -90,7 +90,7 @@ class TrojanGoSettingsActivity : ProfileSettingsActivity<TrojanGoBean>(),
         DataStore.serverPlugin = plugin
     }
 
-    override fun TrojanGoBean.serialize() {
+    override fun  TrojanGoBean.serialize() {
         name = DataStore.profileName
         serverAddress = DataStore.serverAddress
         serverPort = DataStore.serverPort

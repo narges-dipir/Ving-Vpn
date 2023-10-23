@@ -1,7 +1,7 @@
 package com.abrnoc.application.connection.moe.nya
 
-import com.abrnoc.application.ftm.v2ray.V2RayConfig.DnsObject.ServerObject
-import com.abrnoc.application.presentation.connection.DataStore
+import io.nekohasekai.sagernet.ftm.v2ray.V2RayConfig.DnsObject.ServerObject
+import io.nekohasekai.sagernet.database.DataStore
 
 
 object DNS {

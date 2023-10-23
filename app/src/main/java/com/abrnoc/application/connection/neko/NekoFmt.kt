@@ -19,7 +19,7 @@
 
 package com.abrnoc.application.connection.neko
 
-import com.abrnoc.application.presentation.connection.DataStore
+import io.nekohasekai.sagernet.database.DataStore
 import com.abrnoc.application.presentation.connection.Logs
 import com.abrnoc.application.presentation.connection.getStr
 import com.abrnoc.application.presentation.connection.runOnIoDispatcher

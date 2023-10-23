@@ -39,8 +39,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abrnoc.application.R
-import com.abrnoc.application.connection.database.ProfileManager
-import com.abrnoc.application.connection.ktx.FixedLinearLayoutManager
 import com.abrnoc.application.connection.neko.Protocols.getProtocolColor
 import com.abrnoc.application.connection.neko.ResultDeprecated
 import com.abrnoc.application.connection.neko.ResultInsecure
@@ -49,26 +47,29 @@ import com.abrnoc.application.connection.neko.ResultLocal
 import com.abrnoc.application.connection.neko.isInsecure
 import com.abrnoc.application.databinding.LayoutAddEntityBinding
 import com.abrnoc.application.databinding.LayoutProfileBinding
-import com.abrnoc.application.ftm.internal.ChainBean
-import com.abrnoc.application.presentation.connection.DataStore
-import com.abrnoc.application.presentation.connection.ProxyEntity
 import com.abrnoc.application.presentation.connection.onMainDispatcher
 import com.abrnoc.application.presentation.connection.runOnDefaultDispatcher
+import com.github.shadowsocks.plugin.ProfileManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.takisoft.preferencex.PreferenceFragmentCompat
+import io.nekohasekai.sagernet.database.DataStore
+import io.nekohasekai.sagernet.database.ProxyEntity
+import io.nekohasekai.sagernet.ftm.internal.ChainBean
+import io.nekohasekai.sagernet.ktx.FixedLinearLayoutManager
 
 class ChainSettingsActivity : ProfileSettingsActivity<ChainBean>(R.layout.layout_chain_settings) {
 
-    override fun createEntity() = ChainBean()
+    override fun createEntity() =
+         ChainBean()
 
     val proxyList = ArrayList<ProxyEntity>()
 
-    override fun ChainBean.init() {
+    override fun  ChainBean.init() {
         DataStore.profileName = name
         DataStore.serverProtocol = proxies.joinToString(",")
     }
 
-    override fun ChainBean.serialize() {
+    override fun  ChainBean.serialize() {
         name = DataStore.profileName
         proxies = proxyList.map { it.id }
         initializeDefaultValues()

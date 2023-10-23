@@ -23,9 +23,9 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.preference.Preference
 import com.abrnoc.application.R
-import com.abrnoc.application.presentation.connection.DataStore
-import com.abrnoc.application.presentation.connection.PackageCache
-import com.abrnoc.application.presentation.connection.app
+import io.nekohasekai.sagernet.database.DataStore
+import io.nekohasekai.sagernet.ktx.app
+import io.nekohasekai.sagernet.utils.PackageCache
 
 class AppListPreference : Preference {
 

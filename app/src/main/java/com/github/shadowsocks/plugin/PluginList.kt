@@ -23,7 +23,7 @@ package com.github.shadowsocks.plugin
 
 import android.content.Intent
 import android.content.pm.PackageManager
-import com.abrnoc.application.presentation.connection.SagerNet
+import io.nekohasekai.sagernet.SagerNet
 
 class PluginList(skipInternal: Boolean) : ArrayList<Plugin>() {
     init {

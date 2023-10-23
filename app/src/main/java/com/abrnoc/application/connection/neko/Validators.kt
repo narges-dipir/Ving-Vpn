@@ -21,15 +21,15 @@ package com.abrnoc.application.connection.neko
 
 import androidx.annotation.RawRes
 import com.abrnoc.application.R
-import com.abrnoc.application.ftm.AbstractBean
-import com.abrnoc.application.ftm.http.HttpBean
-import com.abrnoc.application.ftm.hysteria.HysteriaBean
-import com.abrnoc.application.ftm.shadowsocks.ShadowsocksBean
-import com.abrnoc.application.ftm.shadowsocksr.ShadowsocksRBean
-import com.abrnoc.application.ftm.socks.SOCKSBean
-import com.abrnoc.application.ftm.trojan.TrojanBean
-import com.abrnoc.application.ftm.v2ray.StandardV2RayBean
-import com.abrnoc.application.ftm.v2ray.VMessBean
+import io.nekohasekai.sagernet.ftm.AbstractBean
+import io.nekohasekai.sagernet.ftm.http.HttpBean
+import io.nekohasekai.sagernet.ftm.hysteria.HysteriaBean
+import io.nekohasekai.sagernet.ftm.shadowsocks.ShadowsocksBean
+import io.nekohasekai.sagernet.ftm.shadowsocksr.ShadowsocksRBean
+import io.nekohasekai.sagernet.ftm.socks.SOCKSBean
+import io.nekohasekai.sagernet.ftm.trojan.TrojanBean
+import io.nekohasekai.sagernet.ftm.v2ray.StandardV2RayBean
+import io.nekohasekai.sagernet.ftm.v2ray.VMessBean
 
 
 interface ValidateResult
@@ -41,25 +41,25 @@ class ResultInsecureText(val text: String) : ValidateResult
 
 val ssSecureList = "(gcm|poly1305)".toRegex()
 
-fun AbstractBean.isInsecure(): ValidateResult {
+fun io.nekohasekai.sagernet.ftm.AbstractBean.isInsecure(): ValidateResult {
     if (serverAddress.isIpAddress()) {
         if (serverAddress.startsWith("127.") || serverAddress.startsWith("::")) {
             return ResultLocal
         }
     }
-    if (this is ShadowsocksBean) {
+    if (this is io.nekohasekai.sagernet.ftm.shadowsocks.ShadowsocksBean) {
         if (plugin.isBlank() || PluginConfiguration(plugin).selected == "obfs-local") {
             if (!method.contains(ssSecureList)) {
                 return ResultInsecure(R.raw.shadowsocks_stream_cipher)
             }
         }
-    } else if (this is ShadowsocksRBean) {
+    } else if (this is io.nekohasekai.sagernet.ftm.shadowsocksr.ShadowsocksRBean) {
         return ResultInsecure(R.raw.shadowsocksr)
-    } else if (this is HttpBean) {
+    } else if (this is io.nekohasekai.sagernet.ftm.http.HttpBean) {
         if (!isTLS()) return ResultInsecure(R.raw.not_encrypted)
-    } else if (this is SOCKSBean) {
+    } else if (this is io.nekohasekai.sagernet.ftm.socks.SOCKSBean) {
         if (!isTLS()) return ResultInsecure(R.raw.not_encrypted)
-    } else if (this is VMessBean) {
+    } else if (this is io.nekohasekai.sagernet.ftm.v2ray.VMessBean) {
         if (security in arrayOf("", "none")) {
             if (encryption in arrayOf("none", "zero")) {
                 return ResultInsecure(R.raw.not_encrypted)
@@ -70,9 +70,9 @@ fun AbstractBean.isInsecure(): ValidateResult {
         }
         if (allowInsecure) return ResultInsecure(R.raw.insecure)
         if (alterId > 0) return ResultDeprecated(R.raw.vmess_md5_auth)
-    } else if (this is HysteriaBean) {
+    } else if (this is io.nekohasekai.sagernet.ftm.hysteria.HysteriaBean) {
         if (allowInsecure) return ResultInsecure(R.raw.insecure)
-    } else if (this is TrojanBean) {
+    } else if (this is io.nekohasekai.sagernet.ftm.trojan.TrojanBean) {
         if (security in arrayOf("", "none")) return ResultInsecure(R.raw.not_encrypted)
         if (allowInsecure) return ResultInsecure(R.raw.insecure)
     } else if (this is NekoBean) {
@@ -82,10 +82,10 @@ fun AbstractBean.isInsecure(): ValidateResult {
     return ResultSecure
 }
 
-fun StandardV2RayBean.isTLS(): Boolean {
+fun io.nekohasekai.sagernet.ftm.v2ray.StandardV2RayBean.isTLS(): Boolean {
     return security == "tls"
 }
 
-fun StandardV2RayBean.setTLS(boolean: Boolean) {
+fun io.nekohasekai.sagernet.ftm.v2ray.StandardV2RayBean.setTLS(boolean: Boolean) {
     security = if (boolean) "tls" else ""
 }

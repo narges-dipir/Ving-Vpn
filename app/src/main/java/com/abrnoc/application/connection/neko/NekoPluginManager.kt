@@ -1,10 +1,10 @@
 package com.abrnoc.application.connection.neko
 
 import com.abrnoc.application.R
-import com.abrnoc.application.presentation.connection.BaseService
-import com.abrnoc.application.presentation.connection.DataStore
-import com.abrnoc.application.presentation.connection.PackageCache
-import com.abrnoc.application.presentation.connection.SagerNet
+import io.nekohasekai.sagernet.bg.BaseService
+import io.nekohasekai.sagernet.database.DataStore
+import io.nekohasekai.sagernet.utils.PackageCache
+import io.nekohasekai.sagernet.SagerNet
 import com.abrnoc.application.presentation.connection.forEach
 import okhttp3.internal.closeQuietly
 import org.json.JSONObject

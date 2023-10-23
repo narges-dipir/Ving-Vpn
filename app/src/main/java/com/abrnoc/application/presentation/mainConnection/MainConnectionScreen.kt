@@ -30,7 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.abrnoc.application.presentation.connection.BaseService
+import io.nekohasekai.sagernet.bg.BaseService
 import com.abrnoc.application.presentation.mainConnection.components.BottomNavigationItem
 import com.abrnoc.application.presentation.mainConnection.components.ConnectionItem
 import com.abrnoc.application.presentation.mainConnection.navigation.MainNavigation
@@ -41,7 +41,7 @@ import com.abrnoc.application.presentation.ui.theme.Neutral3
 import com.abrnoc.application.presentation.ui.theme.Purple40
 import com.abrnoc.application.presentation.viewModel.DefaultConfigViewModel
 import com.abrnoc.application.presentation.viewModel.event.ProxyEvent
-import com.abrnoc.application.repository.model.DefaultConfig
+import com.abrnoc.application.presentation.viewModel.model.DefaultConfig
 import dev.olshevski.navigation.reimagined.NavBackHandler
 import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.popAll

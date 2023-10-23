@@ -14,7 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.abrnoc.application.R
-import com.abrnoc.application.presentation.connection.BaseService
+import io.nekohasekai.sagernet.bg.BaseService
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.progressindicator.BaseProgressIndicator
 import kotlinx.coroutines.Job

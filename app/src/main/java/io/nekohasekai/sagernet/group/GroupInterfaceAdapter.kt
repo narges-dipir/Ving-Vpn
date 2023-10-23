@@ -21,10 +21,9 @@ package io.nekohasekai.sagernet.group
 
 import com.abrnoc.application.MainActivity
 import com.abrnoc.application.R
-import com.abrnoc.application.connection.database.GroupManager
-import com.abrnoc.application.presentation.connection.ProxyGroup
+import io.nekohasekai.sagernet.database.GroupManager
+import io.nekohasekai.sagernet.database.ProxyGroup
 import com.abrnoc.application.presentation.connection.onMainDispatcher
-import com.abrnoc.application.presentation.connection.profile.ThemedActivity
 import com.abrnoc.application.presentation.connection.runOnMainDispatcher
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.delay

@@ -22,20 +22,21 @@ package com.abrnoc.application.presentation.connection.profile
 import android.os.Bundle
 import androidx.preference.EditTextPreference
 import com.abrnoc.application.R
-import com.abrnoc.application.connection.preference.EditTextPreferenceModifiers
-import com.abrnoc.application.ftm.hysteria.HysteriaBean
-import com.abrnoc.application.presentation.connection.DataStore
-import com.abrnoc.application.presentation.connection.Key
 import com.abrnoc.application.presentation.connection.applyDefaultValues
 import com.takisoft.preferencex.PreferenceFragmentCompat
 import com.takisoft.preferencex.SimpleMenuPreference
+import io.nekohasekai.sagernet.Key
+import io.nekohasekai.sagernet.database.DataStore
+import io.nekohasekai.sagernet.database.preference.EditTextPreferenceModifiers
+import io.nekohasekai.sagernet.ftm.hysteria.HysteriaBean
 
 
 class HysteriaSettingsActivity : ProfileSettingsActivity<HysteriaBean>() {
 
-    override fun createEntity() = HysteriaBean().applyDefaultValues()
+    override fun createEntity() = HysteriaBean()
+        .applyDefaultValues()
 
-    override fun HysteriaBean.init() {
+    override fun  HysteriaBean.init() {
         DataStore.profileName = name
         DataStore.serverAddress = serverAddress
         DataStore.serverPort = serverPort
@@ -55,7 +56,7 @@ class HysteriaSettingsActivity : ProfileSettingsActivity<HysteriaBean>() {
         DataStore.serverHopInterval = hopInterval
     }
 
-    override fun HysteriaBean.serialize() {
+    override fun  HysteriaBean.serialize() {
         name = DataStore.profileName
         serverAddress = DataStore.serverAddress
         serverPort = DataStore.serverPort
@@ -83,9 +84,9 @@ class HysteriaSettingsActivity : ProfileSettingsActivity<HysteriaBean>() {
 
         val authType = findPreference<SimpleMenuPreference>(Key.SERVER_AUTH_TYPE)!!
         val authPayload = findPreference<EditTextPreference>(Key.SERVER_PASSWORD)!!
-        authPayload.isVisible = authType.value != "${HysteriaBean.TYPE_NONE}"
+        authPayload.isVisible = authType.value != "${ HysteriaBean.TYPE_NONE}"
         authType.setOnPreferenceChangeListener { _, newValue ->
-            authPayload.isVisible = newValue != "${HysteriaBean.TYPE_NONE}"
+            authPayload.isVisible = newValue != "${ HysteriaBean.TYPE_NONE}"
             true
         }
 

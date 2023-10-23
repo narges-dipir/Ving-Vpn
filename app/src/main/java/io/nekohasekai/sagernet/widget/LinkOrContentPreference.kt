@@ -24,10 +24,10 @@ import android.net.Uri
 import android.util.AttributeSet
 import androidx.core.widget.addTextChangedListener
 import com.abrnoc.application.R
-import com.abrnoc.application.presentation.connection.app
-import com.abrnoc.application.presentation.connection.readableMessage
 import com.google.android.material.textfield.TextInputLayout
 import com.takisoft.preferencex.EditTextPreference
+import io.nekohasekai.sagernet.ktx.app
+import io.nekohasekai.sagernet.ktx.readableMessage
 import okhttp3.HttpUrl.Companion.toHttpUrl
 
 class LinkOrContentPreference : EditTextPreference {

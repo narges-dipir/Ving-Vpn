@@ -21,7 +21,7 @@
 
 package com.abrnoc.application.connection.neko
 
-import com.abrnoc.application.ftm.AbstractBean
+import io.nekohasekai.sagernet.ftm.AbstractBean
 import com.abrnoc.application.presentation.connection.NGUtil
 import okhttp3.HttpUrl
 import java.net.InetSocketAddress
@@ -68,7 +68,7 @@ fun String.wrapIPV6Host(): String {
     }
 }
 
-fun AbstractBean.wrapUri(): String {
+fun io.nekohasekai.sagernet.ftm.AbstractBean.wrapUri(): String {
     return "${finalAddress.wrapIPV6Host()}:$finalPort"
 }
 

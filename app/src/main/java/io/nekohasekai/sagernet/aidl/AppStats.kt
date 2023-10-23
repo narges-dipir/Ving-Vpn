@@ -20,7 +20,7 @@
 package io.nekohasekai.sagernet.aidl
 
 import android.os.Parcelable
-import com.abrnoc.application.presentation.connection.StatsEntity
+import io.nekohasekai.sagernet.database.StatsEntity
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -36,7 +36,7 @@ data class AppStats(
     var uplinkTotal: Long,
     var downlinkTotal: Long,
     var deactivateAt: Int,
-    var nekoConnectionsJSON: String, // 不要放在这里喵
+    var nekoConnectionsJSON: String,
 ) : Parcelable {
 
     operator fun plusAssign(stats: StatsEntity) {

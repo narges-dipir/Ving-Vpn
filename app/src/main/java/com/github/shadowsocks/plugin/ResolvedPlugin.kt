@@ -24,10 +24,9 @@ package com.github.shadowsocks.plugin
 import android.content.pm.ComponentInfo
 import android.content.pm.ResolveInfo
 import android.graphics.drawable.Drawable
-import android.os.Build
-import com.abrnoc.application.presentation.connection.SagerNet
-import com.abrnoc.application.presentation.connection.signaturesCompat
 import com.github.shadowsocks.plugin.PluginManager.loadString
+import io.nekohasekai.sagernet.SagerNet
+import io.nekohasekai.sagernet.ktx.signaturesCompat
 
 abstract class ResolvedPlugin(protected val resolveInfo: ResolveInfo) : Plugin() {
     protected abstract val componentInfo: ComponentInfo

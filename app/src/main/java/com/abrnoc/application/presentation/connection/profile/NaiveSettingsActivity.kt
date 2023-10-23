@@ -22,18 +22,18 @@ package com.abrnoc.application.presentation.connection.profile
 import android.os.Bundle
 import androidx.preference.EditTextPreference
 import com.abrnoc.application.R
-import com.abrnoc.application.connection.preference.EditTextPreferenceModifiers
-import com.abrnoc.application.ftm.naive.NaiveBean
-import com.abrnoc.application.presentation.connection.DataStore
-import com.abrnoc.application.presentation.connection.Key
 import com.takisoft.preferencex.PreferenceFragmentCompat
+import io.nekohasekai.sagernet.Key
+import io.nekohasekai.sagernet.database.DataStore
+import io.nekohasekai.sagernet.database.preference.EditTextPreferenceModifiers
+import io.nekohasekai.sagernet.ftm.naive.NaiveBean
 
 
 class NaiveSettingsActivity : ProfileSettingsActivity<NaiveBean>() {
 
-    override fun createEntity() = NaiveBean()
+    override fun createEntity() =  NaiveBean()
 
-    override fun NaiveBean.init() {
+    override fun  NaiveBean.init() {
         DataStore.profileName = name
         DataStore.serverAddress = serverAddress
         DataStore.serverPort = serverPort
@@ -46,7 +46,7 @@ class NaiveSettingsActivity : ProfileSettingsActivity<NaiveBean>() {
         DataStore.serverInsecureConcurrency = insecureConcurrency
     }
 
-    override fun NaiveBean.serialize() {
+    override fun  NaiveBean.serialize() {
         name = DataStore.profileName
         serverAddress = DataStore.serverAddress
         serverPort = DataStore.serverPort

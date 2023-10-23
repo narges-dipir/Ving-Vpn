@@ -23,18 +23,18 @@ import android.os.Bundle
 import androidx.preference.EditTextPreference
 import androidx.preference.SwitchPreference
 import com.abrnoc.application.R
-import com.abrnoc.application.ftm.tuic.TuicBean
-import com.abrnoc.application.presentation.connection.DataStore
-import com.abrnoc.application.presentation.connection.Key
 import com.abrnoc.application.presentation.connection.applyDefaultValues
 import com.takisoft.preferencex.PreferenceFragmentCompat
+import io.nekohasekai.sagernet.Key
+import io.nekohasekai.sagernet.database.DataStore
+import io.nekohasekai.sagernet.ftm.tuic.TuicBean
 
 
 class TuicSettingsActivity : ProfileSettingsActivity<TuicBean>() {
 
     override fun createEntity() = TuicBean().applyDefaultValues()
 
-    override fun TuicBean.init() {
+    override fun  TuicBean.init() {
         DataStore.profileName = name
         DataStore.serverAddress = serverAddress
         DataStore.serverPort = serverPort
@@ -51,7 +51,7 @@ class TuicSettingsActivity : ProfileSettingsActivity<TuicBean>() {
         DataStore.serverAllowInsecure = allowInsecure
     }
 
-    override fun TuicBean.serialize() {
+    override fun  TuicBean.serialize() {
         name = DataStore.profileName
         serverAddress = DataStore.serverAddress
         serverPort = DataStore.serverPort

@@ -19,7 +19,7 @@
 
 package com.abrnoc.application.presentation.connection.profile
 
-import com.abrnoc.application.ftm.v2ray.VMessBean
+import io.nekohasekai.sagernet.ftm.v2ray.VMessBean
 
 class VMessSettingsActivity : StandardV2RaySettingsActivity() {
 

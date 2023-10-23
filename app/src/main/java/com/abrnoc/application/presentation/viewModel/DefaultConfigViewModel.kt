@@ -1,45 +1,36 @@
 package com.abrnoc.application.presentation.viewModel
 
-import android.content.Context
 import android.net.Uri
-import android.os.RemoteException
 import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.preference.PreferenceDataStore
-import com.abrnoc.application.connection.database.GroupManager
-import com.abrnoc.application.connection.database.ProfileManager
-import com.abrnoc.application.connection.group.GroupUpdater
-import com.abrnoc.application.connection.group.RawUpdater
-import com.abrnoc.application.connection.neko.SagerDatabase
 import com.abrnoc.application.connection.neko.Util
-import com.abrnoc.application.ftm.AbstractBean
-import com.abrnoc.application.ftm.KryoConverters
-import com.abrnoc.application.presentation.connection.BaseService
-import com.abrnoc.application.presentation.connection.DataStore
-import com.abrnoc.application.presentation.connection.GroupType
-import com.abrnoc.application.presentation.connection.Key
-import com.abrnoc.application.presentation.connection.OnPreferenceDataStoreChangeListener
-import com.abrnoc.application.presentation.connection.PackageCache.reload
-import com.abrnoc.application.presentation.connection.ProxyEntity
-import com.abrnoc.application.presentation.connection.ProxyGroup
-import com.abrnoc.application.presentation.connection.SagerConnection
-import com.abrnoc.application.presentation.connection.SagerNet
-import com.abrnoc.application.presentation.connection.SubscriptionBean
 import com.abrnoc.application.presentation.connection.SubscriptionFoundException
-import com.abrnoc.application.presentation.connection.SubscriptionType
 import com.abrnoc.application.presentation.connection.onMainDispatcher
-import com.abrnoc.application.presentation.connection.readableMessage
 import com.abrnoc.application.presentation.connection.runOnDefaultDispatcher
 import com.abrnoc.application.presentation.viewModel.event.ProxyEvent
+import com.abrnoc.application.presentation.viewModel.model.DefaultConfig
 import com.abrnoc.application.presentation.viewModel.state.DefaultConfigState
-import com.abrnoc.application.repository.model.DefaultConfig
 import com.abrnoc.domain.common.Result
 import com.abrnoc.domain.connection.GetDefaultConfigUseCase
+import com.github.shadowsocks.plugin.ProfileManager
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.nekohasekai.sagernet.aidl.ISagerNetService
-import io.nekohasekai.sagernet.aidl.TrafficStats
-import io.nekohasekai.sagernet.widget.UndoSnackbarManager
+import io.nekohasekai.sagernet.GroupType
+import io.nekohasekai.sagernet.SagerNet
+import io.nekohasekai.sagernet.SubscriptionType
+import io.nekohasekai.sagernet.bg.BaseService
+import io.nekohasekai.sagernet.bg.SagerConnection
+import io.nekohasekai.sagernet.database.DataStore
+import io.nekohasekai.sagernet.database.GroupManager
+import io.nekohasekai.sagernet.database.ProxyEntity
+import io.nekohasekai.sagernet.database.ProxyGroup
+import io.nekohasekai.sagernet.database.SagerDatabase
+import io.nekohasekai.sagernet.database.SubscriptionBean
+import io.nekohasekai.sagernet.ftm.AbstractBean
+import io.nekohasekai.sagernet.ftm.KryoConverters
+import io.nekohasekai.sagernet.group.GroupUpdater
+import io.nekohasekai.sagernet.group.RawUpdater
+import io.nekohasekai.sagernet.ktx.readableMessage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -51,16 +42,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DefaultConfigViewModel @Inject constructor(
     private val getDefaultConfigUseCase: GetDefaultConfigUseCase,
-    private val context: Context,
-) : ViewModel(),
-    SagerConnection.Callback,
-    OnPreferenceDataStoreChangeListener,
-    ProfileManager.Listener,
-    GroupManager.Listener,
-    UndoSnackbarManager.Interface<ProxyEntity> {
-    //    private val _state = MutableStateFlow<DefaultConfigState?>(null)
-//    val state: StateFlow<DefaultConfigState?> = _state
-//    val defaultConfigFlow: LiveData<DefaultConfigState?> = state.asLiveData()
+) : ViewModel() {
     private var _configState = MutableStateFlow(DefaultConfigState())
     val configState: StateFlow<DefaultConfigState> = _configState
     val connection = SagerConnection(true)
@@ -76,7 +58,7 @@ class DefaultConfigViewModel @Inject constructor(
     init {
         getAllConfigs()
 //        reloadProfiles()
-        DataStore.profileCacheStore.registerChangeListener(this)
+//        DataStore.profileCacheStore.registerChangeListener(this)
     }
 
     fun onEvent(event: ProxyEvent) {
@@ -85,6 +67,7 @@ class DefaultConfigViewModel @Inject constructor(
             is ProxyEvent.ConfigEvent -> {
                 val profileAccess = Mutex()
                 val selectedProxy = event.defaultConfig.id ?: DataStore.selectedProxy
+                val proxyEntity by lazy { SagerDatabase.proxyDao.getById(selectedProxy) }
                 var update: Boolean
                 var lastSelected: Long
                 // (ConfigurationFragment.SelectCallback).returnProfile(selectedItem?.id ?: 1L)
@@ -209,7 +192,8 @@ class DefaultConfigViewModel @Inject constructor(
         val url = uri.getQueryParameter("url")
         if (!url.isNullOrBlank()) {
             group = ProxyGroup(type = GroupType.SUBSCRIPTION)
-            val subscription = SubscriptionBean()
+            val subscription =
+                SubscriptionBean()
             group.subscription = subscription
 
             // cleartext format
@@ -258,30 +242,6 @@ class DefaultConfigViewModel @Inject constructor(
         GroupUpdater.startUpdate(subscription, true)
     }
 
-    override fun onPreferenceDataStoreChanged(store: PreferenceDataStore, key: String) {
-        when (key) {
-            Key.SERVICE_MODE -> onBinderDied()
-            Key.PROXY_APPS, Key.BYPASS_MODE, Key.INDIVIDUAL -> {
-                if (DataStore.serviceState.canStop) {
-//                    snackbar(getString(R.string.restart)).setAction(R.string.apply) {
-                    SagerNet.reloadService()
-//                    }.show()
-                }
-            }
-        }
-    }
-
-    override fun stateChanged(state: BaseService.State, profileName: String?, msg: String?) {
-        changeState(state, msg, true)
-    }
-
-    override fun onServiceConnected(service: ISagerNetService) = changeState(
-        try {
-            BaseService.State.values()[service.state]
-        } catch (_: RemoteException) {
-            BaseService.State.Idle
-        }
-    )
 
     private fun changeState(
         state: BaseService.State,
@@ -291,12 +251,7 @@ class DefaultConfigViewModel @Inject constructor(
         DataStore.serviceState = state
 
         if (!DataStore.serviceState.connected) {
-            statsUpdated(emptyList())
         }
-
-//        binding.fab.changeState(state, DataStore.serviceState, animate)
-//        binding.stats.changeState(state)
-//        if (msg != null) snackbar(getString(R.string.vpn_error, msg)).show()
 
         when (state) {
             BaseService.State.Stopped -> {
@@ -310,11 +265,7 @@ class DefaultConfigViewModel @Inject constructor(
         }
     }
 
-    override fun onServiceDisconnected() = changeState(BaseService.State.Idle)
-    override fun onBinderDied() {
-        connection.disconnect(context = context)
-        connection.connect(context, this)
-    }
+
 
     fun onClickConnect(connect: ActivityResultLauncher<Void?>) {
 //         val connect = activityContext.registerForActivityResult(StartService()) {}
@@ -324,108 +275,4 @@ class DefaultConfigViewModel @Inject constructor(
 //        connect.launch(null)
     }
 
-    override suspend fun groupAdd(group: ProxyGroup) = Unit
-
-    override suspend fun groupUpdated(group: ProxyGroup) {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun groupUpdated(groupId: Long) {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun groupRemoved(groupId: Long) = Unit
-
-    override suspend fun onAdd(profile: ProxyEntity) {
-        if (groupList.find { it.id == profile.groupId } == null) {
-            DataStore.selectedGroup = profile.groupId
-            reload()
-        }
-    }
-
-    override suspend fun onUpdated(profileId: Long, trafficStats: TrafficStats) = Unit
-    override suspend fun onUpdated(profile: ProxyEntity) = Unit
-
-    override suspend fun onRemoved(groupId: Long, profileId: Long) {
-        val group = groupList.find { it.id == groupId } ?: return
-        if (group.ungrouped && SagerDatabase.proxyDao.countByGroup(groupId) == 0L) {
-            reload()
-        }
-    }
-
-    override fun undo(actions: List<Pair<Int, ProxyEntity>>) {
-        for ((index, item) in actions) {
-//            configurationListView.post {
-//                configurationList[item.id] = item
-//                configurationIdList.add(index, item.id)
-//                notifyItemInserted(index)
-//            }
-        }
-    }
-
-    override fun commit(actions: List<Pair<Int, ProxyEntity>>) {
-        val profiles = actions.map { it.second }
-        runOnDefaultDispatcher {
-            for (entity in profiles) {
-                ProfileManager.deleteProfile(entity.groupId, entity.id)
-            }
-        }
-    }
-
-    // ///////
-//    fun reloadProfiles() {
-//        var newProfiles = SagerDatabase.proxyDao.getByGroup(proxyGroup.id)
-//        val subscription = proxyGroup.subscription
-//        if (subscription != null) {
-//            if (subscription.selectedGroups.isNotEmpty()) {
-//                newProfiles =
-//                    newProfiles.filter { it.requireBean().group in subscription.selectedGroups }
-//            }
-//            if (subscription.selectedOwners.isNotEmpty()) {
-//                newProfiles =
-//                    newProfiles.filter { it.requireBean().owner in subscription.selectedOwners }
-//            }
-//            if (subscription.selectedTags.isNotEmpty()) {
-//                newProfiles = newProfiles.filter { profile ->
-//                    profile.requireBean().tags.containsAll(
-//                        subscription.selectedTags
-//                    )
-//                }
-//            }
-//        }
-//        when (proxyGroup.order) {
-//            GroupOrder.BY_NAME -> {
-//                newProfiles = newProfiles.sortedBy { it.displayName() }
-//
-//            }
-//
-//            GroupOrder.BY_DELAY -> {
-//                newProfiles =
-//                    newProfiles.sortedBy { if (it.status == 1) it.ping else 114514 }
-//            }
-//        }
-//
-//        configurationList.clear()
-//        configurationList.putAll(newProfiles.associateBy { it.id })
-//        val newProfileIds = newProfiles.map { it.id }
-//
-//        var selectedProfileIndex = -1
-//
-//        if (selected) {
-//            val selectedProxy = selectedItem?.id ?: DataStore.selectedProxy
-//            selectedProfileIndex = newProfileIds.indexOf(selectedProxy)
-//        }
-// //        configurationListView.post {
-// //            configurationIdList.clear()
-// //            configurationIdList.addAll(newProfileIds)
-// //            notifyDataSetChanged()
-// //
-// //            if (selectedProfileIndex != -1) {
-// //                configurationListView.scrollTo(selectedProfileIndex, true)
-// //            } else if (newProfiles.isNotEmpty()) {
-// //                configurationListView.scrollTo(0, true)
-// //            }
-// //
-// //        }
-//    }
 }

@@ -6,17 +6,16 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
-import com.abrnoc.application.connection.bg.SubscriptionUpdater
-import com.abrnoc.application.presentation.connection.DataStore
-import com.abrnoc.application.presentation.connection.SagerNet
-import com.abrnoc.application.presentation.connection.app
 import com.abrnoc.application.presentation.connection.runOnDefaultDispatcher
+import io.nekohasekai.sagernet.bg.SubscriptionUpdater
+import io.nekohasekai.sagernet.database.DataStore
+import io.nekohasekai.sagernet.ktx.app
 
 class BootReceiver : BroadcastReceiver() {
     companion object {
-        private val componentName by lazy { ComponentName(app, io.nekohasekai.sagernet.BootReceiver::class.java) }
+        private val componentName by lazy { ComponentName(app, BootReceiver::class.java) }
         var enabled: Boolean
-            get() = app.packageManager.getComponentEnabledSetting(io.nekohasekai.sagernet.BootReceiver.Companion.componentName) == PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+            get() = app.packageManager.getComponentEnabledSetting(componentName) == PackageManager.COMPONENT_ENABLED_STATE_ENABLED
             set(value) = app.packageManager.setComponentEnabledSetting(
                 io.nekohasekai.sagernet.BootReceiver.Companion.componentName,
                 if (value) {

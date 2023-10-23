@@ -19,7 +19,7 @@
 
 package com.abrnoc.application.presentation.connection.profile
 
-import com.abrnoc.application.ftm.trojan.TrojanBean
+import io.nekohasekai.sagernet.ftm.trojan.TrojanBean
 
 
 class TrojanSettingsActivity : StandardV2RaySettingsActivity() {

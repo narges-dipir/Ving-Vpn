@@ -21,7 +21,7 @@ package io.nekohasekai.sagernet.widget
 
 import android.content.Context
 import android.util.AttributeSet
-import com.abrnoc.application.connection.neko.SagerDatabase
+import io.nekohasekai.sagernet.database.SagerDatabase
 import com.takisoft.preferencex.SimpleMenuPreference
 
 class GroupPreference : SimpleMenuPreference {

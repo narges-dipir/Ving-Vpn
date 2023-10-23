@@ -23,12 +23,12 @@ import android.os.Bundle
 import androidx.preference.EditTextPreference
 import androidx.preference.PreferenceCategory
 import com.abrnoc.application.R
-import com.abrnoc.application.connection.preference.EditTextPreferenceModifiers
-import com.abrnoc.application.ftm.http.HttpBean
-import com.abrnoc.application.presentation.connection.DataStore
-import com.abrnoc.application.presentation.connection.Key
 import com.takisoft.preferencex.PreferenceFragmentCompat
 import com.takisoft.preferencex.SimpleMenuPreference
+import io.nekohasekai.sagernet.Key
+import io.nekohasekai.sagernet.database.DataStore
+import io.nekohasekai.sagernet.database.preference.EditTextPreferenceModifiers
+import io.nekohasekai.sagernet.ftm.http.HttpBean
 
 
 class HttpSettingsActivity : ProfileSettingsActivity<HttpBean>() {

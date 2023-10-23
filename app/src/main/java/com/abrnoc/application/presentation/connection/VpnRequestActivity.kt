@@ -32,6 +32,10 @@ import androidx.activity.result.contract.ActivityResultContract
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.getSystemService
 import com.abrnoc.application.R
+import io.nekohasekai.sagernet.Key
+import io.nekohasekai.sagernet.SagerNet
+import io.nekohasekai.sagernet.database.DataStore
+import io.nekohasekai.sagernet.ktx.broadcastReceiver
 
 class VpnRequestActivity : AppCompatActivity() {
     private var receiver: BroadcastReceiver? = null

@@ -46,7 +46,7 @@
         </intent>
     </queries>
     <application
-        android:name=".presentation.connection.SagerNet"
+        android:name="io.nekohasekai.sagernet.SagerNet"
         android:allowBackup="true"
         android:autoRevokePermissions="allowed"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -213,12 +213,12 @@
 <!--            android:configChanges="uiMode" />-->
 
         <service
-            android:name="io.nekohasekai.sagernet.ProxyService"
+            android:name="io.nekohasekai.sagernet.bg.ProxyService"
             android:exported="false"
             android:process=":bg" />
 
         <service
-            android:name="io.nekohasekai.sagernet.VpnService"
+            android:name="io.nekohasekai.sagernet.bg.VpnService"
             android:exported="false"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_VPN_SERVICE"
@@ -230,7 +230,7 @@
         </service>
 
         <service
-            android:name="io.nekohasekai.TileService"
+            android:name="io.nekohasekai.sagernet.bg.TileService"
             android:exported="true"
             android:icon="@drawable/main_icon"
             android:label="@string/tile_title"

@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import com.abrnoc.application.presentation.connection.Theme
+import io.nekohasekai.sagernet.utils.Theme
 import com.google.android.material.snackbar.Snackbar
 
 abstract class ThemedActivity : AppCompatActivity {

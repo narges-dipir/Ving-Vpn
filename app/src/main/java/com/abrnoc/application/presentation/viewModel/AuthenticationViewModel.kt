@@ -32,6 +32,10 @@ class AuthenticationViewModel @Inject constructor(
                 }
 
             }
+
+            SendCodeEvent.ClearEvent -> {
+                _state.value = SendCodeState(isLoading = false, isAlreadyRegistered = false)
+            }
         }
     }
 

@@ -22,18 +22,19 @@ package com.abrnoc.application.presentation.connection.profile
 import android.os.Bundle
 import androidx.preference.EditTextPreference
 import com.abrnoc.application.R
-import com.abrnoc.application.connection.preference.EditTextPreferenceModifiers
-import com.abrnoc.application.ftm.wireguard.WireGuardBean
-import com.abrnoc.application.presentation.connection.DataStore
-import com.abrnoc.application.presentation.connection.Key
 import com.takisoft.preferencex.PreferenceFragmentCompat
+import io.nekohasekai.sagernet.Key
+import io.nekohasekai.sagernet.database.DataStore
+import io.nekohasekai.sagernet.database.preference.EditTextPreferenceModifiers
+import io.nekohasekai.sagernet.ftm.wireguard.WireGuardBean
 
 
 class WireGuardSettingsActivity : ProfileSettingsActivity<WireGuardBean>() {
 
-    override fun createEntity() = WireGuardBean()
+    override fun createEntity() =
+         WireGuardBean()
 
-    override fun WireGuardBean.init() {
+    override fun  WireGuardBean.init() {
         DataStore.profileName = name
 
         DataStore.serverLocalAddress = localAddress
@@ -48,7 +49,7 @@ class WireGuardSettingsActivity : ProfileSettingsActivity<WireGuardBean>() {
         DataStore.serverMTU = mtu
     }
 
-    override fun WireGuardBean.serialize() {
+    override fun  WireGuardBean.serialize() {
         name = DataStore.profileName
 
         localAddress = DataStore.serverLocalAddress

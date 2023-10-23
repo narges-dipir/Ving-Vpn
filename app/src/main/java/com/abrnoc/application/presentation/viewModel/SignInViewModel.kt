@@ -28,6 +28,9 @@ private val _state = MutableStateFlow(SignInState())
                 requestSignIn()
 
             }
+
+            SignInEvent.ClearEvent -> {
+            }
         }
     }
 

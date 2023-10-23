@@ -38,11 +38,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.abrnoc.application.R
-import com.abrnoc.application.presentation.connection.BaseService
-import com.abrnoc.application.presentation.connection.DataStore
 import com.abrnoc.application.presentation.ui.theme.Neutral0
 import com.abrnoc.application.presentation.ui.theme.Sky0
 import com.google.android.material.progressindicator.BaseProgressIndicator
+import io.nekohasekai.sagernet.bg.BaseService
+import io.nekohasekai.sagernet.database.DataStore
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

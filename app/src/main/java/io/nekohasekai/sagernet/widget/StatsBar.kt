@@ -33,10 +33,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.whenStarted
 import com.abrnoc.application.MainActivity
 import com.abrnoc.application.R
-import com.abrnoc.application.presentation.connection.BaseService
-import com.abrnoc.application.presentation.connection.app
 import com.abrnoc.application.presentation.connection.runOnDefaultDispatcher
 import com.google.android.material.bottomappbar.BottomAppBar
+import io.nekohasekai.sagernet.bg.BaseService
+import io.nekohasekai.sagernet.ktx.app
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

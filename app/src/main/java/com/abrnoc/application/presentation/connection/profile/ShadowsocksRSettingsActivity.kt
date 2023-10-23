@@ -22,16 +22,17 @@ package com.abrnoc.application.presentation.connection.profile
 import android.os.Bundle
 import androidx.preference.EditTextPreference
 import com.abrnoc.application.R
-import com.abrnoc.application.connection.preference.EditTextPreferenceModifiers
-import com.abrnoc.application.ftm.shadowsocksr.ShadowsocksRBean
-import com.abrnoc.application.presentation.connection.DataStore
-import com.abrnoc.application.presentation.connection.Key
 import com.takisoft.preferencex.PreferenceFragmentCompat
+import io.nekohasekai.sagernet.Key
+import io.nekohasekai.sagernet.database.DataStore
+import io.nekohasekai.sagernet.database.preference.EditTextPreferenceModifiers
+import io.nekohasekai.sagernet.ftm.shadowsocksr.ShadowsocksRBean
 
 
 class ShadowsocksRSettingsActivity : ProfileSettingsActivity<ShadowsocksRBean>() {
 
-    override fun createEntity() = ShadowsocksRBean()
+    override fun createEntity() =
+         ShadowsocksRBean()
 
     override fun ShadowsocksRBean.init() {
         DataStore.profileName = name
@@ -45,7 +46,7 @@ class ShadowsocksRSettingsActivity : ProfileSettingsActivity<ShadowsocksRBean>()
         DataStore.serverObfsParam = obfsParam
     }
 
-    override fun ShadowsocksRBean.serialize() {
+    override fun  ShadowsocksRBean.serialize() {
         name = DataStore.profileName
         serverAddress = DataStore.serverAddress
         serverPort = DataStore.serverPort

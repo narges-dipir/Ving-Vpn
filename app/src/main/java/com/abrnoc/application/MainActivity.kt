@@ -19,15 +19,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.preference.PreferenceDataStore
-import com.abrnoc.application.connection.database.GroupManager
-import com.abrnoc.application.connection.database.ProfileManager
-import com.abrnoc.application.connection.group.GroupUpdater
-import com.abrnoc.application.presentation.connection.BaseService
-import com.abrnoc.application.presentation.connection.DataStore
-import com.abrnoc.application.presentation.connection.Key
-import com.abrnoc.application.presentation.connection.OnPreferenceDataStoreChangeListener
-import com.abrnoc.application.presentation.connection.ProxyGroup
-import com.abrnoc.application.presentation.connection.SagerConnection
 import com.abrnoc.application.presentation.connection.VpnRequestActivity
 import com.abrnoc.application.presentation.connection.runOnDefaultDispatcher
 import com.abrnoc.application.presentation.mainConnection.MainConnectionScreen
@@ -36,16 +27,29 @@ import com.abrnoc.application.presentation.navigation.Navigation
 import com.abrnoc.application.presentation.screens.landing.Landing
 import com.abrnoc.application.presentation.screens.landing.Welcome
 import com.abrnoc.application.presentation.screens.signUp.EmailSignIn
-import com.abrnoc.application.presentation.screens.signUp.EmailSignUp
+import com.abrnoc.application.presentation.screens.signUp.EmailSignUpScreen
 import com.abrnoc.application.presentation.screens.signUp.PasswordSignUp
 import com.abrnoc.application.presentation.screens.signUp.VerificationSignUp
 import com.abrnoc.application.presentation.ui.theme.AbrnocApplicationTheme
 import com.abrnoc.domain.auth.CheckSignedInUseCase
 import com.abrnoc.domain.common.Result
+import com.github.shadowsocks.plugin.ProfileManager
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import io.nekohasekai.sagernet.Key
+import io.nekohasekai.sagernet.SagerNet
+import io.nekohasekai.sagernet.aidl.AppStats
 import io.nekohasekai.sagernet.aidl.ISagerNetService
+import io.nekohasekai.sagernet.aidl.TrafficStats
+import io.nekohasekai.sagernet.bg.BaseService
+import io.nekohasekai.sagernet.bg.SagerConnection
+import io.nekohasekai.sagernet.database.DataStore
+import io.nekohasekai.sagernet.database.GroupManager
+import io.nekohasekai.sagernet.database.ProxyGroup
+import io.nekohasekai.sagernet.database.preference.OnPreferenceDataStoreChangeListener
+import io.nekohasekai.sagernet.ftm.PluginEntry
 import io.nekohasekai.sagernet.group.GroupInterfaceAdapter
+import io.nekohasekai.sagernet.group.GroupUpdater
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
@@ -72,6 +76,7 @@ class MainActivity :
             if (it) Toast.makeText(this, R.string.vpn_permission_denied, Toast.LENGTH_LONG).show()
         }
         changeState(BaseService.State.Idle)
+        connection.disconnect(this)
         connection.connect(this, this)
         DataStore.configurationStore.registerChangeListener(this)
         GroupManager.userInterface = GroupInterfaceAdapter(this)
@@ -201,7 +206,7 @@ class MainActivity :
                             animationSpec = tween(700)
                         )
                     },
-                    content = { EmailSignUp(navController = navController) }
+                    content = { EmailSignUpScreen(navController = navController) }
                 )
                 composable(
                     Navigation.PasswordScreen.route + "/{email}",
@@ -354,6 +359,18 @@ class MainActivity :
 
     }
 
+    fun ruleCreated() {
+//        navigation.menu.findItem(R.id.nav_route).isChecked = true
+//        supportFragmentManager.beginTransaction()
+//            .replace(R.id.fragment_holder, RouteFragment())
+//            .commitAllowingStateLoss()
+        if (DataStore.serviceState.started) {
+            snackbar(getString(R.string.restart)).setAction(R.string.apply) {
+                SagerNet.reloadService()
+            }.show()
+        }
+    }
+
     private fun changeState(
         state: BaseService.State,
         msg: String? = null,
@@ -407,6 +424,12 @@ class MainActivity :
         }
     }
 
+    override fun onServiceDisconnected() = changeState(BaseService.State.Idle)
+    override fun onBinderDied() {
+        connection.disconnect(this)
+        connection.connect(this, this)
+    }
+
     fun snackbar(@StringRes resId: Int): Snackbar = snackbar("").setText(resId)
     fun snackbar(text: CharSequence): Snackbar = snackbarInternal(text).apply {
         view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text).apply {
@@ -420,6 +443,13 @@ class MainActivity :
     }
 
     internal open fun snackbarInternal(text: CharSequence): Snackbar = throw NotImplementedError()
+
+    fun urlTest(): Int {
+        if (!DataStore.serviceState.connected || connection.service == null) {
+            error("not started")
+        }
+        return connection.service!!.urlTest()
+    }
 
     private fun createDatFile() {
 
@@ -444,4 +474,54 @@ class MainActivity :
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        connection.bandwidthTimeout = 1000
+    }
+
+    override fun onStop() {
+        connection.bandwidthTimeout = 0
+        super.onStop()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        GroupManager.userInterface = null
+        DataStore.configurationStore.unregisterChangeListener(this)
+        connection.disconnect(this)
+    }
+
+    override fun trafficUpdated(profileId: Long, stats: TrafficStats, isCurrent: Boolean) {
+        if (profileId == 0L) return
+
+        if (isCurrent) {
+            println(" ^^^ ^^ the state is ${stats.txRateProxy}  ${stats.rxRateProxy}")
+//            stats.txRateProxy, stats.rxRateProxy
+        }
+
+        runOnDefaultDispatcher {
+            ProfileManager.postTrafficUpdated(profileId, stats)
+        }
+    }
+
+    override fun statsUpdated(stats: List<AppStats>) {
+        println(" ^^^ the state in activity is $stats ")
+//        val fragment = supportFragmentManager.findFragmentById(R.id.fragment_holder)
+//        if (fragment is TrafficFragment) {
+//            fragment.emitStats(stats)
+//        }
+//        (supportFragmentManager.findFragmentById(R.id.fragment_holder) as? TrafficFragment)?.emitStats(
+//            stats
+//        )
+    }
+
+    override fun missingPlugin(profileName: String, pluginName: String) {
+        val pluginEntity = PluginEntry.find(pluginName)
+
+        // unknown exe or neko plugin
+        if (pluginEntity == null) {
+            snackbar(getString(R.string.plugin_unknown, pluginName)).show()
+            return
+        }
+    }
 }

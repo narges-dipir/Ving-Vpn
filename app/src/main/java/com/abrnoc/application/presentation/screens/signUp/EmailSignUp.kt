@@ -54,7 +54,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.navOptions
 import com.abrnoc.application.R
 import com.abrnoc.application.presentation.components.ButtonGradient
 import com.abrnoc.application.presentation.navigation.Navigation
@@ -74,7 +73,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun EmailSignUp(
+fun EmailSignUpScreen(
     navController: NavController?,
     viewModel: AuthenticationViewModel = hiltViewModel()
 ) {
@@ -93,19 +92,19 @@ fun EmailSignUp(
             if (loadingVisibility) {
             } else {
                 if (state.isAlreadyRegistered) {
-                    navController?.navigate(Navigation.EmailSignInScreen.route, navOptions {
-                        anim {
-
-                        }
-                    })
+                    navController?.navigate(Navigation.EmailSignInScreen.route)
+                    viewModel.onEvent(SendCodeEvent.ClearEvent)
                 } else {
                     navController?.navigate(Navigation.PasswordScreen.route + "/${text}")
+                    viewModel.onEvent(SendCodeEvent.ClearEvent)
                 }
             }
         } else {
             loadingVisibility = false
             scope.launch {
-                snackBarHostState.showSnackbar(state.message)
+                if (state.message.isNotBlank()) {
+                    snackBarHostState.showSnackbar(state.message)
+                }
             }
         }
     }
@@ -197,7 +196,11 @@ fun EmailSignUp(
                 ),
                 modifier = Modifier.fillMaxWidth(0.9f),
                 keyboardActions = KeyboardActions(
-                    onDone = { keyboardController?.hide() }
+                    onDone = { keyboardController?.hide() },
+                    onNext = { keyboardController?.hide()
+                        loadingVisibility = true
+                        viewModel.onEvent(SendCodeEvent.EmailQuery(text.trim()))
+                             }
                 )
 
             )
@@ -264,6 +267,6 @@ fun EmailSignUp(
 @Preview
 private fun Preview() {
     AbrnocApplicationTheme {
-        EmailSignUp(null)
+        EmailSignUpScreen(null)
     }
 }

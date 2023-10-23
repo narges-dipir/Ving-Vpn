@@ -22,8 +22,8 @@ package io.nekohasekai.sagernet.widget
 import android.content.Context
 import android.util.AttributeSet
 import com.abrnoc.application.R
-import com.abrnoc.application.connection.database.ProfileManager
-import com.abrnoc.application.presentation.connection.DataStore
+import com.github.shadowsocks.plugin.ProfileManager
+import io.nekohasekai.sagernet.database.DataStore
 import com.takisoft.preferencex.SimpleMenuPreference
 
 class OutboundPreference : SimpleMenuPreference {

@@ -23,20 +23,20 @@ import android.os.Bundle
 import androidx.preference.EditTextPreference
 import androidx.preference.PreferenceCategory
 import com.abrnoc.application.R
-import com.abrnoc.application.connection.preference.EditTextPreferenceModifiers
-import com.abrnoc.application.ftm.socks.SOCKSBean
-import com.abrnoc.application.presentation.connection.DataStore
-import com.abrnoc.application.presentation.connection.Key
 import com.takisoft.preferencex.PreferenceFragmentCompat
 import com.takisoft.preferencex.SimpleMenuPreference
+import io.nekohasekai.sagernet.Key
+import io.nekohasekai.sagernet.database.DataStore
+import io.nekohasekai.sagernet.database.preference.EditTextPreferenceModifiers
+import io.nekohasekai.sagernet.ftm.socks.SOCKSBean
 
 class SocksSettingsActivity : ProfileSettingsActivity<SOCKSBean>() {
 
     lateinit var securityCategory: PreferenceCategory
 
-    override fun createEntity() = SOCKSBean()
+    override fun createEntity() =  SOCKSBean()
 
-    override fun SOCKSBean.init() {
+    override fun  SOCKSBean.init() {
         DataStore.profileName = name
         DataStore.serverAddress = serverAddress
         DataStore.serverPort = serverPort
@@ -53,7 +53,7 @@ class SocksSettingsActivity : ProfileSettingsActivity<SOCKSBean>() {
         DataStore.serverAllowInsecure = allowInsecure
     }
 
-    override fun SOCKSBean.serialize() {
+    override fun  SOCKSBean.serialize() {
         name = DataStore.profileName
         serverAddress = DataStore.serverAddress
         serverPort = DataStore.serverPort
@@ -84,7 +84,7 @@ class SocksSettingsActivity : ProfileSettingsActivity<SOCKSBean>() {
         val protocol = findPreference<SimpleMenuPreference>(Key.SERVER_PROTOCOL)!!
 
         fun updateProtocol(version: Int) {
-            password.isVisible = version == SOCKSBean.PROTOCOL_SOCKS5
+            password.isVisible = version ==  SOCKSBean.PROTOCOL_SOCKS5
         }
 
         updateProtocol(DataStore.serverProtocolVersion)

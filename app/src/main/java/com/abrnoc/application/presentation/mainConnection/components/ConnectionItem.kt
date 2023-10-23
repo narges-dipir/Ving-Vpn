@@ -34,7 +34,7 @@ import com.abrnoc.application.R
 import com.abrnoc.application.presentation.ui.theme.AbrnocApplicationTheme
 import com.abrnoc.application.presentation.ui.theme.ApplicationTheme
 import com.abrnoc.application.presentation.ui.theme.Ocean4
-import com.abrnoc.application.repository.model.DefaultConfig
+import com.abrnoc.application.presentation.viewModel.model.DefaultConfig
 
 @Composable
 fun ConnectionItem(defaultConfig: DefaultConfig? = null,

@@ -2,11 +2,10 @@ package com.abrnoc.application.connection.neko
 
 import android.content.Context
 import com.abrnoc.application.R
-import com.abrnoc.application.ftm.AbstractBean
-import com.abrnoc.application.presentation.connection.DataStore
-import com.abrnoc.application.presentation.connection.ProxyEntity.Companion.TYPE_NEKO
-import com.abrnoc.application.presentation.connection.app
-import com.abrnoc.application.presentation.connection.getColorAttr
+import io.nekohasekai.sagernet.database.DataStore
+import io.nekohasekai.sagernet.database.ProxyEntity.Companion.TYPE_NEKO
+import io.nekohasekai.sagernet.ktx.app
+import io.nekohasekai.sagernet.ktx.getColorAttr
 
 // Settings for all protocols, built-in or plugin
 object Protocols {
@@ -32,7 +31,7 @@ object Protocols {
     // Deduplication
 
     class Deduplication(
-        val bean: AbstractBean, val type: String
+        val bean: io.nekohasekai.sagernet.ftm.AbstractBean, val type: String
     ) {
 
         fun hash(): String {

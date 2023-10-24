@@ -18,6 +18,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -32,12 +33,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.abrnoc.application.R
 import com.abrnoc.application.presentation.components.VpnConnectButton
-import io.nekohasekai.sagernet.bg.BaseService
 import com.abrnoc.application.presentation.mainConnection.components.BottomArcShape
 import com.abrnoc.application.presentation.ui.theme.AbrnocApplicationTheme
 import com.abrnoc.application.presentation.ui.theme.ApplicationTheme
 import com.abrnoc.application.presentation.ui.theme.Neutral0
 import com.abrnoc.application.presentation.viewModel.model.DefaultConfig
+import io.nekohasekai.sagernet.bg.BaseService
 
 @Composable
 fun MainConnectionScreen2() {
@@ -48,12 +49,16 @@ fun MainConnectionScreen2() {
             .verticalScroll(rememberScrollState())
 
     ) {
+        val state = remember { mutableStateOf(BaseService.State.Idle)}
+        val proxy = remember {
+            mutableStateOf(DefaultConfig())
+        }
         Backdrop(
             modifier = Modifier,
             onClick = {},
             context = LocalContext.current,
-            state = null,
-            currentProxy = mutableStateOf(DefaultConfig())
+            state = state,
+            currentProxy = proxy,
         )
         val iconSize = 150.dp
         Spacer(modifier = Modifier)
@@ -71,7 +76,7 @@ fun Backdrop(
     modifier: Modifier,
     onClick: () -> Unit,
     context: Context,
-    state: BaseService.State?,
+    state: MutableState<BaseService.State>,
     currentProxy: MutableState<DefaultConfig>,
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -101,7 +106,7 @@ fun Backdrop(
                     .aspectRatio(1f),
                 contentAlignment = Alignment.Center
             ) {
-                VpnConnectButton(onClick = onClick, context = context, state = state!!)
+                VpnConnectButton(onClick = onClick, context = context, state = state)
             }
         }
         if (currentProxy.value.address!!.isNotBlank())

@@ -13,6 +13,8 @@ import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
@@ -66,6 +68,7 @@ class MainActivity :
 
     @Inject
     lateinit var checkSignedInUseCase: CheckSignedInUseCase
+    private val connectionState = mutableStateOf(BaseService.State.Idle)
 
     val connection = SagerConnection(true)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -106,10 +109,11 @@ class MainActivity :
                             if (result.data) {
                                 LoginApplication(
                                     defaultRoute = Navigation.MainConnectionScreen.route,
-                                    connect
+                                    connect,
+                                    connectionState
                                 )
                             } else {
-                                LoginApplication(Navigation.LandingScreen.route, connect)
+                                LoginApplication(Navigation.LandingScreen.route, connect, connectionState)
                             }
                         }
                     }
@@ -120,7 +124,11 @@ class MainActivity :
     }
 
     @Composable
-    fun LoginApplication(defaultRoute: String, connect: ActivityResultLauncher<Void?>) {
+    fun LoginApplication(
+        defaultRoute: String,
+        connect: ActivityResultLauncher<Void?>,
+        connectionState: MutableState<BaseService.State>
+    ) {
         val navController = rememberNavController()
 
         NavHost(
@@ -294,7 +302,7 @@ class MainActivity :
                         MainConnectionScreen(
                             navControle = navController,
                             connect = connect,
-                            state = BaseService.State.Idle
+                            state = connectionState
                         )
                     }
                 )
@@ -376,6 +384,7 @@ class MainActivity :
         msg: String? = null,
         animate: Boolean = false,
     ) {
+        connectionState.value = state
         DataStore.serviceState = state
 
         if (!DataStore.serviceState.connected) {

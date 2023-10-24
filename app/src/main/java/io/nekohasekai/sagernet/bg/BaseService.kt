@@ -67,6 +67,7 @@ import libcore.Libcore
 import libcore.TrafficListener
 import java.net.UnknownHostException
 import com.github.shadowsocks.plugin.PluginManager as ShadowsocksPluginPluginManager
+import io.nekohasekai.sagernet.aidl.AppStats as AidlAppStats
 
 class BaseService {
 
@@ -174,12 +175,12 @@ class BaseService {
             val showDirectSpeed = DataStore.showDirectSpeed
             while (true) {
                 val delayMs = bandwidthListeners.values.minOrNull()
-                println(" ^^^ the delay is $delayMs ")
                 delay(delayMs ?: return)
                 if (delayMs == 0L) return
                 val queryTime = System.currentTimeMillis()
                 val sinceLastQueryInSeconds = (queryTime - lastQueryTime).toDouble() / 1000L
                 val proxy = data?.proxy ?: continue
+                println(" ^^^^ the proxy is $proxy ")
                 lastQueryTime = queryTime
                 val (statsOut, outs) = proxy.outboundStats()
                 val stats = TrafficStats(
@@ -194,6 +195,8 @@ class BaseService {
                 if (data?.state == State.Connected && bandwidthListeners.isNotEmpty()) {
                     broadcast { item ->
                         println("^^^ i am here $item" )
+                        println("^^^ the bandwidthListeners $bandwidthListeners")
+                        println("^^^ item as binder ${item.asBinder()}")
                         if (bandwidthListeners.contains(item.asBinder())) {
                             item.trafficUpdated(proxy.profile.id, stats, true)
                             outs.forEach { (profileId, stats) ->
@@ -240,7 +243,7 @@ class BaseService {
                     } else {
                         "android"
                     }
-                    io.nekohasekai.sagernet.aidl.AppStats(
+                    AidlAppStats(
                         packageName,
                         uid,
                         it.tcpConn,
@@ -272,6 +275,7 @@ class BaseService {
             timeout: Long,
         ) {
             launch {
+                println(" ^^^^ the binder ${cb.asBinder()}")
                 if (bandwidthListeners.isEmpty() and (bandwidthListeners.put(
                         cb.asBinder(), timeout
                     ) == null)

@@ -22,6 +22,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,7 +43,6 @@ import com.abrnoc.application.presentation.ui.theme.Neutral0
 import com.abrnoc.application.presentation.ui.theme.Sky0
 import com.google.android.material.progressindicator.BaseProgressIndicator
 import io.nekohasekai.sagernet.bg.BaseService
-import io.nekohasekai.sagernet.database.DataStore
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -59,7 +59,7 @@ fun VpnConnectButton(
     thumbStrokeWidth: Float = 6f,
     onClick: () -> Unit,
     context: Context,
-    state: BaseService.State,
+    state: MutableState<BaseService.State>,
 ) {
     var connected by remember {
         mutableStateOf(false)
@@ -67,10 +67,6 @@ fun VpnConnectButton(
     var text by remember {
         mutableStateOf("Tap To Connect ")
     }
-    var titleText by remember {
-        mutableStateOf("You're not Connected")
-    }
-
     var progress by remember {
         mutableStateOf(0)
     }
@@ -78,6 +74,18 @@ fun VpnConnectButton(
     var color by remember {
         mutableStateOf(Color(0xFFA30022))
     }
+    val connectionStatus by remember {
+        state
+    }
+    var titleText by remember {
+        if (connectionStatus == BaseService.State.Connected)
+            mutableStateOf("You're Connected")
+        else
+            mutableStateOf("You're not Connected")
+    }
+
+
+    println(" the status is $connectionStatus ")
 
     val animateProgress by animateIntAsState(
         targetValue = progress,
@@ -95,6 +103,7 @@ fun VpnConnectButton(
         progress = 360
         delay(1300)
         progress = 0
+
     }
 
 //    Surface {
@@ -106,7 +115,8 @@ fun VpnConnectButton(
     ) {
         Spacer(modifier = Modifier.height(12.dp))
         Text(
-            text = titleText,
+            text = if (connectionStatus == BaseService.State.Connected)
+                "You're Connected" else "You're not Connected",
             color = Neutral0,
             fontSize = 20.sp
         )
@@ -117,18 +127,18 @@ fun VpnConnectButton(
             elevation = 3.dp,
             onClick = {
                 onClick()
-                changeState(state, DataStore.serviceState, context)
+//                changeState(state, DataStore.serviceState, context)
                 scope.launch {
                     if (!connected) {
                         connected = true
                         color = Color.DarkGray
-                        text = "Connecting.. "
+                        text = connectionStatus.toString()
                         progress = 300
                         progress = 325
                         progress = 360
-                        text = "Connected"
+//                        text = "Connected"
                         color = Color(0xFF008B48)
-                        titleText = "You are connected"
+//                        titleText = "You are connected"
                     } else {
                         text = "Tap To Connect"
                         color = Color.DarkGray
@@ -179,7 +189,7 @@ fun VpnConnectButton(
             )
 
             Text(
-                text = text,
+                text = connectionStatus.toString(),
                 color = Neutral0,
                 fontSize = 16.sp,
             )
@@ -258,28 +268,6 @@ fun DrawScope.drawCircleProgressBar(
 //    VpnConnectButton(onClick = {}, context = LocalContext.current, state = BaseService.State)
 // }
 
-fun changeState(
-    state: BaseService.State,
-    previousState: BaseService.State,
-    context: Context,
-) {
-//    when (state) {
-//        BaseService.State.Connecting -> println(" $$$$ its connecting ") // / changeState(iconConnecting, animate)
-//        BaseService.State.Connected -> println(" $$$$ its connected ") // /changeState(iconConnected, animate)
-//        BaseService.State.Stopping -> println(" $$$$ its Stopped ...  ")
-//        else -> println(" $$$$ its confused ")
-//    }
-    checked = state == BaseService.State.Connected
-    val description = context.getText(if (state.canStop) R.string.stop else R.string.connect)
-//    contentDescription = description
-//    TooltipCompat.setTooltipText(this, description)
-    val enabled = state.canStop || state == BaseService.State.Stopped
-//    isEnabled = enabled
-//    if (Build.VERSION.SDK_INT >= 24) pointerIcon = PointerIcon.getSystemIcon(
-//        context,
-//        if (enabled) PointerIcon.TYPE_HAND else PointerIcon.TYPE_WAIT
-//    )
-}
 
 private fun hideProgress() {
     delayedAnimation?.cancel()

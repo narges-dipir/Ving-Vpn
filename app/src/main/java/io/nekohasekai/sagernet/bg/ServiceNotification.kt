@@ -32,24 +32,32 @@ import android.text.format.Formatter
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.abrnoc.application.R
-import io.nekohasekai.sagernet.database.SagerDatabase
 import io.nekohasekai.sagernet.Action
-import io.nekohasekai.sagernet.database.DataStore
-import io.nekohasekai.sagernet.database.ProxyEntity
 import io.nekohasekai.sagernet.SagerNet
-import io.nekohasekai.sagernet.utils.Theme
-import com.abrnoc.application.presentation.connection.ui.SwitchActivity
 import io.nekohasekai.sagernet.aidl.AppStatsList
 import io.nekohasekai.sagernet.aidl.ISagerNetServiceCallback
 import io.nekohasekai.sagernet.aidl.TrafficStats
+import io.nekohasekai.sagernet.database.DataStore
+import io.nekohasekai.sagernet.database.ProxyEntity
+import io.nekohasekai.sagernet.database.SagerDatabase
 import io.nekohasekai.sagernet.ktx.app
 import io.nekohasekai.sagernet.ktx.getColorAttr
+//import io.nekohasekai.sagernet.ui.SwitchActivity
+import io.nekohasekai.sagernet.utils.Theme
 
+/**
+ * User can customize visibility of notification since Android 8.
+ * The default visibility:
+ *
+ * Android 8.x: always visible due to system limitations
+ * VPN:         always invisible because of VPN notification/icon
+ * Other:       always visible
+ *
+ * See also: https://github.com/aosp-mirror/platform_frameworks_base/commit/070d142993403cc2c42eca808ff3fafcee220ac4
+ */
 class ServiceNotification(
-    private val service: BaseService.Interface,
-    title: String,
-    channel: String,
-    visible: Boolean = false,
+    private val service: BaseService.Interface, title: String,
+    channel: String, visible: Boolean = false,
 ) : BroadcastReceiver() {
     companion object {
         const val notificationId = 1
@@ -57,11 +65,8 @@ class ServiceNotification(
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_IMMUTABLE else 0
 
         fun genTitle(ent: ProxyEntity): String {
-            val gn = if (DataStore.showGroupInNotification) {
-                SagerDatabase.groupDao.getById(ent.groupId)?.displayName()
-            } else {
-                null
-            }
+            val gn = if (DataStore.showGroupInNotification)
+                SagerDatabase.groupDao.getById(ent.groupId)?.displayName() else null
             return if (gn == null) ent.displayName() else "[$gn] ${ent.displayName()}"
         }
     }
@@ -147,13 +152,10 @@ class ServiceNotification(
         builder.color = service.getColorAttr(R.attr.colorMaterial300)
 
         updateCallback(SagerNet.power.isInteractive)
-        service.registerReceiver(
-            this,
-            IntentFilter().apply {
-                addAction(Intent.ACTION_SCREEN_ON)
-                addAction(Intent.ACTION_SCREEN_OFF)
-            }
-        )
+        service.registerReceiver(this, IntentFilter().apply {
+            addAction(Intent.ACTION_SCREEN_ON)
+            addAction(Intent.ACTION_SCREEN_OFF)
+        })
         show()
     }
 
@@ -162,37 +164,23 @@ class ServiceNotification(
         builder.clearActions()
 
         val closeAction = NotificationCompat.Action.Builder(
-            0,
-            service.getText(R.string.stop),
-            PendingIntent.getBroadcast(
-                service,
-                0,
-                Intent(Action.CLOSE).setPackage(service.packageName),
-                flags
+            0, service.getText(R.string.stop), PendingIntent.getBroadcast(
+                service, 0, Intent(Action.CLOSE).setPackage(service.packageName), flags
             )
         ).setShowsUserInterface(false).build()
         builder.addAction(closeAction)
 
-        val switchAction = NotificationCompat.Action.Builder(
-            0,
-            service.getString(R.string.action_switch),
-            PendingIntent.getActivity(
-                service,
-                0,
-                Intent(service, SwitchActivity::class.java),
-                flags
-            )
-        ).setShowsUserInterface(false).build()
-        builder.addAction(switchAction)
+//        val switchAction = NotificationCompat.Action.Builder(
+//            0, service.getString(R.string.action_switch), PendingIntent.getActivity(
+//                service, 0, Intent(service, SwitchActivity::class.java), flags
+//            )
+//        ).setShowsUserInterface(false).build()
+//        builder.addAction(switchAction)
 
         val resetUpstreamAction = NotificationCompat.Action.Builder(
-            0,
-            service.getString(R.string.reset_connections),
+            0, service.getString(R.string.reset_connections),
             PendingIntent.getBroadcast(
-                service,
-                0,
-                Intent(Action.RESET_UPSTREAM_CONNECTIONS),
-                flags
+                service, 0, Intent(Action.RESET_UPSTREAM_CONNECTIONS), flags
             )
         ).setShowsUserInterface(false).build()
         builder.addAction(resetUpstreamAction)
@@ -219,11 +207,10 @@ class ServiceNotification(
         if (screenOn) {
             service.data.binder.registerCallback(callback)
             service.data.binder.startListeningForBandwidth(
-                callback,
-                DataStore.speedInterval.toLong()
+                callback, DataStore.speedInterval.toLong()
             )
             callbackRegistered = true
-        } else if (callbackRegistered) { // unregister callback to save battery
+        } else if (callbackRegistered) {    // unregister callback to save battery
             service.data.binder.unregisterCallback(callback)
             callbackRegistered = false
         }

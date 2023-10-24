@@ -88,7 +88,6 @@ class SagerConnection(private var listenForDeath: Boolean = false) : ServiceConn
         }
 
         override fun missingPlugin(profileName: String, pluginName: String) {
-            println(" ^^^^ im missing plugin ")
             val callback = callback ?: return
             runOnMainDispatcher {
                 callback.missingPlugin(profileName, pluginName)
@@ -96,13 +95,11 @@ class SagerConnection(private var listenForDeath: Boolean = false) : ServiceConn
         }
 
         override fun statsUpdated(statsList: AppStatsList) {
-            println(" ^^^^ im statsUpdated ")
             val callback = callback ?: return
             callback.statsUpdated(statsList.data)
         }
 
         override fun updateWakeLockStatus(acquired: Boolean) {
-            println(" ^^^^ im  statsUpdated ")
         }
     }
 
@@ -111,6 +108,7 @@ class SagerConnection(private var listenForDeath: Boolean = false) : ServiceConn
     var bandwidthTimeout = 0L
         set(value) {
             try {
+                println(" ^^^ the value is $value ")
                 if (value > 0) service?.startListeningForBandwidth(serviceCallback, value)
                 else service?.stopListeningForBandwidth(serviceCallback)
             } catch (_: RemoteException) {

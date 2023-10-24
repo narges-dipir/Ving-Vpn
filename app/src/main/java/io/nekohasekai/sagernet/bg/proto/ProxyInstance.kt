@@ -19,10 +19,10 @@
 
 package io.nekohasekai.sagernet.bg.proto
 
-import io.nekohasekai.sagernet.database.SagerDatabase
-import io.nekohasekai.sagernet.bg.BaseService
 import com.abrnoc.application.presentation.connection.Logs
+import io.nekohasekai.sagernet.bg.BaseService
 import io.nekohasekai.sagernet.database.ProxyEntity
+import io.nekohasekai.sagernet.database.SagerDatabase
 import kotlinx.coroutines.runBlocking
 import java.io.IOException
 
@@ -61,23 +61,23 @@ class ProxyInstance(profile: ProxyEntity, val service: BaseService.Interface) : 
         return v2rayPoint.queryStats(tag, direct)
     }
 
-//    private val currentTags by lazy {
-//        mapOf(* config.outboundTagsCurrent.map {
-//            it to config.outboundTagsAll[it]
-//        }.toTypedArray())
-//    }
-//
-//    private val statsTags by lazy {
-//        mapOf(*  config.outboundTags.toMutableList().apply {
-//            removeAll(config.outboundTagsCurrent)
-//        }.map {
-//            it to config.outboundTagsAll[it]
-//        }.toTypedArray())
-//    }
-//
-//    private val interTags by lazy {
-//        config.outboundTagsAll.filterKeys { !config.outboundTags.contains(it) }
-//    }
+    private val currentTags by lazy {
+        mapOf(* config.outboundTagsCurrent.map {
+            it to config.outboundTagsAll[it]
+        }.toTypedArray())
+    }
+
+    private val statsTags by lazy {
+        mapOf(*  config.outboundTags.toMutableList().apply {
+            removeAll(config.outboundTagsCurrent)
+        }.map {
+            it to config.outboundTagsAll[it]
+        }.toTypedArray())
+    }
+
+    private val interTags by lazy {
+        config.outboundTagsAll.filterKeys { !config.outboundTags.contains(it) }
+    }
 
     class OutboundStats(
         val proxyEntity: ProxyEntity, var uplinkTotal: Long = 0L, var downlinkTotal: Long = 0L
@@ -110,55 +110,55 @@ class ProxyInstance(profile: ProxyEntity, val service: BaseService.Interface) : 
         uplinkProxy = 0L
         downlinkProxy = 0L
 
-//        val currentUpLink = currentTags.map { (tag, profile) ->
-//            queryStats(tag, "uplink").apply {
-//                profile?.also {
-//                    registerStats(
-//                        it, uplink = this
-//                    )
-//                }
-//            }
-//        }
-//        val currentDownLink = currentTags.map { (tag, profile) ->
-//            queryStats(tag, "downlink").apply {
-//                profile?.also {
-//                    registerStats(it, downlink = this)
-//                }
-//            }
-//        }
-//        uplinkProxy += currentUpLink.fold(0L) { acc, l -> acc + l }
-//        downlinkProxy += currentDownLink.fold(0L) { acc, l -> acc + l }
+        val currentUpLink = currentTags.map { (tag, profile) ->
+            queryStats(tag, "uplink").apply {
+                profile?.also {
+                    registerStats(
+                        it, uplink = this
+                    )
+                }
+            }
+        }
+        val currentDownLink = currentTags.map { (tag, profile) ->
+            queryStats(tag, "downlink").apply {
+                profile?.also {
+                    registerStats(it, downlink = this)
+                }
+            }
+        }
+        uplinkProxy += currentUpLink.fold(0L) { acc, l -> acc + l }
+        downlinkProxy += currentDownLink.fold(0L) { acc, l -> acc + l }
 
         outboundStats.uplinkTotal += uplinkProxy
         outboundStats.downlinkTotal += downlinkProxy
 
-//        if (statsTags.isNotEmpty()) {
-//            uplinkProxy += statsTags.map { (tag, profile) ->
-//                queryStats(tag, "uplink").apply {
-//                    profile?.also {
-//                        registerStats(it, uplink = this)
-//                    }
-//                }
-//            }.fold(0L) { acc, l -> acc + l }
-//            downlinkProxy += statsTags.map { (tag, profile) ->
-//                queryStats(tag, "downlink").apply {
-//                    profile?.also {
-//                        registerStats(it, downlink = this)
-//                    }
-//                }
-//            }.fold(0L) { acc, l -> acc + l }
-//        }
+        if (statsTags.isNotEmpty()) {
+            uplinkProxy += statsTags.map { (tag, profile) ->
+                queryStats(tag, "uplink").apply {
+                    profile?.also {
+                        registerStats(it, uplink = this)
+                    }
+                }
+            }.fold(0L) { acc, l -> acc + l }
+            downlinkProxy += statsTags.map { (tag, profile) ->
+                queryStats(tag, "downlink").apply {
+                    profile?.also {
+                        registerStats(it, downlink = this)
+                    }
+                }
+            }.fold(0L) { acc, l -> acc + l }
+        }
 
-//        if (interTags.isNotEmpty()) {
-//            interTags.map { (tag, profile) ->
-//                queryStats(tag, "uplink").also { registerStats(profile, uplink = it) }
-//            }
-//            interTags.map { (tag, profile) ->
-//                queryStats(tag, "downlink").also {
-//                    registerStats(profile, downlink = it)
-//                }
-//            }
-//        }
+        if (interTags.isNotEmpty()) {
+            interTags.map { (tag, profile) ->
+                queryStats(tag, "uplink").also { registerStats(profile, uplink = it) }
+            }
+            interTags.map { (tag, profile) ->
+                queryStats(tag, "downlink").also {
+                    registerStats(profile, downlink = it)
+                }
+            }
+        }
 
         return outboundStats to statsOutbounds
     }

@@ -17,6 +17,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -30,7 +31,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import io.nekohasekai.sagernet.bg.BaseService
 import com.abrnoc.application.presentation.mainConnection.components.BottomNavigationItem
 import com.abrnoc.application.presentation.mainConnection.components.ConnectionItem
 import com.abrnoc.application.presentation.mainConnection.navigation.MainNavigation
@@ -46,6 +46,7 @@ import dev.olshevski.navigation.reimagined.NavBackHandler
 import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.popAll
 import dev.olshevski.navigation.reimagined.rememberNavController
+import io.nekohasekai.sagernet.bg.BaseService
 
 
 private var checked = false
@@ -56,7 +57,7 @@ fun MainConnectionScreen(
     navControle: NavController?,
     configViewModel: DefaultConfigViewModel = hiltViewModel(),
     connect: ActivityResultLauncher<Void?>,
-    state: BaseService.State
+    state: MutableState<BaseService.State>
 ) {
     val localConnect = connect
     val configState by configViewModel.configState.collectAsState()

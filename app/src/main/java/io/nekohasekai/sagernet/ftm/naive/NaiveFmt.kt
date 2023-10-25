@@ -19,10 +19,10 @@
 
 package io.nekohasekai.sagernet.ftm.naive
 
-import com.abrnoc.application.connection.neko.isIpAddress
-import com.abrnoc.application.connection.neko.linkBuilder
-import com.abrnoc.application.connection.neko.toLink
-import com.abrnoc.application.connection.neko.wrapIPV6Host
+import io.nekohasekai.sagernet.ktx.isIpAddress
+import io.nekohasekai.sagernet.ktx.linkBuilder
+import io.nekohasekai.sagernet.ktx.toLink
+import io.nekohasekai.sagernet.ktx.wrapIPV6Host
 import com.abrnoc.application.presentation.connection.toStringPretty
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.ftm.LOCALHOST

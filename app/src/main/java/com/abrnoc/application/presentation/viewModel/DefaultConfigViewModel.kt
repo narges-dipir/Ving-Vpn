@@ -4,7 +4,7 @@ import android.net.Uri
 import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.abrnoc.application.connection.neko.Util
+import com.matsuri.nya.utils.Util
 import com.abrnoc.application.presentation.connection.SubscriptionFoundException
 import com.abrnoc.application.presentation.connection.onMainDispatcher
 import com.abrnoc.application.presentation.connection.runOnDefaultDispatcher

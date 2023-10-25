@@ -33,8 +33,8 @@ import android.os.RemoteCallbackList
 import android.os.RemoteException
 import android.widget.Toast
 import com.abrnoc.application.R
-import com.abrnoc.application.connection.neko.Protocols
-import com.abrnoc.application.connection.neko.Util
+import com.matsuri.nya.Protocols
+import com.matsuri.nya.utils.Util
 import com.abrnoc.application.presentation.connection.Logs
 import com.abrnoc.application.presentation.connection.runOnDefaultDispatcher
 import com.abrnoc.application.presentation.connection.runOnMainDispatcher

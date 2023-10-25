@@ -22,12 +22,12 @@ package io.nekohasekai.sagernet.group
 import android.net.Uri
 import com.abrnoc.application.R
 import io.nekohasekai.sagernet.database.GroupManager
-import com.abrnoc.application.connection.neko.PluginOptions
-import com.abrnoc.application.connection.neko.Protocols
+import com.github.shadowsocks.plugin.PluginOptions
+import com.matsuri.nya.Protocols
 import io.nekohasekai.sagernet.database.SagerDatabase
-import com.abrnoc.application.connection.neko.USER_AGENT
-import com.abrnoc.application.connection.neko.isTLS
-import com.abrnoc.application.connection.neko.setTLS
+import io.nekohasekai.sagernet.ktx.USER_AGENT
+import io.nekohasekai.sagernet.ktx.isTLS
+import io.nekohasekai.sagernet.ktx.setTLS
 
 import io.nekohasekai.sagernet.database.DataStore
 import com.abrnoc.application.presentation.connection.Logs

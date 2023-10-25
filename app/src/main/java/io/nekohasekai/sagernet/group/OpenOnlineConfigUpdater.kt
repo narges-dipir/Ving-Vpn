@@ -21,10 +21,10 @@ package io.nekohasekai.sagernet.group
 
 import com.abrnoc.application.R
 import io.nekohasekai.sagernet.database.GroupManager
-import com.abrnoc.application.connection.neko.PluginConfiguration
-import com.abrnoc.application.connection.neko.PluginOptions
+import com.github.shadowsocks.plugin.PluginConfiguration
+import com.github.shadowsocks.plugin.PluginOptions
 import io.nekohasekai.sagernet.database.SagerDatabase
-import com.abrnoc.application.connection.neko.USER_AGENT
+import io.nekohasekai.sagernet.ktx.USER_AGENT
 import io.nekohasekai.sagernet.ExtraType
 import com.abrnoc.application.presentation.connection.Logs
 import io.nekohasekai.sagernet.database.ProxyEntity

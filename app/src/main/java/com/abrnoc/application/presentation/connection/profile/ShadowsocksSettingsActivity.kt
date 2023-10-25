@@ -33,8 +33,8 @@ import androidx.lifecycle.whenCreated
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import com.abrnoc.application.R
-import com.abrnoc.application.connection.neko.PluginConfiguration
-import com.abrnoc.application.connection.neko.PluginOptions
+import com.github.shadowsocks.plugin.PluginConfiguration
+import com.github.shadowsocks.plugin.PluginOptions
 import com.abrnoc.application.presentation.connection.runOnDefaultDispatcher
 import com.github.shadowsocks.plugin.AlertDialogFragment
 import com.github.shadowsocks.plugin.Empty

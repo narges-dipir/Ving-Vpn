@@ -21,7 +21,7 @@ package io.nekohasekai.sagernet.group
 
 import android.net.Uri
 import com.abrnoc.application.R
-import com.abrnoc.application.connection.neko.USER_AGENT
+import io.nekohasekai.sagernet.ktx.USER_AGENT
 import com.abrnoc.application.presentation.connection.Logs
 import com.abrnoc.application.presentation.connection.applyDefaultValues
 import com.abrnoc.application.presentation.connection.filterIsInstance

@@ -1,4 +1,4 @@
-package com.abrnoc.application.presentation.connection
+package com.matsuri.nya.utils
 
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -7,9 +7,10 @@ import android.content.Intent
 import android.net.Uri
 import android.text.Editable
 import android.util.Base64
+import com.abrnoc.application.presentation.connection.Logs
 import java.net.URLDecoder
 import java.net.URLEncoder
-import java.util.*
+import java.util.UUID
 
 // Copy form v2rayNG to parse their stupid format
 
@@ -91,12 +92,12 @@ object NGUtil {
         try {
             return Base64.decode(text, Base64.NO_WRAP).toString(charset("UTF-8"))
         } catch (e: Exception) {
-            Logs.i( "Parse base64 standard failed $e")
+            Logs.i("Parse base64 standard failed $e")
         }
         try {
             return Base64.decode(text, Base64.NO_WRAP.or(Base64.URL_SAFE)).toString(charset("UTF-8"))
         } catch (e: Exception) {
-            Logs.i( "Parse base64 url safe failed $e")
+            Logs.i("Parse base64 url safe failed $e")
         }
         return null
     }

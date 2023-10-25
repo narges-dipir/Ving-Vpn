@@ -1,4 +1,4 @@
-package com.abrnoc.application.connection.neko
+package com.matsuri.nya.neko
 
 import android.annotation.SuppressLint
 import android.os.Build
@@ -7,7 +7,8 @@ import android.widget.Toast
 import androidx.preference.Preference
 import androidx.preference.PreferenceScreen
 import com.abrnoc.application.BuildConfig
-import com.abrnoc.application.presentation.connection.JavaUtil
+import com.matsuri.nya.utils.Util
+import com.matsuri.nya.utils.JavaUtil
 import com.abrnoc.application.presentation.connection.Logs
 import com.abrnoc.application.presentation.connection.runBlockingOnMainDispatcher
 import com.abrnoc.application.presentation.connection.runOnIoDispatcher

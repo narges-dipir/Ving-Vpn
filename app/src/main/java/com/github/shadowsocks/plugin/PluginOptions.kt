@@ -19,7 +19,7 @@
  *                                                                            *
  ******************************************************************************/
 
-package com.abrnoc.application.connection.neko
+package com.github.shadowsocks.plugin
 
 import java.util.*
 

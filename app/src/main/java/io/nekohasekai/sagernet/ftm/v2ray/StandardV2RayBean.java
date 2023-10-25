@@ -20,7 +20,7 @@
 package io.nekohasekai.sagernet.ftm.v2ray;
 
 import io.nekohasekai.sagernet.ftm.AbstractBean;
-import com.abrnoc.application.presentation.connection.JavaUtil;
+import com.matsuri.nya.utils.JavaUtil;
 import com.esotericsoftware.kryo.io.ByteBufferInput;
 import com.esotericsoftware.kryo.io.ByteBufferOutput;
 

@@ -1,7 +1,7 @@
 package io.nekohasekai.sagernet.ftm.socks
 
-import com.abrnoc.application.connection.neko.isTLS
-import com.abrnoc.application.connection.neko.toLink
+import io.nekohasekai.sagernet.ktx.isTLS
+import io.nekohasekai.sagernet.ktx.toLink
 import com.abrnoc.application.presentation.connection.decodeBase64UrlSafe
 import io.nekohasekai.sagernet.ktx.urlSafe
 import okhttp3.HttpUrl

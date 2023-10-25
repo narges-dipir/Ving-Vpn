@@ -1,4 +1,4 @@
-package com.abrnoc.application.connection.neko
+package com.matsuri.nya.neko
 
 import android.content.Intent
 import android.content.pm.PackageInfo
@@ -8,9 +8,9 @@ import android.net.Uri
 import android.os.Build
 import android.widget.Toast
 import com.github.shadowsocks.plugin.PluginManager.loadString
+import io.nekohasekai.sagernet.SagerNet
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.utils.PackageCache
-import io.nekohasekai.sagernet.SagerNet
 
 
 object Plugins {

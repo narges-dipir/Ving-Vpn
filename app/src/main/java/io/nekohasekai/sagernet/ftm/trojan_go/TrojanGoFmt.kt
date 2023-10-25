@@ -19,12 +19,12 @@
 
 package io.nekohasekai.sagernet.ftm.trojan_go
 
-import com.abrnoc.application.connection.neko.PluginConfiguration
-import com.abrnoc.application.connection.neko.PluginOptions
-import com.abrnoc.application.connection.neko.Protocols
-import com.abrnoc.application.connection.neko.isIpAddress
-import com.abrnoc.application.connection.neko.linkBuilder
-import com.abrnoc.application.connection.neko.toLink
+import com.github.shadowsocks.plugin.PluginConfiguration
+import com.github.shadowsocks.plugin.PluginOptions
+import com.matsuri.nya.Protocols
+import io.nekohasekai.sagernet.ktx.isIpAddress
+import io.nekohasekai.sagernet.ktx.linkBuilder
+import io.nekohasekai.sagernet.ktx.toLink
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.IPv6Mode
 import com.abrnoc.application.presentation.connection.applyDefaultValues

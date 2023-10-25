@@ -19,11 +19,11 @@
 
 package io.nekohasekai.sagernet.ftm.hysteria
 
-import com.abrnoc.application.connection.neko.isIpAddress
-import com.abrnoc.application.connection.neko.linkBuilder
-import com.abrnoc.application.connection.neko.toLink
-import com.abrnoc.application.connection.neko.wrapIPV6Host
-import com.abrnoc.application.connection.neko.wrapUri
+import io.nekohasekai.sagernet.ktx.isIpAddress
+import io.nekohasekai.sagernet.ktx.linkBuilder
+import io.nekohasekai.sagernet.ktx.toLink
+import io.nekohasekai.sagernet.ktx.wrapIPV6Host
+import io.nekohasekai.sagernet.ktx.wrapUri
 import com.abrnoc.application.presentation.connection.getBool
 import com.abrnoc.application.presentation.connection.getIntNya
 import com.abrnoc.application.presentation.connection.getStr

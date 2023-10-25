@@ -23,6 +23,7 @@
     <!-- externel -->
     <string name="action_copy">Copy</string>
     <string name="action_open">Open</string>
+    <string name="abc_shareactionprovider_share_with">Share with</string>
     <!-- group -->
     <string name="group_name">Group name</string>
     <string name="group_update">Update</string>

@@ -18,8 +18,8 @@
 
 package io.nekohasekai.sagernet.ftm.tuic
 
-import com.abrnoc.application.connection.neko.Plugins
-import com.abrnoc.application.connection.neko.isIpAddress
+import com.matsuri.nya.neko.Plugins
+import io.nekohasekai.sagernet.ktx.isIpAddress
 import com.abrnoc.application.presentation.connection.toStringPretty
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.ftm.LOCALHOST

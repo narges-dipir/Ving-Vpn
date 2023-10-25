@@ -21,7 +21,7 @@ package io.nekohasekai.sagernet.ftm.gson;
 
 import androidx.room.TypeConverter;
 
-import com.abrnoc.application.presentation.connection.JavaUtil;
+import com.matsuri.nya.utils.JavaUtil;
 
 import java.util.Collection;
 import java.util.List;

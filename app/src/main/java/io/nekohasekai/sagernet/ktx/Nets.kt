@@ -19,10 +19,9 @@
 
 @file:Suppress("SpellCheckingInspection")
 
-package com.abrnoc.application.connection.neko
+package io.nekohasekai.sagernet.ktx
 
-import io.nekohasekai.sagernet.ftm.AbstractBean
-import com.abrnoc.application.presentation.connection.NGUtil
+import com.matsuri.nya.utils.NGUtil
 import okhttp3.HttpUrl
 import java.net.InetSocketAddress
 import java.net.Socket

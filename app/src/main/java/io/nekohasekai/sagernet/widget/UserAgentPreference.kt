@@ -21,7 +21,7 @@ package io.nekohasekai.sagernet.widget
 
 import android.content.Context
 import android.util.AttributeSet
-import com.abrnoc.application.connection.neko.USER_AGENT
+import io.nekohasekai.sagernet.ktx.USER_AGENT
 import com.takisoft.preferencex.EditTextPreference
 
 class UserAgentPreference : EditTextPreference {

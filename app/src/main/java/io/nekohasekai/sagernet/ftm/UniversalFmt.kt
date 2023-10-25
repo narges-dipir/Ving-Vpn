@@ -19,7 +19,7 @@
 
 package io.nekohasekai.sagernet.ftm
 
-import com.abrnoc.application.connection.neko.Util
+import com.matsuri.nya.utils.Util
 import io.nekohasekai.sagernet.database.ProxyEntity
 
 

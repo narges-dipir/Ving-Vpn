@@ -1,4 +1,4 @@
-package com.abrnoc.application.presentation.connection;
+package com.matsuri.nya.utils;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.webkit.WebView;
 
 import com.abrnoc.application.BuildConfig;
+import com.abrnoc.application.presentation.connection.Logs;
 
 import java.io.File;
 import java.io.RandomAccessFile;

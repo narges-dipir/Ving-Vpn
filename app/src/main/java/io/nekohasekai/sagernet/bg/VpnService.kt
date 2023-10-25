@@ -17,7 +17,7 @@ import android.system.ErrnoException
 import android.system.Os
 import androidx.annotation.RequiresApi
 import com.abrnoc.application.R
-import com.abrnoc.application.connection.neko.needBypassRootUid
+import com.matsuri.nya.neko.needBypassRootUid
 import com.abrnoc.application.presentation.connection.Logs
 import com.abrnoc.application.presentation.connection.VpnRequestActivity
 import com.abrnoc.application.presentation.connection.runOnDefaultDispatcher

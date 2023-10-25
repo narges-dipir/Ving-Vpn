@@ -46,7 +46,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.abrnoc.application.BuildConfig
 import com.abrnoc.application.MainActivity
 import com.abrnoc.application.R
-import com.abrnoc.application.presentation.connection.NGUtil
+import com.matsuri.nya.utils.NGUtil
 import com.abrnoc.application.presentation.connection.profile.ThemedActivity
 import io.nekohasekai.sagernet.SagerNet
 import io.nekohasekai.sagernet.database.DataStore

@@ -17,7 +17,7 @@ class BootReceiver : BroadcastReceiver() {
         var enabled: Boolean
             get() = app.packageManager.getComponentEnabledSetting(componentName) == PackageManager.COMPONENT_ENABLED_STATE_ENABLED
             set(value) = app.packageManager.setComponentEnabledSetting(
-                io.nekohasekai.sagernet.BootReceiver.Companion.componentName,
+               componentName,
                 if (value) {
                     PackageManager.COMPONENT_ENABLED_STATE_ENABLED
                 } else {
@@ -33,7 +33,7 @@ class BootReceiver : BroadcastReceiver() {
         }
 
         if (!DataStore.persistAcrossReboot) { // sanity check
-            io.nekohasekai.sagernet.BootReceiver.Companion.enabled = false
+            enabled = false
             return
         }
 

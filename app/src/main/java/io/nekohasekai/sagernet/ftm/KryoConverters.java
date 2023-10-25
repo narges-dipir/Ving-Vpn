@@ -21,7 +21,7 @@ package io.nekohasekai.sagernet.ftm;
 
 import androidx.room.TypeConverter;
 
-import com.abrnoc.application.connection.neko.NekoBean;
+import com.matsuri.nya.neko.NekoBean;
 import io.nekohasekai.sagernet.ftm.http.HttpBean;
 import io.nekohasekai.sagernet.ftm.hysteria.HysteriaBean;
 import io.nekohasekai.sagernet.ftm.internal.ChainBean;
@@ -35,18 +35,10 @@ import io.nekohasekai.sagernet.ftm.trojan_go.TrojanGoBean;
 import io.nekohasekai.sagernet.ftm.tuic.TuicBean;
 import io.nekohasekai.sagernet.ftm.v2ray.VMessBean;
 import io.nekohasekai.sagernet.ftm.wireguard.WireGuardBean;
-import com.abrnoc.application.presentation.connection.JavaUtil;
+import com.matsuri.nya.utils.JavaUtil;
 import com.abrnoc.application.presentation.connection.KryosKt;
 import com.abrnoc.application.presentation.connection.Logs;
 import io.nekohasekai.sagernet.database.SubscriptionBean;
-import io.nekohasekai.sagernet.ftm.http.HttpBean;
-import io.nekohasekai.sagernet.ftm.hysteria.HysteriaBean;
-import io.nekohasekai.sagernet.ftm.naive.NaiveBean;
-import io.nekohasekai.sagernet.ftm.socks.SOCKSBean;
-import io.nekohasekai.sagernet.ftm.ssh.SSHBean;
-import io.nekohasekai.sagernet.ftm.trojan.TrojanBean;
-import io.nekohasekai.sagernet.ftm.tuic.TuicBean;
-import io.nekohasekai.sagernet.ftm.v2ray.VMessBean;
 
 import com.esotericsoftware.kryo.KryoException;
 import com.esotericsoftware.kryo.io.ByteBufferInput;

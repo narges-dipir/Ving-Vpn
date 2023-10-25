@@ -34,21 +34,27 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.os.Build
 import android.os.PowerManager
+import android.os.StrictMode
 import android.os.UserManager
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
+import com.abrnoc.application.BuildConfig
 import com.abrnoc.application.MainActivity
 import com.abrnoc.application.R
-import com.abrnoc.application.presentation.connection.JavaUtil
 import com.abrnoc.application.presentation.connection.Logs
+import com.abrnoc.application.presentation.connection.runOnDefaultDispatcher
+import com.matsuri.nya.utils.JavaUtil
+import com.matsuri.nya.utils.cleanWebview
 import dagger.hilt.android.HiltAndroidApp
 import go.Seq
 import io.nekohasekai.sagernet.bg.SagerConnection
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.utils.CrashHandler
+import io.nekohasekai.sagernet.utils.DefaultNetworkListener
 import io.nekohasekai.sagernet.utils.DeviceStorageApp
 import io.nekohasekai.sagernet.utils.PackageCache
+import io.nekohasekai.sagernet.utils.Theme
 import kotlinx.coroutines.DEBUG_PROPERTY_NAME
 import kotlinx.coroutines.DEBUG_PROPERTY_VALUE_ON
 import libcore.Libcore
@@ -72,25 +78,25 @@ class SagerNet :
     val externalAssets by lazy { getExternalFilesDir(null) ?: filesDir }
     val process = JavaUtil.getProcessName()
 
-//    val isMainProcess = process == BuildConfig.APPLICATION_ID
+    val isMainProcess = process == BuildConfig.APPLICATION_ID
     val isBgProcess = process.endsWith(":bg")
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate() {
         super.onCreate()
 
         System.setProperty(DEBUG_PROPERTY_NAME, DEBUG_PROPERTY_VALUE_ON)
         Thread.setDefaultUncaughtExceptionHandler(CrashHandler)
 
-//        if (isMainProcess || isBgProcess) {
-//            // fix multi process issue in Android 9+
-//            JavaUtil.handleWebviewDir(this)
-//
-//            runOnDefaultDispatcher {
-//                PackageCache.register()
-//                cleanWebview()
-//            }
-//        }
+        println(" ^^^^ isMainProcess $isMainProcess  isBgProcess $isBgProcess")
+        if (isMainProcess || isBgProcess) {
+            // fix multi process issue in Android 9+
+            JavaUtil.handleWebviewDir(this)
+
+            runOnDefaultDispatcher {
+                PackageCache.register()
+                cleanWebview()
+            }
+        }
 
         DataStore.init()
         Seq.setContext(this)
@@ -102,30 +108,30 @@ class SagerNet :
             DataStore.rulesProvider == 0
         }, cacheDir.absolutePath, process, DataStore.enableLog, DataStore.logBufSize)
 
-//        if (isMainProcess) {
-//            Theme.apply(this)
-//            Theme.applyNightTheme()
-//            runOnDefaultDispatcher {
-//                DefaultNetworkListener.start(this) {
-//                    underlyingNetwork = it
-//                }
-//            }
-//        }
+        if (isMainProcess) {
+            Theme.apply(this)
+            Theme.applyNightTheme()
+            runOnDefaultDispatcher {
+                DefaultNetworkListener.start(this) {
+                    underlyingNetwork = it
+                }
+            }
+        }
 
         if (isBgProcess) {
             Libcore.setUidDumper(this, Build.VERSION.SDK_INT < Build.VERSION_CODES.Q)
         }
 
-//        if (BuildConfig.DEBUG) {
-//            StrictMode.setVmPolicy(
-//                StrictMode.VmPolicy.Builder()
-//                    .detectLeakedSqlLiteObjects()
-//                    .detectLeakedClosableObjects()
-//                    .detectLeakedRegistrationObjects()
-//                    .penaltyLog()
-//                    .build(),
-//            )
-//        }
+        if (BuildConfig.DEBUG) {
+            StrictMode.setVmPolicy(
+                StrictMode.VmPolicy.Builder()
+                    .detectLeakedSqlLiteObjects()
+                    .detectLeakedClosableObjects()
+                    .detectLeakedRegistrationObjects()
+                    .penaltyLog()
+                    .build(),
+            )
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -183,7 +189,7 @@ class SagerNet :
 
     override fun getWorkManagerConfiguration(): WorkConfiguration {
         return WorkConfiguration.Builder()
-//            .setDefaultProcessName("${BuildConfig.APPLICATION_ID}:bg")
+            .setDefaultProcessName("${BuildConfig.APPLICATION_ID}:bg")
             .build()
     }
 

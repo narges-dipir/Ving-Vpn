@@ -1,4 +1,4 @@
-package com.abrnoc.application.connection.moe.nya
+package com.matsuri.nya
 
 import io.nekohasekai.sagernet.ftm.v2ray.V2RayConfig.DnsObject.ServerObject
 import io.nekohasekai.sagernet.database.DataStore

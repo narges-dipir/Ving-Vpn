@@ -21,11 +21,11 @@ package io.nekohasekai.sagernet.ftm
 
 import android.widget.Toast
 import com.abrnoc.application.R
-import com.abrnoc.application.connection.moe.nya.DNS.applyDNSNetworkSettings
-import com.abrnoc.application.connection.neko.PluginConfiguration
-import com.abrnoc.application.connection.neko.Plugins
-import com.abrnoc.application.connection.neko.isIpAddress
-import com.abrnoc.application.connection.neko.mkPort
+import com.matsuri.nya.DNS.applyDNSNetworkSettings
+import com.github.shadowsocks.plugin.PluginConfiguration
+import com.matsuri.nya.neko.Plugins
+import io.nekohasekai.sagernet.ktx.isIpAddress
+import io.nekohasekai.sagernet.ktx.mkPort
 import com.github.shadowsocks.plugin.PluginManager
 import io.nekohasekai.sagernet.IPv6Mode
 import io.nekohasekai.sagernet.Key

@@ -1,10 +1,11 @@
-package com.abrnoc.application.connection.neko;
+package com.matsuri.nya.neko;
 
 import androidx.annotation.NonNull;
 
 import com.abrnoc.application.R;
 import io.nekohasekai.sagernet.ftm.AbstractBean;
 import io.nekohasekai.sagernet.ftm.KryoConverters;
+
 import com.abrnoc.application.presentation.connection.Logs;
 import io.nekohasekai.sagernet.SagerNet;
 import com.esotericsoftware.kryo.io.ByteBufferInput;

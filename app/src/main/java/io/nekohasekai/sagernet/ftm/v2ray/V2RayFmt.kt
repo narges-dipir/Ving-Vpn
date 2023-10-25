@@ -19,10 +19,10 @@
 
 package io.nekohasekai.sagernet.ftm.v2ray
 
-import com.abrnoc.application.connection.neko.linkBuilder
-import com.abrnoc.application.connection.neko.toLink
+import io.nekohasekai.sagernet.ktx.linkBuilder
+import io.nekohasekai.sagernet.ktx.toLink
 import com.abrnoc.application.presentation.connection.Logs
-import com.abrnoc.application.presentation.connection.NGUtil
+import com.matsuri.nya.utils.NGUtil
 import com.abrnoc.application.presentation.connection.decodeBase64UrlSafe
 import com.abrnoc.application.presentation.connection.formatObject
 import com.abrnoc.application.presentation.connection.getIntNya

@@ -19,10 +19,10 @@
 
 package io.nekohasekai.sagernet.ktx
 
-import com.abrnoc.application.connection.neko.NekoJSInterface
-import com.abrnoc.application.connection.neko.NekoPluginManager
-import com.abrnoc.application.connection.neko.Util
-import com.abrnoc.application.connection.neko.parseShareLink
+import com.matsuri.nya.neko.NekoJSInterface
+import com.matsuri.nya.neko.NekoPluginManager
+import com.matsuri.nya.utils.Util
+import com.matsuri.nya.neko.parseShareLink
 import com.abrnoc.application.presentation.connection.Logs
 import com.google.gson.JsonParser
 import io.nekohasekai.sagernet.ftm.AbstractBean

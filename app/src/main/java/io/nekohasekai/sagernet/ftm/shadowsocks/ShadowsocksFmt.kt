@@ -19,11 +19,11 @@
 
 package io.nekohasekai.sagernet.ftm.shadowsocks
 
-import com.abrnoc.application.connection.neko.PluginConfiguration
-import com.abrnoc.application.connection.neko.PluginOptions
-import com.abrnoc.application.connection.neko.Util
-import com.abrnoc.application.connection.neko.linkBuilder
-import com.abrnoc.application.connection.neko.toLink
+import com.github.shadowsocks.plugin.PluginConfiguration
+import com.github.shadowsocks.plugin.PluginOptions
+import com.matsuri.nya.utils.Util
+import io.nekohasekai.sagernet.ktx.linkBuilder
+import io.nekohasekai.sagernet.ktx.toLink
 import com.abrnoc.application.presentation.connection.decodeBase64UrlSafe
 import com.abrnoc.application.presentation.connection.getIntNya
 import com.abrnoc.application.presentation.connection.getStr

@@ -19,9 +19,9 @@
 
 package io.nekohasekai.sagernet.ftm.wireguard
 
-import com.abrnoc.application.connection.neko.Util
-import com.abrnoc.application.connection.neko.wrapUri
-import com.abrnoc.application.presentation.connection.JavaUtil
+import com.matsuri.nya.utils.Util
+import io.nekohasekai.sagernet.ktx.wrapUri
+import com.matsuri.nya.utils.JavaUtil
 import com.wireguard.crypto.Key
 
 fun WireGuardBean.buildWireGuardUapiConf(): String {

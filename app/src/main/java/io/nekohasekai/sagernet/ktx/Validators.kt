@@ -17,19 +17,12 @@
  *                                                                            *
  ******************************************************************************/
 
-package com.abrnoc.application.connection.neko
+package io.nekohasekai.sagernet.ktx
 
 import androidx.annotation.RawRes
 import com.abrnoc.application.R
-import io.nekohasekai.sagernet.ftm.AbstractBean
-import io.nekohasekai.sagernet.ftm.http.HttpBean
-import io.nekohasekai.sagernet.ftm.hysteria.HysteriaBean
-import io.nekohasekai.sagernet.ftm.shadowsocks.ShadowsocksBean
-import io.nekohasekai.sagernet.ftm.shadowsocksr.ShadowsocksRBean
-import io.nekohasekai.sagernet.ftm.socks.SOCKSBean
-import io.nekohasekai.sagernet.ftm.trojan.TrojanBean
-import io.nekohasekai.sagernet.ftm.v2ray.StandardV2RayBean
-import io.nekohasekai.sagernet.ftm.v2ray.VMessBean
+import com.github.shadowsocks.plugin.PluginConfiguration
+import com.matsuri.nya.neko.NekoBean
 
 
 interface ValidateResult

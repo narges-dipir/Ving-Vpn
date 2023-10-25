@@ -21,11 +21,11 @@ package io.nekohasekai.sagernet.ftm;
 
 import androidx.annotation.NonNull;
 
-import com.abrnoc.application.connection.neko.NetsKt;
 import io.nekohasekai.sagernet.ExtraType;
 import io.nekohasekai.sagernet.ftm.gson.GsonsKt;
+import io.nekohasekai.sagernet.ktx.NetsKt;
 
-import com.abrnoc.application.presentation.connection.JavaUtil;
+import com.matsuri.nya.utils.JavaUtil;
 import com.abrnoc.application.presentation.connection.KryosKt;
 import com.esotericsoftware.kryo.io.ByteBufferInput;
 import com.esotericsoftware.kryo.io.ByteBufferOutput;

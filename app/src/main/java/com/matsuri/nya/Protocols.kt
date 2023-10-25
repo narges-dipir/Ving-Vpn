@@ -1,7 +1,8 @@
-package com.abrnoc.application.connection.neko
+package com.matsuri.nya
 
 import android.content.Context
 import com.abrnoc.application.R
+import com.matsuri.nya.neko.NekoPluginManager
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.database.ProxyEntity.Companion.TYPE_NEKO
 import io.nekohasekai.sagernet.ktx.app

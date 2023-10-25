@@ -145,6 +145,20 @@
         </activity>
 
         <activity
+            android:name="io.nekohasekai.sagernet.QuickToggleShortcut"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:label="@string/quick_toggle"
+            android:launchMode="singleTask"
+            android:process=":bg"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name=".presentation.connection.VpnRequestActivity"
             android:excludeFromRecents="true"
             android:taskAffinity="" />
@@ -236,7 +250,7 @@
             android:label="@string/tile_title"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
             android:process=":bg"
-            tools:targetApi="n">
+            >
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
@@ -267,6 +281,19 @@
             </intent-filter>
         </receiver>
 
+
+        <receiver
+            android:name="io.nekohasekai.sagernet.BootReceiver"
+            android:enabled="false"
+            android:exported="true"
+            android:process=":bg">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
@@ -283,7 +310,6 @@
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
             </intent-filter>
         </receiver>
-
         <service
             android:name="androidx.room.MultiInstanceInvalidationService"
             android:process=":bg" />

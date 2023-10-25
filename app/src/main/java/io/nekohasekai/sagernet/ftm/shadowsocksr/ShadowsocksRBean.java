@@ -23,13 +23,11 @@ import androidx.annotation.NonNull;
 
 import io.nekohasekai.sagernet.ftm.AbstractBean;
 import io.nekohasekai.sagernet.ftm.KryoConverters;
-import com.abrnoc.application.presentation.connection.JavaUtil;
+import com.matsuri.nya.utils.JavaUtil;
 import com.esotericsoftware.kryo.io.ByteBufferInput;
 import com.esotericsoftware.kryo.io.ByteBufferOutput;
 
 import org.jetbrains.annotations.NotNull;
-
-import io.nekohasekai.sagernet.ftm.KryoConverters;
 
 public class ShadowsocksRBean extends AbstractBean {
 

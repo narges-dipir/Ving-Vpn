@@ -1,4 +1,4 @@
-package com.abrnoc.application.connection.neko
+package com.matsuri.nya.neko
 
 import com.abrnoc.application.R
 import io.nekohasekai.sagernet.bg.BaseService

@@ -37,8 +37,6 @@ import android.util.Base64
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import com.abrnoc.application.R
-import com.abrnoc.application.connection.neko.PluginConfiguration
-import com.abrnoc.application.connection.neko.PluginOptions
 import com.abrnoc.application.presentation.connection.Logs
 import io.nekohasekai.sagernet.SagerNet
 import io.nekohasekai.sagernet.bg.BaseService

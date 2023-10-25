@@ -1,10 +1,10 @@
-package com.abrnoc.application.connection.moe.nb4a
+package com.matsuri.nya
 
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import io.nekohasekai.sagernet.database.preference.KeyValuePair
 import io.nekohasekai.sagernet.SagerNet
+import io.nekohasekai.sagernet.database.preference.KeyValuePair
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 

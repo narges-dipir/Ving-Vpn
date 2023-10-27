@@ -30,11 +30,12 @@ import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
-import com.abrnoc.application.R
 import com.abrnoc.application.presentation.ui.theme.AbrnocApplicationTheme
 import com.abrnoc.application.presentation.ui.theme.ApplicationTheme
 import com.abrnoc.application.presentation.ui.theme.Ocean4
+import com.abrnoc.application.presentation.utiles.countryFlagUrl
 import com.abrnoc.application.presentation.viewModel.model.DefaultConfig
+import io.nekohasekai.sagernet.R
 
 @Composable
 fun ConnectionItem(defaultConfig: DefaultConfig? = null,
@@ -56,8 +57,7 @@ fun ConnectionItem(defaultConfig: DefaultConfig? = null,
 //            )
             val parts = defaultConfig?.flag?.split('/')
             val countryCode = parts?.get(2)
-            val svgImageUrl =
-                "https://raw.githubusercontent.com/hampusborgos/country-flags/main/svg/$countryCode.svg"
+            val svgImageUrl = countryFlagUrl(countryCode)
             SubcomposeAsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(svgImageUrl)

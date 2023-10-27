@@ -23,8 +23,8 @@ package io.nekohasekai.sagernet.plugin
 
 import android.content.pm.ComponentInfo
 import android.content.pm.ProviderInfo
-import com.abrnoc.application.R
-import com.matsuri.nya.neko.Plugins
+import io.nekohasekai.sagernet.R
+import moe.matsuri.nya.neko.Plugins
 import com.abrnoc.application.presentation.connection.Logs
 import io.nekohasekai.sagernet.SagerNet
 import io.nekohasekai.sagernet.bg.BaseService

@@ -1,4 +1,4 @@
-package com.matsuri.nya.utils
+package moe.matsuri.nya.utils
 
 import android.content.ClipData
 import android.content.ClipboardManager

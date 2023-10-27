@@ -33,7 +33,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.abrnoc.application.R
+import io.nekohasekai.sagernet.R
 import com.abrnoc.application.presentation.bottomNavigation.BottomNavigationBar
 import com.abrnoc.application.presentation.bottomNavigation.HomeSection
 import com.abrnoc.application.presentation.components.CustomSurface

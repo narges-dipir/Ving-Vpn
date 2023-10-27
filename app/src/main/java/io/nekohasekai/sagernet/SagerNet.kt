@@ -39,17 +39,13 @@ import android.os.UserManager
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
-import com.abrnoc.application.BuildConfig
-import com.abrnoc.application.MainActivity
-import com.abrnoc.application.R
 import com.abrnoc.application.presentation.connection.Logs
 import com.abrnoc.application.presentation.connection.runOnDefaultDispatcher
-import com.matsuri.nya.utils.JavaUtil
-import com.matsuri.nya.utils.cleanWebview
 import dagger.hilt.android.HiltAndroidApp
 import go.Seq
 import io.nekohasekai.sagernet.bg.SagerConnection
 import io.nekohasekai.sagernet.database.DataStore
+import com.abrnoc.application.presentation.MainActivity
 import io.nekohasekai.sagernet.utils.CrashHandler
 import io.nekohasekai.sagernet.utils.DefaultNetworkListener
 import io.nekohasekai.sagernet.utils.DeviceStorageApp
@@ -60,6 +56,8 @@ import kotlinx.coroutines.DEBUG_PROPERTY_VALUE_ON
 import libcore.Libcore
 import libcore.UidDumper
 import libcore.UidInfo
+import moe.matsuri.nya.utils.JavaUtil
+import moe.matsuri.nya.utils.cleanWebview
 import java.net.InetSocketAddress
 import androidx.work.Configuration as WorkConfiguration
 

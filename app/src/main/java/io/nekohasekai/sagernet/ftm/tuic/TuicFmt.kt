@@ -18,7 +18,7 @@
 
 package io.nekohasekai.sagernet.ftm.tuic
 
-import com.matsuri.nya.neko.Plugins
+import moe.matsuri.nya.neko.Plugins
 import io.nekohasekai.sagernet.ktx.isIpAddress
 import com.abrnoc.application.presentation.connection.toStringPretty
 import io.nekohasekai.sagernet.database.DataStore

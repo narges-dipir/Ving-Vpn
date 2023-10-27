@@ -1,4 +1,4 @@
-package com.matsuri.nya
+package moe.matsuri.nya
 
 import androidx.room.Database
 import androidx.room.Room

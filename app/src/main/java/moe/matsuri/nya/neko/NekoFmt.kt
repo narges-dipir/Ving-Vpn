@@ -17,9 +17,9 @@
  *                                                                            *
  ******************************************************************************/
 
-package com.matsuri.nya.neko
+package moe.matsuri.nya.neko
 
-import com.matsuri.nya.Protocols
+import moe.matsuri.nya.Protocols
 import io.nekohasekai.sagernet.database.DataStore
 import com.abrnoc.application.presentation.connection.Logs
 import com.abrnoc.application.presentation.connection.getStr

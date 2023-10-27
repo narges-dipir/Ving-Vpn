@@ -23,7 +23,7 @@ package io.nekohasekai.sagernet.bg
 import android.graphics.drawable.Icon
 import android.service.quicksettings.Tile
 import androidx.annotation.RequiresApi
-import com.abrnoc.application.R
+import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.SagerNet
 import io.nekohasekai.sagernet.aidl.ISagerNetService
 import android.service.quicksettings.TileService as BaseTileService

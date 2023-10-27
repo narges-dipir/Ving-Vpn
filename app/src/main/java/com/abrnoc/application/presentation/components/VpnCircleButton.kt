@@ -1,6 +1,6 @@
 package com.abrnoc.application.presentation.components
 
-import android.content.Context
+import android.text.format.Formatter
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.core.tween
@@ -11,18 +11,21 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,18 +33,28 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.abrnoc.application.R
+import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.SubcomposeAsyncImage
+import coil.decode.SvgDecoder
+import coil.request.ImageRequest
 import com.abrnoc.application.presentation.ui.theme.Neutral0
 import com.abrnoc.application.presentation.ui.theme.Sky0
+import com.abrnoc.application.presentation.utiles.countryFlagUrl
+import com.abrnoc.application.presentation.viewModel.DefaultConfigViewModel
 import com.google.android.material.progressindicator.BaseProgressIndicator
+import io.nekohasekai.sagernet.R
+import io.nekohasekai.sagernet.aidl.TrafficStats
 import io.nekohasekai.sagernet.bg.BaseService
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -58,8 +71,9 @@ fun VpnConnectButton(
     outStrokeWidth: Float = 8f,
     thumbStrokeWidth: Float = 6f,
     onClick: () -> Unit,
-    context: Context,
     state: MutableState<BaseService.State>,
+    trafficState: MutableState<TrafficStats>,
+    configViewModel: DefaultConfigViewModel = hiltViewModel(),
 ) {
     var connected by remember {
         mutableStateOf(false)
@@ -72,10 +86,13 @@ fun VpnConnectButton(
     }
 
     var color by remember {
-        mutableStateOf(Color(0xFFA30022))
+        mutableStateOf(Color(0xFF008B48))
     }
     val connectionStatus by remember {
         state
+    }
+    val trafficStatus by remember {
+        trafficState
     }
     var titleText by remember {
         if (connectionStatus == BaseService.State.Connected)
@@ -85,10 +102,8 @@ fun VpnConnectButton(
     }
 
 
-    println(" the status is $connectionStatus ")
-
     val animateProgress by animateIntAsState(
-        targetValue = progress,
+        targetValue = getProgressForConnectionStatus(connectionStatus),
         animationSpec = tween(1200)
     )
 
@@ -96,8 +111,9 @@ fun VpnConnectButton(
         targetValue = color,
         animationSpec = tween(1500)
     )
-
+    val configValue by configViewModel.selectedProxy.collectAsState()
     val scope = rememberCoroutineScope()
+
 
     LaunchedEffect(key1 = true) {
         progress = 360
@@ -106,7 +122,6 @@ fun VpnConnectButton(
 
     }
 
-//    Surface {
     Column(
         Modifier
             .padding(10.dp)
@@ -131,17 +146,19 @@ fun VpnConnectButton(
                 scope.launch {
                     if (!connected) {
                         connected = true
-                        color = Color.DarkGray
+                        color = Color.Green
                         text = connectionStatus.toString()
-                        progress = 300
-                        progress = 325
-                        progress = 360
+                        progress = getProgressForConnectionStatus(connectionStatus)
 //                        text = "Connected"
                         color = Color(0xFF008B48)
 //                        titleText = "You are connected"
+                        if (text == BaseService.State.Connected.toString()) {
+                            delay(200)
+                            text = trafficState.value.rxRateProxy.toString()
+                        }
                     } else {
                         text = "Tap To Connect"
-                        color = Color.DarkGray
+                        color = Color.Green
                         progress = 0
                         connected = false
                     }
@@ -182,31 +199,76 @@ fun VpnConnectButton(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.wrapContentSize()
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.tap_icon),
-                contentDescription = "connection description text",
-                modifier = Modifier.padding(12.dp)
-            )
-
+            if (connectionStatus != BaseService.State.Connected) {
+                Image(
+                    painter = painterResource(id = R.drawable.tap_icon),
+                    contentDescription = "connection description text",
+                    modifier = Modifier.padding(12.dp)
+                )
+            }
             Text(
-                text = connectionStatus.toString(),
+                text = if (connectionStatus != BaseService.State.Connected) {
+                    if (connectionStatus == BaseService.State.Stopped) {
+                        "Tap To Connect"
+                    } else {
+                        connectionStatus.toString()
+                    }
+                } else {
+                    "▲ ${
+                        Formatter.formatFileSize(
+                            LocalContext.current,
+                            trafficState.value.txRateProxy
+                        )
+                    }  ▼ ${
+                        Formatter.formatFileSize(
+                            LocalContext.current,
+                            trafficState.value.rxRateProxy
+                        )
+                    }"
+                },
                 color = Neutral0,
                 fontSize = 16.sp,
             )
         }
-//            Text(
-//                text = text,
-//                style = MaterialTheme.typography.overline.copy(
-//                    fontSize = 16.sp
-//                )
-//            )
+        if (connectionStatus.connected && configValue?.flag != "") {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.wrapContentSize()
+            ) {
+                val parts = configValue?.flag?.split('/')
+                val countryCode = parts?.get(2)
+                val svgImageUrl = countryFlagUrl(countryCode)
+                SubcomposeAsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(svgImageUrl)
+                        .decoderFactory(SvgDecoder.Factory())
+                        .build(),
+                    contentDescription = "flag icon image",
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .size(24.dp)
+                        .aspectRatio(1f),
+                    contentScale = ContentScale.Crop,
+                    loading = {
+                        CircularProgressIndicator()
+                    }
+                )
+
+                Text(
+                    text = configValue?.address.toString(),
+                    color = Neutral0,
+                    fontSize = 16.sp,
+                    modifier = Modifier.padding(8.dp)
+                )
+
+            }
+        }
     }
-//    }
 }
 
 fun DrawScope.drawThumb(
     thumbStrokeWidth: Float,
-    color: Color = Color(0xFFA30022),
+    color: Color = Color(0xFF008B48),
 ) {
     drawArc(
         color = color,
@@ -268,6 +330,15 @@ fun DrawScope.drawCircleProgressBar(
 //    VpnConnectButton(onClick = {}, context = LocalContext.current, state = BaseService.State)
 // }
 
+fun getProgressForConnectionStatus(status: BaseService.State): Int {
+    return when (status) {
+        BaseService.State.Idle -> 0
+        BaseService.State.Connecting -> 180
+        BaseService.State.Connected -> 360
+        BaseService.State.Stopping -> 180
+        BaseService.State.Stopped -> 0
+    }
+}
 
 private fun hideProgress() {
     delayedAnimation?.cancel()

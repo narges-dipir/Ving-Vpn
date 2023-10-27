@@ -19,8 +19,8 @@
 
 package io.nekohasekai.sagernet.group
 
-import com.abrnoc.application.MainActivity
-import com.abrnoc.application.R
+import com.abrnoc.application.presentation.MainActivity
+import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.database.GroupManager
 import io.nekohasekai.sagernet.database.ProxyGroup
 import com.abrnoc.application.presentation.connection.onMainDispatcher

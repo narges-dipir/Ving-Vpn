@@ -22,7 +22,7 @@ package io.nekohasekai.sagernet.ktx
 import android.graphics.Rect
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.abrnoc.application.MainActivity
+import com.abrnoc.application.presentation.MainActivity
 import io.nekohasekai.sagernet.database.DataStore
 
 

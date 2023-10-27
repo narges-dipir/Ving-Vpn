@@ -1,7 +1,7 @@
 package com.abrnoc.application.presentation.connection.ui
 
 import android.os.Bundle
-import com.abrnoc.application.R
+import io.nekohasekai.sagernet.R
 import com.abrnoc.application.presentation.connection.fragment.ConfigurationFragment
 import com.abrnoc.application.presentation.connection.profile.ThemedActivity
 import com.abrnoc.application.presentation.connection.runOnMainDispatcher

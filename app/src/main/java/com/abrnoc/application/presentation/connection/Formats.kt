@@ -19,10 +19,10 @@
 
 package com.abrnoc.application.presentation.connection
 
-import com.matsuri.nya.neko.NekoJSInterface
-import com.matsuri.nya.neko.NekoPluginManager
-import com.matsuri.nya.utils.Util
-import com.matsuri.nya.neko.parseShareLink
+import moe.matsuri.nya.neko.NekoJSInterface
+import moe.matsuri.nya.neko.NekoPluginManager
+import moe.matsuri.nya.utils.Util
+import moe.matsuri.nya.neko.parseShareLink
 import com.google.gson.JsonParser
 import io.nekohasekai.sagernet.ftm.AbstractBean
 import io.nekohasekai.sagernet.ftm.Serializable

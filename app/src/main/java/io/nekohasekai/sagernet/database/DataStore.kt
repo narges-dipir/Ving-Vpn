@@ -24,7 +24,7 @@ package io.nekohasekai.sagernet.database
 import android.os.Binder
 import android.os.Build
 import androidx.preference.PreferenceDataStore
-import com.matsuri.nya.TempDatabase
+import moe.matsuri.nya.TempDatabase
 import io.nekohasekai.sagernet.CONNECTION_TEST_URL
 import io.nekohasekai.sagernet.GroupType
 import io.nekohasekai.sagernet.IPv6Mode

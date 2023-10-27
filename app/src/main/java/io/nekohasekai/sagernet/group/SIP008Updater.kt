@@ -20,7 +20,7 @@
 package io.nekohasekai.sagernet.group
 
 import android.net.Uri
-import com.abrnoc.application.R
+import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.ktx.USER_AGENT
 import com.abrnoc.application.presentation.connection.Logs
 import com.abrnoc.application.presentation.connection.applyDefaultValues

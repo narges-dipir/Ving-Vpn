@@ -1,6 +1,6 @@
-package com.matsuri.nya.neko
+package moe.matsuri.nya.neko
 
-import com.abrnoc.application.R
+import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.bg.BaseService
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.utils.PackageCache

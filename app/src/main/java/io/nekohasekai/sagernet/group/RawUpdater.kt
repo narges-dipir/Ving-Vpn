@@ -20,10 +20,10 @@
 package io.nekohasekai.sagernet.group
 
 import android.net.Uri
-import com.abrnoc.application.R
+import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.database.GroupManager
 import com.github.shadowsocks.plugin.PluginOptions
-import com.matsuri.nya.Protocols
+import moe.matsuri.nya.Protocols
 import io.nekohasekai.sagernet.database.SagerDatabase
 import io.nekohasekai.sagernet.ktx.USER_AGENT
 import io.nekohasekai.sagernet.ktx.isTLS

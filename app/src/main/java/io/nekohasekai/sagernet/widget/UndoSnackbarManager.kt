@@ -22,7 +22,7 @@
 package io.nekohasekai.sagernet.widget
 
 import android.app.ProgressDialog.show
-import com.abrnoc.application.R
+import io.nekohasekai.sagernet.R
 import com.abrnoc.application.presentation.connection.profile.ThemedActivity
 import com.google.android.material.snackbar.Snackbar
 

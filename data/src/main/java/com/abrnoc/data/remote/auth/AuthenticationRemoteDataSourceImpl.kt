@@ -1,7 +1,6 @@
 package com.abrnoc.data.remote.auth
 
 import com.abrnoc.data.api.auth.AuthApi
-import com.abrnoc.data.api.auth.model.Email
 import com.abrnoc.data.api.auth.model.SignIn
 import com.abrnoc.data.api.auth.model.SignUp
 import com.abrnoc.data.mappers.mapJwt
@@ -14,7 +13,7 @@ class AuthenticationRemoteDataSourceImpl @Inject constructor(
 
 ) : AuthenticationRemoteDataSource {
     override suspend fun sendCodeVerification(email: String): Response<Unit> {
-        return authApi.setEmailForVerification(Email(email))
+        return authApi.setEmailForVerification(email)
     }
 
     override suspend fun signUpWithVerificationCode(

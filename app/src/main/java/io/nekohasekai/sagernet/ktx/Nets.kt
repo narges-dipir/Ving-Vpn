@@ -21,7 +21,7 @@
 
 package io.nekohasekai.sagernet.ktx
 
-import com.matsuri.nya.utils.NGUtil
+import moe.matsuri.nya.utils.NGUtil
 import okhttp3.HttpUrl
 import java.net.InetSocketAddress
 import java.net.Socket

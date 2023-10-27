@@ -37,10 +37,10 @@ import androidx.preference.PreferenceDialogFragmentCompat
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.abrnoc.application.R
-import com.abrnoc.application.databinding.LayoutIconListItem2Binding
+import io.nekohasekai.sagernet.R
 import com.github.shadowsocks.plugin.Plugin
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import io.nekohasekai.sagernet.databinding.LayoutIconListItem2Binding
 
 class PluginPreferenceDialogFragment : PreferenceDialogFragmentCompat() {
     companion object {

@@ -26,7 +26,7 @@ import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.Update
-import com.abrnoc.application.R
+import io.nekohasekai.sagernet.R
 import com.github.shadowsocks.plugin.ProfileManager
 import io.nekohasekai.sagernet.ktx.app
 import kotlinx.parcelize.Parcelize

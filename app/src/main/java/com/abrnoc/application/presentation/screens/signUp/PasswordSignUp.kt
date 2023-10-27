@@ -47,7 +47,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.abrnoc.application.R
+import io.nekohasekai.sagernet.R
 import com.abrnoc.application.presentation.components.ButtonGradient
 import com.abrnoc.application.presentation.navigation.Navigation
 import com.abrnoc.application.presentation.screens.landing.AnimatedLogo

@@ -1,9 +1,10 @@
-package com.abrnoc.application
+package com.abrnoc.application.presentation
 
 import android.content.Intent
 import android.os.Bundle
 import android.os.RemoteException
 import android.util.Log
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -33,12 +34,14 @@ import com.abrnoc.application.presentation.screens.signUp.EmailSignUpScreen
 import com.abrnoc.application.presentation.screens.signUp.PasswordSignUp
 import com.abrnoc.application.presentation.screens.signUp.VerificationSignUp
 import com.abrnoc.application.presentation.ui.theme.AbrnocApplicationTheme
+import com.abrnoc.application.presentation.utiles.setupCachePolicy
 import com.abrnoc.domain.auth.CheckSignedInUseCase
 import com.abrnoc.domain.common.Result
 import com.github.shadowsocks.plugin.ProfileManager
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import io.nekohasekai.sagernet.Key
+import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.SagerNet
 import io.nekohasekai.sagernet.aidl.AppStats
 import io.nekohasekai.sagernet.aidl.ISagerNetService
@@ -69,12 +72,15 @@ class MainActivity :
     @Inject
     lateinit var checkSignedInUseCase: CheckSignedInUseCase
     private val connectionState = mutableStateOf(BaseService.State.Idle)
+    private val trafficState = mutableStateOf(TrafficStats())
 
     val connection = SagerConnection(true)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         createDatFile()
+        setupCachePolicy(this)
         WindowCompat.setDecorFitsSystemWindows(window, false)
+
         val connect = registerForActivityResult(VpnRequestActivity.StartService()) {
             if (it) Toast.makeText(this, R.string.vpn_permission_denied, Toast.LENGTH_LONG).show()
         }
@@ -110,10 +116,11 @@ class MainActivity :
                                 LoginApplication(
                                     defaultRoute = Navigation.MainConnectionScreen.route,
                                     connect,
-                                    connectionState
+                                    connectionState,
+                                    trafficState
                                 )
                             } else {
-                                LoginApplication(Navigation.LandingScreen.route, connect, connectionState)
+                                LoginApplication(Navigation.LandingScreen.route, connect, connectionState, trafficState)
                             }
                         }
                     }
@@ -127,7 +134,8 @@ class MainActivity :
     fun LoginApplication(
         defaultRoute: String,
         connect: ActivityResultLauncher<Void?>,
-        connectionState: MutableState<BaseService.State>
+        connectionState: MutableState<BaseService.State>,
+        trafficState: MutableState<TrafficStats>
     ) {
         val navController = rememberNavController()
 
@@ -302,7 +310,8 @@ class MainActivity :
                         MainConnectionScreen(
                             navControle = navController,
                             connect = connect,
-                            state = connectionState
+                            state = connectionState,
+                            trafficState = trafficState
                         )
                     }
                 )
@@ -504,7 +513,7 @@ class MainActivity :
         if (profileId == 0L) return
 
         if (isCurrent) {
-            println(" ^^^ ^^ the state is ${stats.txRateProxy}  ${stats.rxRateProxy}")
+            trafficState.value = stats
 //            stats.txRateProxy, stats.rxRateProxy
         }
 
@@ -514,7 +523,6 @@ class MainActivity :
     }
 
     override fun statsUpdated(stats: List<AppStats>) {
-        println(" ^^^ the state in activity is $stats ")
 //        val fragment = supportFragmentManager.findFragmentById(R.id.fragment_holder)
 //        if (fragment is TrafficFragment) {
 //            fragment.emitStats(stats)

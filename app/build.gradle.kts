@@ -10,7 +10,7 @@ android {
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
     }
-    namespace = "com.abrnoc.application"
+    namespace = "io.nekohasekai.sagernet"
     compileSdk = 34
 
     kapt.arguments {
@@ -105,6 +105,7 @@ dependencies {
     implementation("androidx.compose.foundation:foundation:1.4.3")
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
     implementation("androidx.compose.animation:animation:1.1.0")
+    implementation("com.google.accompanist:accompanist-swiperefresh:0.15.0")
 
     // Hilt
     implementation("com.google.dagger:hilt-android:2.44.2")

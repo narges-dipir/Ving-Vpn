@@ -42,10 +42,13 @@ import com.abrnoc.application.presentation.ui.theme.Purple40
 import com.abrnoc.application.presentation.viewModel.DefaultConfigViewModel
 import com.abrnoc.application.presentation.viewModel.event.ProxyEvent
 import com.abrnoc.application.presentation.viewModel.model.DefaultConfig
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import dev.olshevski.navigation.reimagined.NavBackHandler
 import dev.olshevski.navigation.reimagined.navigate
 import dev.olshevski.navigation.reimagined.popAll
 import dev.olshevski.navigation.reimagined.rememberNavController
+import io.nekohasekai.sagernet.aidl.TrafficStats
 import io.nekohasekai.sagernet.bg.BaseService
 
 
@@ -57,7 +60,8 @@ fun MainConnectionScreen(
     navControle: NavController?,
     configViewModel: DefaultConfigViewModel = hiltViewModel(),
     connect: ActivityResultLauncher<Void?>,
-    state: MutableState<BaseService.State>
+    state: MutableState<BaseService.State>,
+    trafficState: MutableState<TrafficStats>
 ) {
     val localConnect = connect
     val configState by configViewModel.configState.collectAsState()
@@ -66,10 +70,12 @@ fun MainConnectionScreen(
     )
     val currentProxy = remember {
         mutableStateOf(DefaultConfig())
-//
     }
     NavBackHandler(navController)
     val context = LocalContext.current
+    val swipeRefreshState = rememberSwipeRefreshState(
+        isRefreshing = configState.isRefreshing
+    )
     var loadingVisibility by remember { mutableStateOf(false) }
     var isConfigFetched by remember { mutableStateOf(false) }
     var configs by remember { mutableStateOf(listOf(DefaultConfig())) }
@@ -128,18 +134,27 @@ fun MainConnectionScreen(
 
         Column(modifier = Modifier.padding(it)) {
             Backdrop(
-                modifier = Modifier, onClick = {
+                modifier = Modifier,
+                onClick = {
                     configViewModel.onClickConnect(localConnect)
                 },
                 context = context,
                 state = state,
-                currentProxy
+                currentProxy,
+                trafficState = trafficState
             )
             Spacer(modifier = Modifier.height(16.dp))
             if (loadingVisibility) {
                 CircularProgressIndicator(color = Purple40)
             }
             if (isConfigFetched) {
+
+                SwipeRefresh(
+                    state = swipeRefreshState,
+                    onRefresh = {
+                        configViewModel.onEvent(ProxyEvent.triggerRefresh)
+                    },
+                ) {
                 LazyColumn {
                     if (!loadingVisibility) {
                         items(configs.size) { i ->
@@ -152,10 +167,14 @@ fun MainConnectionScreen(
                                         context
                                     )
                                 )
+                                //auto connect and disconnet
+                                configViewModel.onClickConnect(localConnect)
+
                             })
                         }
                     }
                 }
+            }
             }
         }
     }

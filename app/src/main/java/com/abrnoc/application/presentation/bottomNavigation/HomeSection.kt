@@ -2,7 +2,7 @@ package com.abrnoc.application.presentation.bottomNavigation
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import com.abrnoc.application.R
+import io.nekohasekai.sagernet.R
 
 enum class HomeSection(
     @StringRes val title: Int,

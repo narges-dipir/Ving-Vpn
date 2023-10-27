@@ -1,7 +1,7 @@
 package com.abrnoc.application.presentation.mainConnection.components
 
 import androidx.annotation.DrawableRes
-import com.abrnoc.application.R
+import io.nekohasekai.sagernet.R
 import com.abrnoc.application.presentation.mainConnection.navigation.MainNavigation
 
 enum class BottomNavigationItem(val route: MainNavigation, @DrawableRes val icon: Int, val title: String) {

@@ -31,7 +31,7 @@ import android.os.Build
 import android.text.format.Formatter
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.abrnoc.application.R
+import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.Action
 import io.nekohasekai.sagernet.SagerNet
 import io.nekohasekai.sagernet.aidl.AppStatsList

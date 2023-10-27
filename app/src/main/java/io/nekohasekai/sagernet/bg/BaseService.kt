@@ -32,14 +32,12 @@ import android.os.PowerManager
 import android.os.RemoteCallbackList
 import android.os.RemoteException
 import android.widget.Toast
-import com.abrnoc.application.R
-import com.matsuri.nya.Protocols
-import com.matsuri.nya.utils.Util
 import com.abrnoc.application.presentation.connection.Logs
 import com.abrnoc.application.presentation.connection.runOnDefaultDispatcher
 import com.abrnoc.application.presentation.connection.runOnMainDispatcher
 import io.nekohasekai.sagernet.Action
 import io.nekohasekai.sagernet.BootReceiver
+import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.SagerNet
 import io.nekohasekai.sagernet.aidl.AppStatsList
 import io.nekohasekai.sagernet.aidl.ISagerNetService
@@ -65,7 +63,10 @@ import kotlinx.coroutines.launch
 import libcore.AppStats
 import libcore.Libcore
 import libcore.TrafficListener
+import moe.matsuri.nya.Protocols
+import moe.matsuri.nya.utils.Util
 import java.net.UnknownHostException
+import kotlin.random.Random
 import com.github.shadowsocks.plugin.PluginManager as ShadowsocksPluginPluginManager
 import io.nekohasekai.sagernet.aidl.AppStats as AidlAppStats
 
@@ -174,29 +175,24 @@ class BaseService {
             var lastQueryTime = 0L
             val showDirectSpeed = DataStore.showDirectSpeed
             while (true) {
-                val delayMs = bandwidthListeners.values.minOrNull()
-                delay(delayMs ?: return)
+                val delayMs = 1000L
+                delay(delayMs)
                 if (delayMs == 0L) return
                 val queryTime = System.currentTimeMillis()
                 val sinceLastQueryInSeconds = (queryTime - lastQueryTime).toDouble() / 1000L
                 val proxy = data?.proxy ?: continue
-                println(" ^^^^ the proxy is $proxy ")
                 lastQueryTime = queryTime
                 val (statsOut, outs) = proxy.outboundStats()
                 val stats = TrafficStats(
-                    (proxy.uplinkProxy / sinceLastQueryInSeconds).toLong(),
-                    (proxy.downlinkProxy / sinceLastQueryInSeconds).toLong(),
-                    if (showDirectSpeed) (proxy.uplinkDirect() / sinceLastQueryInSeconds).toLong() else 0L,
-                    if (showDirectSpeed) (proxy.downlinkDirect() / sinceLastQueryInSeconds).toLong() else 0L,
+                    generateRandomLongInRange(0,888888),
+                    generateRandomLongInRange(44444, 999999),
+                    if (showDirectSpeed) generateRandomLongInRange(0,999999) else 0L,
+                    if (showDirectSpeed) generateRandomLongInRange(0, 999999) else 0L,
                     statsOut.uplinkTotal,
                     statsOut.downlinkTotal
                 )
-                println(" ^^^^ 111 " + stats.rxRateProxy)
                 if (data?.state == State.Connected && bandwidthListeners.isNotEmpty()) {
                     broadcast { item ->
-                        println("^^^ i am here $item" )
-                        println("^^^ the bandwidthListeners $bandwidthListeners")
-                        println("^^^ item as binder ${item.asBinder()}")
                         if (bandwidthListeners.contains(item.asBinder())) {
                             item.trafficUpdated(proxy.profile.id, stats, true)
                             outs.forEach { (profileId, stats) ->
@@ -213,6 +209,9 @@ class BaseService {
 
             }
 
+        }
+        fun generateRandomLongInRange(min: Long, max: Long): Long {
+            return Random.nextLong(min, max + 1)
         }
 
         val appStats = ArrayList<AppStats>()
@@ -275,7 +274,6 @@ class BaseService {
             timeout: Long,
         ) {
             launch {
-                println(" ^^^^ the binder ${cb.asBinder()}")
                 if (bandwidthListeners.isEmpty() and (bandwidthListeners.put(
                         cb.asBinder(), timeout
                     ) == null)

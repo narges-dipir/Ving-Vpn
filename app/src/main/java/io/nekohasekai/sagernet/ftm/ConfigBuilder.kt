@@ -20,15 +20,11 @@
 package io.nekohasekai.sagernet.ftm
 
 import android.widget.Toast
-import com.abrnoc.application.R
-import com.matsuri.nya.DNS.applyDNSNetworkSettings
 import com.github.shadowsocks.plugin.PluginConfiguration
-import com.matsuri.nya.neko.Plugins
-import io.nekohasekai.sagernet.ktx.isIpAddress
-import io.nekohasekai.sagernet.ktx.mkPort
 import com.github.shadowsocks.plugin.PluginManager
 import io.nekohasekai.sagernet.IPv6Mode
 import io.nekohasekai.sagernet.Key
+import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.SagerNet
 import io.nekohasekai.sagernet.bg.VpnService
 import io.nekohasekai.sagernet.database.DataStore
@@ -67,7 +63,11 @@ import io.nekohasekai.sagernet.ftm.v2ray.V2RayConfig.TrojanOutboundConfiguration
 import io.nekohasekai.sagernet.ftm.v2ray.V2RayConfig.UTLSObject
 import io.nekohasekai.sagernet.ftm.v2ray.V2RayConfig.VMessOutboundConfigurationObject
 import io.nekohasekai.sagernet.ftm.v2ray.V2RayConfig.WebSocketObject
+import io.nekohasekai.sagernet.ktx.isIpAddress
+import io.nekohasekai.sagernet.ktx.mkPort
 import io.nekohasekai.sagernet.utils.PackageCache
+import moe.matsuri.nya.DNS.applyDNSNetworkSettings
+import moe.matsuri.nya.neko.Plugins
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
 const val TAG_SOCKS = "socks"

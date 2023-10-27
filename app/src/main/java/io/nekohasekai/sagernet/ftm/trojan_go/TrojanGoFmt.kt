@@ -21,7 +21,7 @@ package io.nekohasekai.sagernet.ftm.trojan_go
 
 import com.github.shadowsocks.plugin.PluginConfiguration
 import com.github.shadowsocks.plugin.PluginOptions
-import com.matsuri.nya.Protocols
+import moe.matsuri.nya.Protocols
 import io.nekohasekai.sagernet.ktx.isIpAddress
 import io.nekohasekai.sagernet.ktx.linkBuilder
 import io.nekohasekai.sagernet.ktx.toLink

@@ -1,4 +1,4 @@
-package com.matsuri.nya
+package moe.matsuri.nya
 
 import io.nekohasekai.sagernet.ftm.v2ray.V2RayConfig.DnsObject.ServerObject
 import io.nekohasekai.sagernet.database.DataStore

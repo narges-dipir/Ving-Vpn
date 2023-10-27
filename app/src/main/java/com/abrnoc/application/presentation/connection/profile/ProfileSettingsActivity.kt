@@ -32,7 +32,7 @@ import androidx.core.view.ViewCompat
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceDataStore
-import com.abrnoc.application.R
+import io.nekohasekai.sagernet.R
 import com.abrnoc.application.presentation.connection.Logs
 import com.abrnoc.application.presentation.connection.applyDefaultValues
 import com.abrnoc.application.presentation.connection.onMainDispatcher

@@ -23,7 +23,7 @@ import android.app.Activity
 import android.content.Context
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import com.abrnoc.application.R
+import io.nekohasekai.sagernet.R
 import com.abrnoc.application.presentation.connection.Logs
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 

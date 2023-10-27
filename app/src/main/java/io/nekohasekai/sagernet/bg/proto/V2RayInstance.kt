@@ -26,10 +26,10 @@ import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import com.matsuri.nya.neko.NekoBean
-import com.matsuri.nya.neko.NekoJSInterface
-import com.matsuri.nya.neko.NekoPluginManager
-import com.matsuri.nya.neko.updateAllConfig
+import moe.matsuri.nya.neko.NekoBean
+import moe.matsuri.nya.neko.NekoJSInterface
+import moe.matsuri.nya.neko.NekoPluginManager
+import moe.matsuri.nya.neko.updateAllConfig
 import com.abrnoc.application.presentation.connection.Logs
 import com.abrnoc.application.presentation.connection.onMainDispatcher
 import com.abrnoc.application.presentation.connection.runOnMainDispatcher

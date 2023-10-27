@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -23,21 +22,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.abrnoc.application.R
 import com.abrnoc.application.presentation.components.VpnConnectButton
 import com.abrnoc.application.presentation.mainConnection.components.BottomArcShape
 import com.abrnoc.application.presentation.ui.theme.AbrnocApplicationTheme
 import com.abrnoc.application.presentation.ui.theme.ApplicationTheme
-import com.abrnoc.application.presentation.ui.theme.Neutral0
 import com.abrnoc.application.presentation.viewModel.model.DefaultConfig
+import io.nekohasekai.sagernet.R
+import io.nekohasekai.sagernet.aidl.TrafficStats
 import io.nekohasekai.sagernet.bg.BaseService
 
 @Composable
@@ -53,13 +49,14 @@ fun MainConnectionScreen2() {
         val proxy = remember {
             mutableStateOf(DefaultConfig())
         }
-        Backdrop(
-            modifier = Modifier,
-            onClick = {},
-            context = LocalContext.current,
-            state = state,
-            currentProxy = proxy,
-        )
+//        Backdrop(
+//            modifier = Modifier,
+//            onClick = {},
+//            context = LocalContext.current,
+//            state = state,
+//            currentProxy = proxy,
+//            trafficState = trafficState,
+//        )
         val iconSize = 150.dp
         Spacer(modifier = Modifier)
 //        LazyColumn(modifier = Modifier.constrainAs(locations) {
@@ -78,6 +75,7 @@ fun Backdrop(
     context: Context,
     state: MutableState<BaseService.State>,
     currentProxy: MutableState<DefaultConfig>,
+    trafficState: MutableState<TrafficStats>,
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
 
@@ -106,16 +104,10 @@ fun Backdrop(
                     .aspectRatio(1f),
                 contentAlignment = Alignment.Center
             ) {
-                VpnConnectButton(onClick = onClick, context = context, state = state)
+                VpnConnectButton(onClick = onClick, state = state, trafficState = trafficState)
             }
         }
-        if (currentProxy.value.address!!.isNotBlank())
-            Text(
-                text = currentProxy.value.address.toString(),
-                color = Neutral0,
-                fontSize = 16.sp,
-                textAlign = TextAlign.Center
-            )
+
     }
 }
 

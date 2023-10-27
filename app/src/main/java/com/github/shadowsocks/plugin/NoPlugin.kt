@@ -21,7 +21,7 @@
 
 package com.github.shadowsocks.plugin
 
-import com.abrnoc.application.R
+import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.SagerNet
 
 

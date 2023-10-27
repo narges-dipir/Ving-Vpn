@@ -20,9 +20,9 @@
 package io.nekohasekai.sagernet.ktx
 
 import androidx.annotation.RawRes
-import com.abrnoc.application.R
+import io.nekohasekai.sagernet.R
 import com.github.shadowsocks.plugin.PluginConfiguration
-import com.matsuri.nya.neko.NekoBean
+import moe.matsuri.nya.neko.NekoBean
 
 
 interface ValidateResult

@@ -21,7 +21,7 @@ package io.nekohasekai.sagernet.ftm.shadowsocks
 
 import com.github.shadowsocks.plugin.PluginConfiguration
 import com.github.shadowsocks.plugin.PluginOptions
-import com.matsuri.nya.utils.Util
+import moe.matsuri.nya.utils.Util
 import io.nekohasekai.sagernet.ktx.linkBuilder
 import io.nekohasekai.sagernet.ktx.toLink
 import com.abrnoc.application.presentation.connection.decodeBase64UrlSafe

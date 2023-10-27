@@ -19,7 +19,7 @@
 
 package io.nekohasekai.sagernet.ftm
 
-import com.abrnoc.application.R
+import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.SagerNet
 
 

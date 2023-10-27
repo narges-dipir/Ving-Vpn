@@ -1,8 +1,8 @@
-package com.matsuri.nya.neko;
+package moe.matsuri.nya.neko;
 
 import androidx.annotation.NonNull;
 
-import com.abrnoc.application.R;
+import io.nekohasekai.sagernet.R;
 import io.nekohasekai.sagernet.ftm.AbstractBean;
 import io.nekohasekai.sagernet.ftm.KryoConverters;
 

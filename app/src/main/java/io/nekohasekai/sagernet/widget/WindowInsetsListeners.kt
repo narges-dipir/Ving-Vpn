@@ -29,7 +29,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
-import com.abrnoc.application.R
+import io.nekohasekai.sagernet.R
 
 object ListHolderListener : OnApplyWindowInsetsListener {
     override fun onApplyWindowInsets(view: View, insets: WindowInsetsCompat): WindowInsetsCompat {

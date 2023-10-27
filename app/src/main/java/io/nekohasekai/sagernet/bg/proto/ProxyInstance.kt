@@ -99,10 +99,10 @@ class ProxyInstance(profile: ProxyEntity, val service: BaseService.Interface) : 
         }
     }
 
-    var uplinkProxy = 0L
-    var downlinkProxy = 0L
-    var uplinkTotalDirect = 0L
-    var downlinkTotalDirect = 0L
+    var uplinkProxy = 3L
+    var downlinkProxy = 4L
+    var uplinkTotalDirect = 5L
+    var downlinkTotalDirect = 6L
 
     private val outboundStats = OutboundStats(profile)
     suspend fun outboundStats(): Pair<OutboundStats, HashMap<Long, OutboundStats>> {

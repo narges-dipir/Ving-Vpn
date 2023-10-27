@@ -21,7 +21,7 @@ package com.abrnoc.application.presentation.connection.profile
 
 import android.os.Bundle
 import androidx.preference.EditTextPreference
-import com.abrnoc.application.R
+import io.nekohasekai.sagernet.R
 import com.takisoft.preferencex.PreferenceFragmentCompat
 import com.takisoft.preferencex.SimpleMenuPreference
 import io.nekohasekai.sagernet.Key

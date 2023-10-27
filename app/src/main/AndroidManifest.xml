@@ -14,6 +14,7 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
@@ -75,9 +76,10 @@
             android:resource="@xml/shortcuts" />
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.abrnoc.application.presentation.MainActivity"
             android:configChanges="uiMode"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -159,56 +161,56 @@
         </activity>
 
         <activity
-            android:name=".presentation.connection.VpnRequestActivity"
+            android:name="com.abrnoc.application.presentation.connection.VpnRequestActivity"
             android:excludeFromRecents="true"
             android:taskAffinity="" />
         <activity
-            android:name=".presentation.connection.profile.SocksSettingsActivity"
+            android:name="com.abrnoc.application.presentation.connection.profile.SocksSettingsActivity"
             android:configChanges="uiMode" />
         <activity
-            android:name=".presentation.connection.profile.HttpSettingsActivity"
+            android:name="com.abrnoc.application.presentation.connection.profile.HttpSettingsActivity"
             android:configChanges="uiMode" />
         <activity
-            android:name=".presentation.connection.profile.ShadowsocksSettingsActivity"
+            android:name="com.abrnoc.application.presentation.connection.profile.ShadowsocksSettingsActivity"
             android:configChanges="uiMode" />
         <activity
-            android:name=".presentation.connection.profile.ShadowsocksRSettingsActivity"
+            android:name="com.abrnoc.application.presentation.connection.profile.ShadowsocksRSettingsActivity"
             android:configChanges="uiMode" />
         <activity
-            android:name=".presentation.connection.profile.VMessSettingsActivity"
+            android:name="com.abrnoc.application.presentation.connection.profile.VMessSettingsActivity"
             android:configChanges="uiMode" />
         <activity
-            android:name=".presentation.connection.profile.TrojanSettingsActivity"
+            android:name="com.abrnoc.application.presentation.connection.profile.TrojanSettingsActivity"
             android:configChanges="uiMode" />
         <activity
-            android:name=".presentation.connection.profile.TrojanGoSettingsActivity"
+            android:name="com.abrnoc.application.presentation.connection.profile.TrojanGoSettingsActivity"
             android:configChanges="uiMode" />
         <activity
-            android:name=".presentation.connection.profile.NaiveSettingsActivity"
+            android:name="com.abrnoc.application.presentation.connection.profile.NaiveSettingsActivity"
             android:configChanges="uiMode" />
         <activity
-            android:name=".presentation.connection.profile.HysteriaSettingsActivity"
+            android:name="com.abrnoc.application.presentation.connection.profile.HysteriaSettingsActivity"
             android:configChanges="uiMode" />
         <activity
-            android:name=".presentation.connection.profile.SSHSettingsActivity"
+            android:name="com.abrnoc.application.presentation.connection.profile.SSHSettingsActivity"
             android:configChanges="uiMode" />
         <activity
-            android:name=".presentation.connection.profile.WireGuardSettingsActivity"
+            android:name="com.abrnoc.application.presentation.connection.profile.WireGuardSettingsActivity"
             android:configChanges="uiMode" />
         <activity
-            android:name=".presentation.connection.profile.TuicSettingsActivity"
+            android:name="com.abrnoc.application.presentation.connection.profile.TuicSettingsActivity"
             android:configChanges="uiMode" />
         <activity
-            android:name=".presentation.connection.profile.ChainSettingsActivity"
+            android:name="com.abrnoc.application.presentation.connection.profile.ChainSettingsActivity"
             android:configChanges="uiMode" />
-        <activity android:name=".presentation.connection.ui.SwitchActivity"
+        <activity android:name="com.abrnoc.application.presentation.connection.ui.SwitchActivity"
             android:configChanges="uiMode"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
             android:theme="@style/Theme.SagerNet.Dialog"
             />
         <activity
-            android:name=".presentation.uiActivity.AssetsActivity"
+            android:name="com.abrnoc.application.presentation.uiActivity.AssetsActivity"
             android:configChanges="uiMode" />
 <!--        <activity-->
 <!--            android:name="moe.matsuri.nya.neko.NekoSettingActivity"-->

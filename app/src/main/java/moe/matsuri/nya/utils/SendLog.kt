@@ -1,11 +1,11 @@
-package com.matsuri.nya.utils
+package moe.matsuri.nya.utils
 
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.core.content.FileProvider
-import com.abrnoc.application.BuildConfig
-import com.abrnoc.application.R
+import io.nekohasekai.sagernet.BuildConfig
+import io.nekohasekai.sagernet.R
 import com.abrnoc.application.presentation.connection.Logs
 import com.abrnoc.application.presentation.connection.use
 import io.nekohasekai.sagernet.ktx.app

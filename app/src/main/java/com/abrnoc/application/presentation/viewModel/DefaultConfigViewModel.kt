@@ -4,7 +4,6 @@ import android.net.Uri
 import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.matsuri.nya.utils.Util
 import com.abrnoc.application.presentation.connection.SubscriptionFoundException
 import com.abrnoc.application.presentation.connection.onMainDispatcher
 import com.abrnoc.application.presentation.connection.runOnDefaultDispatcher
@@ -36,6 +35,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import moe.matsuri.nya.utils.Util
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -45,20 +45,19 @@ class DefaultConfigViewModel @Inject constructor(
 ) : ViewModel() {
     private var _configState = MutableStateFlow(DefaultConfigState())
     val configState: StateFlow<DefaultConfigState> = _configState
+
+    private var _selectedProxy = MutableStateFlow(DefaultConfig())
+    val selectedProxy: StateFlow<DefaultConfig?> = _selectedProxy
+
     val connection = SagerConnection(true)
 
-    //    lateinit var proxyGroup: ProxyGroup
     var selected = false
     var configurationIdList: MutableList<Long> = mutableListOf()
     val configurationList = HashMap<Long, ProxyEntity>()
     val select: Boolean = false
-    val selectedItem: ProxyEntity? = null
-    var groupList: ArrayList<ProxyGroup> = ArrayList()
 
     init {
         getAllConfigs()
-//        reloadProfiles()
-//        DataStore.profileCacheStore.registerChangeListener(this)
     }
 
     fun onEvent(event: ProxyEvent) {
@@ -68,6 +67,7 @@ class DefaultConfigViewModel @Inject constructor(
                 val profileAccess = Mutex()
                 val selectedProxy = event.defaultConfig.id ?: DataStore.selectedProxy
                 val proxyEntity by lazy { SagerDatabase.proxyDao.getById(selectedProxy) }
+                _selectedProxy.value = event.defaultConfig
                 var update: Boolean
                 var lastSelected: Long
                 // (ConfigurationFragment.SelectCallback).returnProfile(selectedItem?.id ?: 1L)
@@ -83,21 +83,34 @@ class DefaultConfigViewModel @Inject constructor(
                     }
                 }
             }
+
+            ProxyEvent.triggerRefresh -> {
+                _configState.value = DefaultConfigState(isLoading = true, isRefreshing = true)
+                getAllConfigs()
+            }
         }
     }
 
     private fun getAllConfigs() {
         viewModelScope.launch {
+            var tryTimes = 0
             getDefaultConfigUseCase(Unit).collect { result ->
                 when (result) {
                     is Result.Error -> {
                         _configState.value = DefaultConfigState(
                             error = result.exception.message ?: "An unexpected error occured",
+                            isRefreshing = false
                         )
+
+                        if (tryTimes < 5) {
+                            getAllConfigs()
+                            tryTimes++
+                        }
                     }
 
                     Result.Loading -> {
-                        _configState.value = DefaultConfigState(isLoading = true)
+                        _configState.value =
+                            DefaultConfigState(isLoading = true, isRefreshing = false)
                     }
 
                     is Result.Success -> {
@@ -105,6 +118,10 @@ class DefaultConfigViewModel @Inject constructor(
                         SagerDatabase.proxyDao.reset()
                         SagerDatabase.proxyDao.deleteAllProxyEntities()
                         SagerDatabase.proxyDao.clearPrimaryKey()
+                        if (result.data.isEmpty() && tryTimes < 5) {
+                            getAllConfigs()
+                            tryTimes++
+                        }
                         result.data.forEach { config ->
                             try {
                                 var url = ""
@@ -150,8 +167,7 @@ class DefaultConfigViewModel @Inject constructor(
                                     it.type,
                                     it.url
                                 )
-                            }
-                        )
+                            }, isRefreshing = false)
                     }
                 }
             }
@@ -264,7 +280,6 @@ class DefaultConfigViewModel @Inject constructor(
             else -> {}
         }
     }
-
 
 
     fun onClickConnect(connect: ActivityResultLauncher<Void?>) {

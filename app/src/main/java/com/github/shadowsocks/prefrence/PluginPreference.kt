@@ -25,7 +25,7 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import androidx.preference.ListPreference
-import com.abrnoc.application.R
+import io.nekohasekai.sagernet.R
 import com.github.shadowsocks.plugin.PluginList
 import com.github.shadowsocks.plugin.PluginManager
 

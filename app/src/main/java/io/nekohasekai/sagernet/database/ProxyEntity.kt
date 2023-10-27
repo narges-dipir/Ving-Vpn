@@ -30,12 +30,12 @@ import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.Update
-import com.abrnoc.application.R
-import com.matsuri.nya.neko.NekoBean
-import com.matsuri.nya.Protocols
-import com.matsuri.nya.neko.haveStandardLink
+import io.nekohasekai.sagernet.R
+import moe.matsuri.nya.neko.NekoBean
+import moe.matsuri.nya.Protocols
+import moe.matsuri.nya.neko.haveStandardLink
 import io.nekohasekai.sagernet.ktx.isTLS
-import com.matsuri.nya.neko.shareLink
+import moe.matsuri.nya.neko.shareLink
 import com.abrnoc.application.presentation.connection.profile.ChainSettingsActivity
 import com.abrnoc.application.presentation.connection.profile.HttpSettingsActivity
 import com.abrnoc.application.presentation.connection.profile.HysteriaSettingsActivity

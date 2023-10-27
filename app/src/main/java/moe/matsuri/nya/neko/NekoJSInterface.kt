@@ -1,4 +1,4 @@
-package com.matsuri.nya.neko
+package moe.matsuri.nya.neko
 
 import android.annotation.SuppressLint
 import android.os.Build
@@ -6,9 +6,9 @@ import android.webkit.*
 import android.widget.Toast
 import androidx.preference.Preference
 import androidx.preference.PreferenceScreen
-import com.abrnoc.application.BuildConfig
-import com.matsuri.nya.utils.Util
-import com.matsuri.nya.utils.JavaUtil
+import io.nekohasekai.sagernet.BuildConfig
+import moe.matsuri.nya.utils.Util
+import moe.matsuri.nya.utils.JavaUtil
 import com.abrnoc.application.presentation.connection.Logs
 import com.abrnoc.application.presentation.connection.runBlockingOnMainDispatcher
 import com.abrnoc.application.presentation.connection.runOnIoDispatcher

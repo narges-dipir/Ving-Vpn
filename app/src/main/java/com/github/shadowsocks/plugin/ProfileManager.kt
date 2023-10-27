@@ -20,9 +20,9 @@
 package com.github.shadowsocks.plugin
 
 import android.database.sqlite.SQLiteCantOpenDatabaseException
-import com.abrnoc.application.R
 import com.abrnoc.application.presentation.connection.Logs
 import com.abrnoc.application.presentation.connection.applyDefaultValues
+import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.aidl.TrafficStats
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.database.GroupManager

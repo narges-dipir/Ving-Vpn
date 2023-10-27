@@ -53,11 +53,19 @@ class AuthenticationViewModel @Inject constructor(
 
                 is Result.Success -> {
                     when (result.data) {
-                        400 -> {
+                        409 -> {
                             _state.value = SendCodeState(
                                 isLoading = false,
                                 isValid = true,
                                 isAlreadyRegistered = true,
+                                message = "server error, check your network"
+                            )
+                        }
+                        400 -> {
+                            _state.value = SendCodeState(
+                                isLoading = false,
+                                isValid = true,
+                                isAlreadyRegistered = false,
                                 message = "server error, check your network"
                             )
                         }

@@ -1,4 +1,4 @@
-package com.matsuri.nya.utils;
+package moe.matsuri.nya.utils;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -8,7 +8,7 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.webkit.WebView;
 
-import com.abrnoc.application.BuildConfig;
+import io.nekohasekai.sagernet.BuildConfig;
 import com.abrnoc.application.presentation.connection.Logs;
 
 import java.io.File;

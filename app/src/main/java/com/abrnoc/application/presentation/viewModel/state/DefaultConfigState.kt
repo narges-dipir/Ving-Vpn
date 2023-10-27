@@ -6,4 +6,5 @@ data class DefaultConfigState(
     val isLoading: Boolean = false,
     val configs: List<DefaultConfig>? = emptyList(),
     val error: String = "",
+    val isRefreshing: Boolean = false,
 )

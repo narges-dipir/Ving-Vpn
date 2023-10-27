@@ -38,24 +38,24 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.abrnoc.application.R
-import com.matsuri.nya.Protocols.getProtocolColor
-import io.nekohasekai.sagernet.ktx.ResultDeprecated
-import io.nekohasekai.sagernet.ktx.ResultInsecure
-import io.nekohasekai.sagernet.ktx.ResultInsecureText
-import io.nekohasekai.sagernet.ktx.ResultLocal
-import io.nekohasekai.sagernet.ktx.isInsecure
-import com.abrnoc.application.databinding.LayoutAddEntityBinding
-import com.abrnoc.application.databinding.LayoutProfileBinding
 import com.abrnoc.application.presentation.connection.onMainDispatcher
 import com.abrnoc.application.presentation.connection.runOnDefaultDispatcher
 import com.github.shadowsocks.plugin.ProfileManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.takisoft.preferencex.PreferenceFragmentCompat
+import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.database.ProxyEntity
+import io.nekohasekai.sagernet.databinding.LayoutAddEntityBinding
+import io.nekohasekai.sagernet.databinding.LayoutProfileBinding
 import io.nekohasekai.sagernet.ftm.internal.ChainBean
 import io.nekohasekai.sagernet.ktx.FixedLinearLayoutManager
+import io.nekohasekai.sagernet.ktx.ResultDeprecated
+import io.nekohasekai.sagernet.ktx.ResultInsecure
+import io.nekohasekai.sagernet.ktx.ResultInsecureText
+import io.nekohasekai.sagernet.ktx.ResultLocal
+import io.nekohasekai.sagernet.ktx.isInsecure
+import moe.matsuri.nya.Protocols.getProtocolColor
 
 class ChainSettingsActivity : ProfileSettingsActivity<ChainBean>(R.layout.layout_chain_settings) {
 

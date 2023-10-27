@@ -19,7 +19,7 @@
 
 package io.nekohasekai.sagernet.group
 
-import com.abrnoc.application.R
+import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.ktx.isIpAddress
 import io.nekohasekai.sagernet.ktx.isTLS
 import com.abrnoc.application.presentation.connection.Logs

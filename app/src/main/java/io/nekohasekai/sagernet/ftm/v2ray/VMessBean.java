@@ -23,7 +23,7 @@ import androidx.annotation.NonNull;
 
 import io.nekohasekai.sagernet.ftm.AbstractBean;
 import io.nekohasekai.sagernet.ftm.KryoConverters;
-import com.matsuri.nya.utils.JavaUtil;
+import moe.matsuri.nya.utils.JavaUtil;
 
 import org.jetbrains.annotations.NotNull;
 

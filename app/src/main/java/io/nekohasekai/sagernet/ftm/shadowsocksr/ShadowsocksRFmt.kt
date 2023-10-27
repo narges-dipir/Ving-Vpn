@@ -19,7 +19,7 @@
 
 package io.nekohasekai.sagernet.ftm.shadowsocksr
 
-import com.matsuri.nya.utils.Util
+import moe.matsuri.nya.utils.Util
 import com.abrnoc.application.presentation.connection.applyDefaultValues
 import com.abrnoc.application.presentation.connection.decodeBase64UrlSafe
 import okhttp3.HttpUrl.Companion.toHttpUrl

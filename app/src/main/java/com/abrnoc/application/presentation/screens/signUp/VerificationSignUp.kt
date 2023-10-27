@@ -173,10 +173,17 @@ fun VerificationSignUp(
 //                        context.startActivity(intent)
                         navController?.navigate(Navigation.MainConnectionScreen.route)
                     } else {
-                        longToast(
-                            context,
-                            verificationCodeViewModel.state.error ?: "400 Bad Request"
-                        )
+                        if (verificationCodeViewModel.state.error.isNotBlank()) {
+                            longToast(
+                                context,
+                                verificationCodeViewModel.state.error
+                            )
+                        } else {
+                            longToast(
+                                context,
+                                "Oops! Try again.."
+                            )
+                        }
                     }
                 }
 

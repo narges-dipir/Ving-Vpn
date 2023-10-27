@@ -1,4 +1,4 @@
-package com.matsuri.nya.neko
+package moe.matsuri.nya.neko
 
 import android.content.Intent
 import android.content.pm.PackageInfo

@@ -21,7 +21,7 @@ package io.nekohasekai.sagernet.utils
 import android.annotation.SuppressLint
 import android.os.Build
 import android.util.Log
-import com.abrnoc.application.BuildConfig
+import io.nekohasekai.sagernet.BuildConfig
 import com.abrnoc.application.presentation.connection.Logs
 import io.nekohasekai.sagernet.database.preference.PublicDatabase
 import java.io.BufferedReader

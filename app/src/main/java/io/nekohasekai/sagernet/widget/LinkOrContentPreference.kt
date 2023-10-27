@@ -23,7 +23,7 @@ import android.content.Context
 import android.net.Uri
 import android.util.AttributeSet
 import androidx.core.widget.addTextChangedListener
-import com.abrnoc.application.R
+import io.nekohasekai.sagernet.R
 import com.google.android.material.textfield.TextInputLayout
 import com.takisoft.preferencex.EditTextPreference
 import io.nekohasekai.sagernet.ktx.app

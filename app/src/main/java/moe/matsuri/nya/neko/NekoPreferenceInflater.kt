@@ -1,10 +1,10 @@
-package com.matsuri.nya.neko
+package moe.matsuri.nya.neko
 
 import androidx.preference.Preference
 import androidx.preference.PreferenceScreen
 import androidx.preference.SwitchPreference
 import com.abrnoc.application.presentation.connection.forEach
-import com.matsuri.nya.utils.getDrawableByName
+import moe.matsuri.nya.utils.getDrawableByName
 import com.abrnoc.application.presentation.connection.getStr
 import com.takisoft.preferencex.EditTextPreference
 import com.takisoft.preferencex.PreferenceCategory

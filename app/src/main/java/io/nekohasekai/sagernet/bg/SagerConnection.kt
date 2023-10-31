@@ -70,7 +70,6 @@ class SagerConnection(private var listenForDeath: Boolean = false) : ServiceConn
     private var callback: Callback? = null
     private val serviceCallback = object : ISagerNetServiceCallback.Stub() {
         override fun stateChanged(state: Int, profileName: String?, msg: String?) {
-            println(" ^^^^^ im changed ")
             val s = BaseService.State.values()[state]
             DataStore.serviceState = s
             val callback = callback ?: return
@@ -80,7 +79,6 @@ class SagerConnection(private var listenForDeath: Boolean = false) : ServiceConn
         }
 
         override fun trafficUpdated(profileId: Long, stats: TrafficStats, isCurrent: Boolean) {
-            println(" ^^^^^ im updated ")
             val callback = callback ?: return
             runOnMainDispatcher {
                 callback.trafficUpdated(profileId, stats, isCurrent)
@@ -108,7 +106,6 @@ class SagerConnection(private var listenForDeath: Boolean = false) : ServiceConn
     var bandwidthTimeout = 0L
         set(value) {
             try {
-                println(" ^^^ the value is $value ")
                 if (value > 0) service?.startListeningForBandwidth(serviceCallback, value)
                 else service?.stopListeningForBandwidth(serviceCallback)
             } catch (_: RemoteException) {

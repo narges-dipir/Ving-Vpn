@@ -51,6 +51,8 @@ import coil.request.ImageRequest
 import com.abrnoc.application.presentation.ui.theme.Neutral0
 import com.abrnoc.application.presentation.ui.theme.Sky0
 import com.abrnoc.application.presentation.utiles.countryFlagUrl
+import com.abrnoc.application.presentation.utiles.isInternetConnected
+import com.abrnoc.application.presentation.utiles.longToast
 import com.abrnoc.application.presentation.viewModel.DefaultConfigViewModel
 import com.google.android.material.progressindicator.BaseProgressIndicator
 import io.nekohasekai.sagernet.R
@@ -91,15 +93,8 @@ fun VpnConnectButton(
     val connectionStatus by remember {
         state
     }
-    val trafficStatus by remember {
-        trafficState
-    }
-    var titleText by remember {
-        if (connectionStatus == BaseService.State.Connected)
-            mutableStateOf("You're Connected")
-        else
-            mutableStateOf("You're not Connected")
-    }
+
+    val context = LocalContext.current
 
 
     val animateProgress by animateIntAsState(
@@ -141,27 +136,36 @@ fun VpnConnectButton(
             color = Color.White,
             elevation = 3.dp,
             onClick = {
-                onClick()
+
+                val isInternetConnected = isInternetConnected(context)
+                if (isInternetConnected) {
+                    onClick()
 //                changeState(state, DataStore.serviceState, context)
-                scope.launch {
-                    if (!connected) {
-                        connected = true
-                        color = Color.Green
-                        text = connectionStatus.toString()
-                        progress = getProgressForConnectionStatus(connectionStatus)
+                    scope.launch {
+                        if (!connected) {
+                            connected = true
+                            color = Color(0xFF008B48)
+                            text = connectionStatus.toString()
+                            progress = getProgressForConnectionStatus(connectionStatus)
 //                        text = "Connected"
-                        color = Color(0xFF008B48)
+                            color = Color(0xFF008B48)
 //                        titleText = "You are connected"
-                        if (text == BaseService.State.Connected.toString()) {
-                            delay(200)
-                            text = trafficState.value.rxRateProxy.toString()
+                            if (text == BaseService.State.Connected.toString()) {
+                                delay(200)
+                                text = trafficState.value.rxRateProxy.toString()
+                            }
+                        } else {
+                            text = "Tap To Connect"
+                            color = Color(0xFF008B48)
+                            progress = 0
+                            connected = false
                         }
-                    } else {
-                        text = "Tap To Connect"
-                        color = Color.Green
-                        progress = 0
-                        connected = false
                     }
+                } else {
+                    longToast(
+                        context,
+                        "no internet connection"
+                    )
                 }
             }
         ) {
@@ -343,3 +347,7 @@ fun getProgressForConnectionStatus(status: BaseService.State): Int {
 private fun hideProgress() {
     delayedAnimation?.cancel()
 }
+
+
+
+

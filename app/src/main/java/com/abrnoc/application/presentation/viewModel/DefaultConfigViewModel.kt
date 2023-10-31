@@ -1,5 +1,6 @@
 package com.abrnoc.application.presentation.viewModel
 
+import android.content.Context
 import android.net.Uri
 import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.ViewModel
@@ -7,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.abrnoc.application.presentation.connection.SubscriptionFoundException
 import com.abrnoc.application.presentation.connection.onMainDispatcher
 import com.abrnoc.application.presentation.connection.runOnDefaultDispatcher
+import com.abrnoc.application.presentation.utiles.isInternetConnected
 import com.abrnoc.application.presentation.viewModel.event.ProxyEvent
 import com.abrnoc.application.presentation.viewModel.model.DefaultConfig
 import com.abrnoc.application.presentation.viewModel.state.DefaultConfigState
@@ -137,7 +139,6 @@ class DefaultConfigViewModel @Inject constructor(
                                     url = config.url
                                 }
                                 val proxies = RawUpdater.parseRaw(url)
-                                println(" the proxies are : $proxies")
                                 if (proxies.isNullOrEmpty()) {
                                     onMainDispatcher {
                                         Timber.e("Error", "Proxy Not Found")
@@ -150,6 +151,7 @@ class DefaultConfigViewModel @Inject constructor(
                             }
 //                        reloadProfiles()
                         }
+
                         _configState.value = DefaultConfigState(
                             configs = result.data.map { it ->
                                 DefaultConfig(
@@ -168,6 +170,10 @@ class DefaultConfigViewModel @Inject constructor(
                                     it.url
                                 )
                             }, isRefreshing = false)
+
+                        _configState.value.let {
+                            _selectedProxy.value = _configState.value.configs?.get(0)!!
+                        }
                     }
                 }
             }
@@ -282,11 +288,14 @@ class DefaultConfigViewModel @Inject constructor(
     }
 
 
-    fun onClickConnect(connect: ActivityResultLauncher<Void?>) {
+    fun onClickConnect(connect: ActivityResultLauncher<Void?>, context: Context) {
 //         val connect = activityContext.registerForActivityResult(StartService()) {}
-        if (DataStore.serviceState.canStop) SagerNet.stopService() else connect.launch(
-            null
-        )
+        val isInternetConnected = isInternetConnected(context)
+        if (isInternetConnected) {
+            if (DataStore.serviceState.canStop) SagerNet.stopService() else connect.launch(
+                null
+            )
+        }
 //        connect.launch(null)
     }
 

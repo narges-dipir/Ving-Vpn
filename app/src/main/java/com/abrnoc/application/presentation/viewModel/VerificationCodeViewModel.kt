@@ -38,6 +38,7 @@ class VerificationCodeViewModel @Inject constructor(
         savedStateHandle.get<String>("password")?.let {psw ->
            password = psw
         }
+        resendVerificationCode(email)
     }
     fun onEvent(event: SendVerificationEvent) {
         when (event) {

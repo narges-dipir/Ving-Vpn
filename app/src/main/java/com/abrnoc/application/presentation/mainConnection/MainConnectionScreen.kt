@@ -136,7 +136,7 @@ fun MainConnectionScreen(
             Backdrop(
                 modifier = Modifier,
                 onClick = {
-                    configViewModel.onClickConnect(localConnect)
+                    configViewModel.onClickConnect(localConnect, context = context)
                 },
                 context = context,
                 state = state,
@@ -168,7 +168,7 @@ fun MainConnectionScreen(
                                     )
                                 )
                                 //auto connect and disconnet
-                                configViewModel.onClickConnect(localConnect)
+                                configViewModel.onClickConnect(localConnect, context)
 
                             })
                         }

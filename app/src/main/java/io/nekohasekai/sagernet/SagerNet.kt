@@ -85,7 +85,6 @@ class SagerNet :
         System.setProperty(DEBUG_PROPERTY_NAME, DEBUG_PROPERTY_VALUE_ON)
         Thread.setDefaultUncaughtExceptionHandler(CrashHandler)
 
-        println(" ^^^^ isMainProcess $isMainProcess  isBgProcess $isBgProcess")
         if (isMainProcess || isBgProcess) {
             // fix multi process issue in Android 9+
             JavaUtil.handleWebviewDir(this)

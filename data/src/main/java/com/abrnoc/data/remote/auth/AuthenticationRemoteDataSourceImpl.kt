@@ -1,6 +1,7 @@
 package com.abrnoc.data.remote.auth
 
 import com.abrnoc.data.api.auth.AuthApi
+import com.abrnoc.data.api.auth.model.Email
 import com.abrnoc.data.api.auth.model.SignIn
 import com.abrnoc.data.api.auth.model.SignUp
 import com.abrnoc.data.mappers.mapJwt
@@ -12,8 +13,12 @@ class AuthenticationRemoteDataSourceImpl @Inject constructor(
     private val authApi: AuthApi,
 
 ) : AuthenticationRemoteDataSource {
+    override suspend fun checkMail(email: String): Response<Unit> {
+        return authApi.checkMail(email)
+    }
+
     override suspend fun sendCodeVerification(email: String): Response<Unit> {
-        return authApi.setEmailForVerification(email)
+        return authApi.setEmailForVerification(Email(email))
     }
 
     override suspend fun signUpWithVerificationCode(

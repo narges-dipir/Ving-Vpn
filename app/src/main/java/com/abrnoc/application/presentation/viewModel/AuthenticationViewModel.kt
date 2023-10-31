@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.abrnoc.application.presentation.utiles.validateSignInRequest
 import com.abrnoc.application.presentation.viewModel.event.SendCodeEvent
 import com.abrnoc.application.presentation.viewModel.state.SendCodeState
-import com.abrnoc.domain.auth.SendVerificationCodeUseCase
+import com.abrnoc.domain.auth.CheckMailCodeUseCase
 import com.abrnoc.domain.common.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthenticationViewModel @Inject constructor(
-    private val sendCodeVerificationUseCase: SendVerificationCodeUseCase
+    private val checkMailUseCase: CheckMailCodeUseCase
 ) : ViewModel() {
     private val _state = MutableStateFlow(SendCodeState())
     val state: StateFlow<SendCodeState> = _state
@@ -24,9 +24,17 @@ class AuthenticationViewModel @Inject constructor(
             is SendCodeEvent.EmailQuery -> {
                 _state.value = SendCodeState(isLoading = true)
                 val isValid = validateSignInRequest(event.email)
-                _state.value = SendCodeState(isValid = isValid.isValid, message = isValid.message, isLoading = true)
+                _state.value = SendCodeState(
+                    isValid = isValid.isValid,
+                    message = isValid.message,
+                    isLoading = true
+                )
                 if (isValid.isValid) {
-                    _state.value = SendCodeState(email = event.email, message = isValid.message, isLoading = true)
+                    _state.value = SendCodeState(
+                        email = event.email,
+                        message = isValid.message,
+                        isLoading = true
+                    )
 //                    if (isValidEmail(state.email)) {
                     sendVerificationCode()
                 }
@@ -41,10 +49,15 @@ class AuthenticationViewModel @Inject constructor(
 
     private fun sendVerificationCode() {
         viewModelScope.launch {
-            when (val result = sendCodeVerificationUseCase(_state.value.email)) {
+            when (val result = checkMailUseCase(_state.value.email)) {
                 is Result.Error -> {
                     _state.value =
-                        SendCodeState(isLoading = false, isValid = false, isAlreadyRegistered = false, message = "send email task failed")
+                        SendCodeState(
+                            isLoading = false,
+                            isValid = false,
+                            isAlreadyRegistered = false,
+                            message = "send email task failed"
+                        )
                 }
 
                 Result.Loading -> {
@@ -61,6 +74,7 @@ class AuthenticationViewModel @Inject constructor(
                                 message = "server error, check your network"
                             )
                         }
+
                         400 -> {
                             _state.value = SendCodeState(
                                 isLoading = false,

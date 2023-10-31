@@ -5,19 +5,13 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -36,37 +30,6 @@ import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.aidl.TrafficStats
 import io.nekohasekai.sagernet.bg.BaseService
 
-@Composable
-fun MainConnectionScreen2() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(ApplicationTheme.colors.uiBackground)
-            .verticalScroll(rememberScrollState())
-
-    ) {
-        val state = remember { mutableStateOf(BaseService.State.Idle)}
-        val proxy = remember {
-            mutableStateOf(DefaultConfig())
-        }
-//        Backdrop(
-//            modifier = Modifier,
-//            onClick = {},
-//            context = LocalContext.current,
-//            state = state,
-//            currentProxy = proxy,
-//            trafficState = trafficState,
-//        )
-        val iconSize = 150.dp
-        Spacer(modifier = Modifier)
-//        LazyColumn(modifier = Modifier.constrainAs(locations) {
-//            top.linkTo(title.bottom, 8.dp)
-//            linkTo(startGuideline, endGuideline)
-//        }) {
-//
-//        }
-    }
-}
 
 @Composable
 fun Backdrop(
@@ -118,6 +81,6 @@ fun Dp.dpToPx() = with(LocalDensity.current) { this@dpToPx.toPx() }
 @Composable
 private fun Preview() {
     AbrnocApplicationTheme {
-        MainConnectionScreen2()
+//        MainConnectionScreen2()
     }
 }

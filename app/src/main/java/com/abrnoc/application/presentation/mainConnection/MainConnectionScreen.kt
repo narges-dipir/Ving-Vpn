@@ -170,7 +170,8 @@ fun MainConnectionScreen(
                                 //auto connect and disconnet
                                 configViewModel.onClickConnect(localConnect, context)
 
-                            })
+                            },
+                                totalSize = configs.size)
                         }
                     }
                 }

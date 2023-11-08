@@ -298,5 +298,4 @@ class DefaultConfigViewModel @Inject constructor(
         }
 //        connect.launch(null)
     }
-
 }

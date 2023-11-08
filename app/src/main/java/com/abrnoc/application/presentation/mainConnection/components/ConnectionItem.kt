@@ -19,6 +19,11 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,6 +32,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.SubcomposeAsyncImage
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
@@ -39,7 +45,25 @@ import io.nekohasekai.sagernet.R
 
 @Composable
 fun ConnectionItem(defaultConfig: DefaultConfig? = null,
-                   onClick: () -> Unit) {
+                   onClick: () -> Unit,
+                   totalSize: Int,
+                   pingViewModel: PingViewModel = hiltViewModel()) {
+    val context = LocalContext.current
+    val ping by pingViewModel.ping.collectAsState()
+    val pingDrawabl = remember {
+        mutableIntStateOf(R.drawable.ping_four_bars)
+    }
+    val iconResourceMap = mapOf(
+        "ping_one_bars" to R.drawable.ping_one_bars,
+        "ping_two_bars" to R.drawable.ping_two_bars,
+        "ping_three_bars" to R.drawable.ping_three_bars,
+        "ping_four_bars" to R.drawable.ping_four_bars
+        // Add mappings for all the icons you have
+    )
+    pingViewModel.startPing(totalSize)
+    LaunchedEffect(key1 = ping) {
+            pingDrawabl.intValue = iconResourceMap[defaultConfig?.id?.toInt()?.let { ping[it] }]!!
+    }
     Row(
         modifier = Modifier
             .clip(RoundedCornerShape(50))
@@ -55,6 +79,7 @@ fun ConnectionItem(defaultConfig: DefaultConfig? = null,
 //                contentDescription = "icon flag",
 //                modifier = Modifier.clip(CircleShape)
 //            )
+
             val parts = defaultConfig?.flag?.split('/')
             val countryCode = parts?.get(2)
             val svgImageUrl = countryFlagUrl(countryCode)
@@ -84,7 +109,7 @@ fun ConnectionItem(defaultConfig: DefaultConfig? = null,
                 )
                 Row {
                     Image(
-                        painter = painterResource(id = R.drawable.bar_icon),
+                        painter = painterResource(id = pingDrawabl.intValue),
                         contentDescription = ""
                     )
                     Text(
@@ -133,6 +158,7 @@ private fun Preview() {
             url = "trojan://3dc90e78b18c5e9c6f382dd3b42891d3@172.86.76.146:443?security=tls&alpn=http/1.1&headerType=none&fp=chrome&type=tcp&sni=zire.ml",
             protocol = "Trojan"
         )
-        ConnectionItem(onClick = {})
+        ConnectionItem(onClick = {}, totalSize = 1)
     }
 }
+

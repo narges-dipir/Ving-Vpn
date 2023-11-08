@@ -35,6 +35,7 @@ import android.widget.Toast
 import com.abrnoc.application.presentation.connection.Logs
 import com.abrnoc.application.presentation.connection.runOnDefaultDispatcher
 import com.abrnoc.application.presentation.connection.runOnMainDispatcher
+import com.abrnoc.application.presentation.utiles.network.PingUtil
 import io.nekohasekai.sagernet.Action
 import io.nekohasekai.sagernet.BootReceiver
 import io.nekohasekai.sagernet.R
@@ -182,7 +183,13 @@ class BaseService {
                 val sinceLastQueryInSeconds = (queryTime - lastQueryTime).toDouble() / 1000L
                 val proxy = data?.proxy ?: continue
                 lastQueryTime = queryTime
-                val (statsOut, outs) = proxy.outboundStats()
+                val (statsOut, outs) = proxy.outboundStats() ///
+                /// get ping
+                val ping = PingUtil().pingTcpByHostname("172.86.76.146", 22)
+                println(" **** the ping is $ping ")
+
+
+
                 val stats = TrafficStats(
                     generateRandomLongInRange(0,888888),
                     generateRandomLongInRange(44444, 999999),

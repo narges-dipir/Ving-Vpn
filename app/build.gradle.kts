@@ -161,4 +161,8 @@ dependencies {
     implementation("io.coil-kt:coil-svg:2.2.2")
     // desugaring
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
+
+    // proton
+    implementation("me.proton.core:util-kotlin:17.0.3")
+    implementation("commons-codec:commons-codec:1.15")
 }

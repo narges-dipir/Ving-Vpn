@@ -54,7 +54,7 @@ android {
         aidl = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
+        kotlinCompilerExtensionVersion = "1.4.2"
     }
     packaging {
         resources {
@@ -85,7 +85,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.9.0")
+    implementation("com.google.accompanist:accompanist-navigation-material:0.28.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation(project(mapOf("path" to ":domain")))
     testImplementation("junit:junit:4.13.2")
@@ -100,12 +100,13 @@ dependencies {
     //compose
     implementation("androidx.compose.ui:ui-util:1.4.3")
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.30.1")
-    implementation("androidx.compose.material:material:1.4.3")
+    implementation("androidx.compose.material:material:1.3.1")
     implementation("androidx.navigation:navigation-compose:2.7.4")
     implementation("androidx.compose.foundation:foundation:1.4.3")
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
     implementation("androidx.compose.animation:animation:1.1.0")
     implementation("com.google.accompanist:accompanist-swiperefresh:0.15.0")
+    implementation("androidx.core:core-splashscreen:1.1.0-alpha02")
 
     // Hilt
     implementation("com.google.dagger:hilt-android:2.44.2")

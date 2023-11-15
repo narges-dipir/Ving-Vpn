@@ -3,7 +3,7 @@
 
     <style name="Theme.AbrnocApplication" parent="android:Theme.Material.Light.NoActionBar" />
 
-    <style name="Theme.SagerNet" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.SagerNet" parent="Theme.SplashScreen">
         <item name="actionBarStyle">@style/Widget.MaterialComponents.ActionBar.Solid</item>
         <item name="actionModeCloseDrawable">@drawable/ic_navigation_close</item>
         <item name="colorButtonNormal">?colorAccent</item>

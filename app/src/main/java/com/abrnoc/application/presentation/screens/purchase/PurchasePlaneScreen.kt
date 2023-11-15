@@ -1,4 +1,4 @@
-package com.abrnoc.application.presentation.mainConnection.bottomScreens
+package com.abrnoc.application.presentation.screens.purchase
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.material3.Button
@@ -30,38 +29,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import io.nekohasekai.sagernet.R
-import com.abrnoc.application.presentation.navigation.Navigation
 import com.abrnoc.application.presentation.ui.theme.AbrnocApplicationTheme
 import com.abrnoc.application.presentation.ui.theme.ApplicationTheme
 import com.abrnoc.application.presentation.ui.theme.Ocean11
+import io.nekohasekai.sagernet.R
 
 @Composable
 fun PurchaseScreen(navController: NavController?) {
     val brush = Brush.verticalGradient(ApplicationTheme.colors.welcomeGradiant)
-    val data = listOf(
-        ShoppingItem(
-            plan = "1-Month Plan",
-            pricePerMonth = "3.99",
-            off = "0",
-            save = "",
-            isBestDeal = false
-        ),
-        ShoppingItem(
-            plan = "1-Year Plan",
-            pricePerMonth = "2.99",
-            off = "40",
-            save = "120",
-            isBestDeal = false
-        ),
-        ShoppingItem(
-            plan = "2-Year Plan",
-            pricePerMonth = "1.99",
-            off = "50",
-            save = "180",
-            isBestDeal = true
-        )
-    )
     Column(
         modifier = Modifier
             .background(brush = brush)
@@ -83,19 +58,17 @@ fun PurchaseScreen(navController: NavController?) {
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(8.dp))
-        Row(modifier = Modifier.padding(12.dp),
-            verticalAlignment = Alignment.CenterVertically,) {
+        Row(
+            modifier = Modifier.padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
             FeatureTikText(text = "Secure")
             FeatureTikText(text = "High-speed VPN")
             FeatureTikText(text = "Customer Support")
         }
         Spacer(modifier = Modifier.height(16.dp))
-        LazyColumn() {
-            items(data.size) {i ->
-                val item = data[i]
-                ShoppingItem(onClick = { /*TODO*/ }, item = item)
-
-            }
+        Column(modifier = Modifier.padding(end = 15.dp, start = 15.dp, bottom = 10.dp)) {
+            ShoppingItem(onClick = { /*TODO*/ })
         }
         Button(
             modifier = Modifier
@@ -109,7 +82,7 @@ fun PurchaseScreen(navController: NavController?) {
             ),
             shape = RoundedCornerShape(50),
             colors = ButtonDefaults.buttonColors(containerColor = Color.White),
-            onClick = { navController?.navigate(Navigation.WelcomeScreen.route) }
+            onClick = { }
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -130,14 +103,17 @@ fun PurchaseScreen(navController: NavController?) {
 @Composable
 fun FeatureTikText(text: String, modifier: Modifier = Modifier) {
     Row(modifier = modifier) {
-        Image(painter = painterResource(id = R.drawable.tike_icon),
+        Image(
+            painter = painterResource(id = R.drawable.tike_icon),
             contentDescription = "feature $text",
-            modifier = Modifier.padding(4.dp))
-        Text(text = text,
+            modifier = Modifier.padding(4.dp)
+        )
+        Text(
+            text = text,
             color = Color.White,
             maxLines = 1,
             textAlign = TextAlign.Center
-            )
+        )
     }
 }
 

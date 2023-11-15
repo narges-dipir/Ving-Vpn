@@ -1,7 +1,6 @@
 package com.abrnoc.application.presentation.screens
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -13,35 +12,25 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
-
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.TileMode
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.nekohasekai.sagernet.R
-import com.abrnoc.application.presentation.bottomNavigation.BottomNavigationBar
-import com.abrnoc.application.presentation.bottomNavigation.HomeSection
 import com.abrnoc.application.presentation.components.CustomSurface
 import com.abrnoc.application.presentation.extensions.fadeInDiagonalGradientBorder
 import com.abrnoc.application.presentation.extensions.offsetGradientBackground
 import com.abrnoc.application.presentation.ui.theme.AbrnocApplicationTheme
 import com.abrnoc.application.presentation.ui.theme.ApplicationTheme
-import com.abrnoc.application.presentation.ui.theme.Shapes
+import io.nekohasekai.sagernet.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,19 +38,8 @@ fun Landing(
     onNavigateToRoute: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Scaffold(
-        bottomBar = {
-            BottomNavigationBar(
-                tabs = HomeSection.values(),
-                currentRoute = HomeSection.LANDING.route,
-                navigateRoute = onNavigateToRoute
-            )
-        },
-        modifier = modifier
-    ) { contenPadding ->
 
-        Landing(modifier = modifier.padding(contenPadding))
-    }
+        Landing()
 }
 
 @Composable

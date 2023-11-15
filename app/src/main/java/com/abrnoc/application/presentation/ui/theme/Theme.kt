@@ -50,7 +50,6 @@ private val LightColorPalette = ApplicationColors(
 @Composable
 fun AbrnocApplicationTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
     content: @Composable () -> Unit
 ) {
     val colorPalette = if (darkTheme) DarkColorPalette else LightColorPalette

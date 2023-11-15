@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.RemoteException
 import android.util.Log
-import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -16,24 +15,25 @@ import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.preference.PreferenceDataStore
+import com.abrnoc.application.presentation.bottomNavigation.RootScreen
 import com.abrnoc.application.presentation.connection.VpnRequestActivity
 import com.abrnoc.application.presentation.connection.runOnDefaultDispatcher
 import com.abrnoc.application.presentation.mainConnection.MainConnectionScreen
-import com.abrnoc.application.presentation.mainConnection.bottomScreens.PurchaseScreen
 import com.abrnoc.application.presentation.navigation.Navigation
 import com.abrnoc.application.presentation.screens.landing.Landing
 import com.abrnoc.application.presentation.screens.landing.Welcome
+import com.abrnoc.application.presentation.screens.purchase.PurchaseScreen
 import com.abrnoc.application.presentation.screens.signUp.EmailSignIn
 import com.abrnoc.application.presentation.screens.signUp.EmailSignUpScreen
 import com.abrnoc.application.presentation.screens.signUp.PasswordSignUp
 import com.abrnoc.application.presentation.screens.signUp.VerificationSignUp
-import com.abrnoc.application.presentation.ui.theme.AbrnocApplicationTheme
 import com.abrnoc.application.presentation.utiles.setupCachePolicy
 import com.abrnoc.domain.auth.CheckSignedInUseCase
 import com.abrnoc.domain.common.Result
@@ -76,11 +76,11 @@ class MainActivity :
 
     val connection = SagerConnection(true)
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         createDatFile()
         setupCachePolicy(this)
         WindowCompat.setDecorFitsSystemWindows(window, false)
-
         val connect = registerForActivityResult(VpnRequestActivity.StartService()) {
             if (it) Toast.makeText(this, R.string.vpn_permission_denied, Toast.LENGTH_LONG).show()
         }
@@ -89,6 +89,7 @@ class MainActivity :
         connection.connect(this, this)
         DataStore.configurationStore.registerChangeListener(this)
         GroupManager.userInterface = GroupInterfaceAdapter(this)
+
 
         if (intent?.action == Intent.ACTION_VIEW) {
             onNewIntent(intent)
@@ -105,24 +106,24 @@ class MainActivity :
                 }
 
                 is Result.Success -> {
-//                    if (result.data) {
-//                        LoginApplication(Navigation.LandingScreen.route)
-// //                        val intent = Intent(this@MainActivity, ConnActivity::class.java)
-// //                        this@MainActivity.startActivity(intent)
-//                    } else {
                     setContent {
-                        AbrnocApplicationTheme {
+//                        AbrnocApplicationTheme {
                             if (result.data) {
-                                LoginApplication(
+                                RootScreen(
                                     defaultRoute = Navigation.MainConnectionScreen.route,
-                                    connect,
-                                    connectionState,
-                                    trafficState
+                                    connect = connect,
+                                    connectionState = connectionState,
+                                    trafficState = trafficState
                                 )
                             } else {
-                                LoginApplication(Navigation.LandingScreen.route, connect, connectionState, trafficState)
+                                RootScreen(
+                                    defaultRoute = Navigation.LandingScreen.route,
+                                    connect = connect,
+                                    connectionState = connectionState,
+                                    trafficState = trafficState
+                                )
                             }
-                        }
+//                        }
                     }
 //                            }
                 }

@@ -1,4 +1,4 @@
-package com.abrnoc.application.presentation.mainConnection.bottomScreens
+package com.abrnoc.application.presentation.screens.purchase
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,7 +19,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,36 +26,33 @@ import com.abrnoc.application.presentation.ui.theme.AbrnocApplicationTheme
 import com.abrnoc.application.presentation.ui.theme.ApplicationTheme
 import com.abrnoc.application.presentation.ui.theme.Blue1
 import com.abrnoc.application.presentation.ui.theme.Ocean11
-import com.abrnoc.application.presentation.ui.theme.Ocean13
 
 @Composable
 fun ShoppingItem(
     onClick: () -> Unit,
-    item: ShoppingItem
 ) {
     Row(
         modifier = Modifier
-            .clip(RoundedCornerShape(15))
+            .clip(RoundedCornerShape(8))
             .fillMaxWidth()
-            .padding(start = 18.dp, end = 18.dp, bottom = 32.dp)
             .clickable {
                 onClick()
             }
-            .background(color = ApplicationTheme.colors.uiBackground.copy(alpha = 0.4f)),
-        horizontalArrangement = Arrangement.SpaceBetween
+            .background(color = Color.White.copy(alpha = 0.7f)),
+
+        horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Column {
-            if (item.isBestDeal)
-            Text(
-                text = "Best Deal",
-                color = Color.White,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(25.dp)
-                    .background(color = Ocean13),
-                textAlign = TextAlign.Center,
-
-            )
+//            Text(
+//                text = "Best Deal",
+//                color = Color.White,
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .height(25.dp)
+//                    .background(color = Ocean13),
+//                textAlign = TextAlign.Center,
+//
+//            )
             Row {
                 Column(modifier = Modifier.padding(12.dp)) {
                     Row(
@@ -65,14 +60,14 @@ fun ShoppingItem(
 
                     ) {
                         Text(
-                            text = item.plan,
+                            text = "plan",
                             fontWeight = FontWeight.Bold,
                             fontSize = 18.sp,
                             color = ApplicationTheme.colors.textPrimary,
                             modifier = Modifier.padding(8.dp)
                         )
                         Text(
-                            text = "${item.off}% OFF",
+                            text = "30% OFF",
                             color = ApplicationTheme.colors.textSecondry,
                             fontSize = 8.sp,
                             modifier = Modifier
@@ -92,7 +87,7 @@ fun ShoppingItem(
                             )
                         )
                         Text(
-                            text = item.pricePerMonth,
+                            text = "12.99",
                             color = Ocean11,
                             fontWeight = FontWeight.Bold,
                             fontSize = 25.sp,
@@ -101,7 +96,7 @@ fun ShoppingItem(
                     }
 
                 }
-                Spacer(modifier = Modifier.width(100.dp))
+                Spacer(modifier = Modifier.width(150.dp))
                 Column(
                     modifier = Modifier.padding(12.dp)
                 ) {
@@ -109,7 +104,7 @@ fun ShoppingItem(
                         selected = false, onClick = { /*TODO*/ },
 //                    colors = RadioButtonDefaults.colors()
                     )
-                    Text(text = if(item.save.isNotBlank()) "Save $${item.save}" else "", fontSize = 10.sp, color = Blue1)
+                    Text("save 20$")
                 }
             }
         }
@@ -119,17 +114,10 @@ fun ShoppingItem(
 @Preview
 @Composable
 private fun preview() {
-    val item = ShoppingItem(
-        plan = "1-Month Plan",
-        pricePerMonth = "3.99",
-        off = "0",
-        save = "120",
-        isBestDeal = true
-    )
+
     AbrnocApplicationTheme {
         ShoppingItem(
             onClick = {},
-            item
         )
     }
 }

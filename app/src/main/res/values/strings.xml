@@ -3,6 +3,7 @@
     <!-- bottom tabs -->
     <string name="home">Home</string>
     <string name="profile">Profile</string>
+    <string name="help">Help</string>
     <string name="project">Project</string>
     <string name="github">Source code</string>
     <string name="telegram">Telegram update channel</string>

@@ -32,7 +32,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.abrnoc.application.presentation.navigation.AppNavHost
 import com.abrnoc.application.presentation.navigation.Navigation
-import com.abrnoc.application.presentation.ui.theme.AbrnocApplicationTheme
+import com.abrnoc.application.presentation.ui.theme.ApplicationTheme
 import com.abrnoc.application.presentation.ui.theme.Blue1
 import com.abrnoc.application.presentation.ui.theme.Violate0
 import com.google.accompanist.navigation.material.BottomSheetNavigator
@@ -77,20 +77,26 @@ fun RootScreen(
         }
     }
 
-    AbrnocApplicationTheme {
-       // SetupSystemUi(rememberSystemUiController(), MaterialTheme.colorScheme.background)
-        Scaffold(
-            modifier = Modifier.fillMaxSize(),
-            topBar = {
+    // SetupSystemUi(rememberSystemUiController(), MaterialTheme.colorScheme.background)
+    println("the default color is : ${MaterialTheme.colorScheme.background}")
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        topBar = {
 
-            },
-            bottomBar = {
+        },
+        bottomBar = {
+            if (defaultRoute != Navigation.LandingScreen.route) {
                 NavigationBar(
-                    containerColor =  MaterialTheme.colorScheme.background
+                    containerColor = ApplicationTheme.colors.uiBackground
                 ) {
                     BottomBarDestination.values().forEach { item ->
                         NavigationBarItem(
-                            icon = { Icon(painterResource(id = item.unFilledIcon), contentDescription = stringResource(id = item.title)) },
+                            icon = {
+                                Icon(
+                                    painterResource(id = item.unFilledIcon),
+                                    contentDescription = stringResource(id = item.title)
+                                )
+                            },
                             label = { androidx.compose.material3.Text(stringResource(id = item.title)) },
                             selected = item.route == currentDestination,
                             colors = NavigationBarItemDefaults.colors(
@@ -100,7 +106,7 @@ fun RootScreen(
                             onClick = {
                                 if (item.route != currentDestination) {
                                     println(" the rout is ${item.route.route}")
-                                  //  navController.popAll()
+                                    //  navController.popAll()
                                     navController.navigate(item.route.route)
                                 }
                             }
@@ -108,18 +114,18 @@ fun RootScreen(
                     }
                 }
             }
-        ) {
-            Surface(modifier = Modifier.padding(it)) {
-               // Text(text = "hey hey")
-                AppNavHost(
-                    defaultRoute = defaultRoute,
-                    connect = connect,
-                    connectionState = connectionState,
-                    trafficState = trafficState,
-                    navController = navController
+        }
+    ) {
+        Surface(modifier = Modifier.padding(it)) {
+            // Text(text = "hey hey")
+            AppNavHost(
+                defaultRoute = defaultRoute,
+                connect = connect,
+                connectionState = connectionState,
+                trafficState = trafficState,
+                navController = navController
 
-                )
-            }
+            )
         }
     }
 }

@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -96,7 +97,7 @@ fun ShoppingItem(
                     }
 
                 }
-                Spacer(modifier = Modifier.width(150.dp))
+                Spacer(modifier = Modifier.width(130.dp))
                 Column(
                     modifier = Modifier.padding(12.dp)
                 ) {
@@ -104,7 +105,7 @@ fun ShoppingItem(
                         selected = false, onClick = { /*TODO*/ },
 //                    colors = RadioButtonDefaults.colors()
                     )
-                    Text("save 20$")
+                    Text(text = "save 20$", maxLines = 1, overflow = TextOverflow.Visible)
                 }
             }
         }

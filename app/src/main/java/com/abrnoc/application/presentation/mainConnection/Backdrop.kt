@@ -39,6 +39,7 @@ fun Backdrop(
     state: MutableState<BaseService.State>,
     currentProxy: MutableState<DefaultConfig>,
     trafficState: MutableState<TrafficStats>,
+    isConfigEmpty: Boolean
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
 
@@ -67,7 +68,7 @@ fun Backdrop(
                     .aspectRatio(1f),
                 contentAlignment = Alignment.Center
             ) {
-                VpnConnectButton(onClick = onClick, state = state, trafficState = trafficState)
+                VpnConnectButton(onClick = onClick, state = state, trafficState = trafficState, isConfigEmpty = isConfigEmpty)
             }
         }
 

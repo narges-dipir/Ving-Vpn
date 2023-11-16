@@ -54,6 +54,7 @@ fun AbrnocApplicationTheme(
 ) {
     val colorPalette = if (darkTheme) DarkColorPalette else LightColorPalette
     val sysController = rememberSystemUiController()
+
         SideEffect {
             sysController.setSystemBarsColor(
                 color = colorPalette.uiBackground.copy(AlphaNearOpaque)

@@ -76,6 +76,7 @@ fun VpnConnectButton(
     state: MutableState<BaseService.State>,
     trafficState: MutableState<TrafficStats>,
     configViewModel: DefaultConfigViewModel = hiltViewModel(),
+    isConfigEmpty: Boolean,
 ) {
     var connected by remember {
         mutableStateOf(false)
@@ -138,7 +139,7 @@ fun VpnConnectButton(
             onClick = {
 
                 val isInternetConnected = isInternetConnected(context)
-                if (isInternetConnected) {
+                if (isInternetConnected && !isConfigEmpty) {
                     onClick()
 //                changeState(state, DataStore.serviceState, context)
                     scope.launch {

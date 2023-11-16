@@ -34,6 +34,7 @@ import com.abrnoc.application.presentation.screens.signUp.EmailSignIn
 import com.abrnoc.application.presentation.screens.signUp.EmailSignUpScreen
 import com.abrnoc.application.presentation.screens.signUp.PasswordSignUp
 import com.abrnoc.application.presentation.screens.signUp.VerificationSignUp
+import com.abrnoc.application.presentation.ui.theme.AbrnocApplicationTheme
 import com.abrnoc.application.presentation.utiles.setupCachePolicy
 import com.abrnoc.domain.auth.CheckSignedInUseCase
 import com.abrnoc.domain.common.Result
@@ -107,25 +108,15 @@ class MainActivity :
 
                 is Result.Success -> {
                     setContent {
-//                        AbrnocApplicationTheme {
-                            if (result.data) {
-                                RootScreen(
-                                    defaultRoute = Navigation.MainConnectionScreen.route,
-                                    connect = connect,
-                                    connectionState = connectionState,
-                                    trafficState = trafficState
-                                )
-                            } else {
-                                RootScreen(
-                                    defaultRoute = Navigation.LandingScreen.route,
-                                    connect = connect,
-                                    connectionState = connectionState,
-                                    trafficState = trafficState
-                                )
-                            }
-//                        }
+                        AbrnocApplicationTheme {
+                            RootScreen(
+                                defaultRoute = if (result.data) {Navigation.MainConnectionScreen.route} else {Navigation.LandingScreen.route},
+                                connect = connect,
+                                connectionState = connectionState,
+                                trafficState = trafficState
+                            )
+                        }
                     }
-//                            }
                 }
             }
         }

@@ -66,51 +66,49 @@ fun MainConnectionScreen(
             isConfigFetched = true
         }
     }
+    Column {
+        Backdrop(
+            modifier = Modifier,
+            onClick = {
+                configViewModel.onClickConnect(localConnect, context = context)
+            },
+            context = context,
+            state = state,
+            currentProxy,
+            trafficState = trafficState,
+            isConfigEmpty = configs.first().address == ""
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        if (loadingVisibility) {
+            CircularProgressIndicator(color = Purple40)
+        }
+        if (isConfigFetched) {
 
-    AbrnocApplicationTheme {
-        Column {
-            Backdrop(
-                modifier = Modifier,
-                onClick = {
-                    configViewModel.onClickConnect(localConnect, context = context)
+            SwipeRefresh(
+                state = swipeRefreshState,
+                onRefresh = {
+                    configViewModel.onEvent(ProxyEvent.triggerRefresh)
                 },
-                context = context,
-                state = state,
-                currentProxy,
-                trafficState = trafficState
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            if (loadingVisibility) {
-                CircularProgressIndicator(color = Purple40)
-            }
-            if (isConfigFetched) {
-
-                SwipeRefresh(
-                    state = swipeRefreshState,
-                    onRefresh = {
-                        configViewModel.onEvent(ProxyEvent.triggerRefresh)
-                    },
-                ) {
-                    LazyColumn {
-                        if (!loadingVisibility) {
-                            items(configs.size) { i ->
-                                val config = configs[i]
-                                ConnectionItem(
-                                    config, onClick = {
-                                        currentProxy.value = config
-                                        configViewModel.onEvent(
-                                            ProxyEvent.ConfigEvent(
-                                                defaultConfig = currentProxy.value,
-                                                context
-                                            )
+            ) {
+                LazyColumn {
+                    if (!loadingVisibility) {
+                        items(configs.size) { i ->
+                            val config = configs[i]
+                            ConnectionItem(
+                                config, onClick = {
+                                    currentProxy.value = config
+                                    configViewModel.onEvent(
+                                        ProxyEvent.ConfigEvent(
+                                            defaultConfig = currentProxy.value,
+                                            context
                                         )
-                                        //auto connect and disconnet
-                                        configViewModel.onClickConnect(localConnect, context)
+                                    )
+                                    //auto connect and disconnet
+                                    configViewModel.onClickConnect(localConnect, context)
 
-                                    },
-                                    totalSize = configs.size
-                                )
-                            }
+                                },
+                                totalSize = configs.size
+                            )
                         }
                     }
                 }

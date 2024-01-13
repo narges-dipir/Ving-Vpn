@@ -33,7 +33,6 @@ import android.system.Os
 import android.system.OsConstants
 import android.util.TypedValue
 import android.view.View
-import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
@@ -47,7 +46,6 @@ import io.nekohasekai.sagernet.BuildConfig
 import com.narcis.application.presentation.MainActivity
 import io.nekohasekai.sagernet.R
 import moe.matsuri.nya.utils.NGUtil
-import com.narcis.application.presentation.connection.profile.ThemedActivity
 import io.nekohasekai.sagernet.SagerNet
 import io.nekohasekai.sagernet.database.DataStore
 import kotlinx.coroutines.Dispatchers
@@ -66,7 +64,6 @@ import java.util.concurrent.atomic.AtomicReference
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
-import kotlin.reflect.KClass
 import kotlin.reflect.KMutableProperty0
 import kotlin.reflect.KProperty
 import kotlin.reflect.KProperty0
@@ -236,58 +233,16 @@ fun View.crossFadeFrom(other: View) {
     }).duration = shortAnimTime
 }
 
-fun Fragment.snackbar(textId: Int) = (requireActivity() as MainActivity).snackbar(textId)
 fun Fragment.snackbar(text: CharSequence) = (requireActivity() as MainActivity).snackbar(text)
 
-fun ThemedActivity.startFilesForResult(
-    launcher: ActivityResultLauncher<String>,
-    input: String,
-) {
-    try {
-        return launcher.launch(input)
-    } catch (_: ActivityNotFoundException) {
-    } catch (_: SecurityException) {
-    }
-    snackbar(getString(R.string.file_manager_missing)).show()
-}
 
-fun Fragment.startFilesForResult(
-    launcher: ActivityResultLauncher<String>,
-    input: String,
-) {
-    try {
-        return launcher.launch(input)
-    } catch (_: ActivityNotFoundException) {
-    } catch (_: SecurityException) {
-    }
-    (requireActivity() as ThemedActivity).snackbar(getString(R.string.file_manager_missing)).show()
-}
 
-fun Fragment.needReload() {
-    if (DataStore.serviceState.started) {
-        snackbar(getString(R.string.restart)).setAction(R.string.apply) {
-            SagerNet.reloadService()
-        }.show()
-    }
-}
 
-@Suppress("DEPRECATION")
-fun <T : Service> KClass<T>.isRunning(): Boolean {
-    val name = qualifiedName
-    var myServices = SagerNet.activity.getRunningServices(5) ?: return false
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-        val myUid = Os.getuid()
-        myServices = myServices.filter { it.uid == myUid }
-    }
-    for (myService in myServices) if (myService.service.className == name) {
-        return true
-    }
-    return false
-}
 
-fun Context.getColour(@ColorRes colorRes: Int): Int {
-    return ContextCompat.getColor(this, colorRes)
-}
+
+
+
+
 
 fun Context.getColorAttr(@AttrRes resId: Int): Int {
     return ContextCompat.getColor(
@@ -298,14 +253,7 @@ fun Context.getColorAttr(@AttrRes resId: Int): Int {
     )
 }
 
-var isExpert: Boolean
-    get() = BuildConfig.DEBUG || DataStore.isExpert
-    set(value) = TODO()
 
-// val isExpertFlavor = ((BuildConfig.FLAVOR == "expert") || BuildConfig.DEBUG)
-// const val isOss = BuildConfig.FLAVOR == "oss"
-// const val isFdroid = BuildConfig.FLAVOR == "fdroid"
-// const val isPlay = BuildConfig.FLAVOR == "play"
 
 fun <T> Continuation<T>.tryResume(value: T) {
     try {

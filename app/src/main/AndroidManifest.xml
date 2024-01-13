@@ -146,87 +146,12 @@
                 android:resource="@xml/shortcuts" />
         </activity>
 
-        <activity
-            android:name="io.nekohasekai.sagernet.QuickToggleShortcut"
-            android:excludeFromRecents="true"
-            android:exported="true"
-            android:label="@string/quick_toggle"
-            android:launchMode="singleTask"
-            android:process=":bg"
-            android:taskAffinity=""
-            android:theme="@android:style/Theme.Translucent.NoTitleBar">
-            <intent-filter>
-                <action android:name="android.intent.action.CREATE_SHORTCUT" />
-            </intent-filter>
-        </activity>
+
 
         <activity
             android:name="com.narcis.application.presentation.connection.VpnRequestActivity"
             android:excludeFromRecents="true"
             android:taskAffinity="" />
-        <activity
-            android:name="com.narcis.application.presentation.connection.profile.SocksSettingsActivity"
-            android:configChanges="uiMode" />
-        <activity
-            android:name="com.narcis.application.presentation.connection.profile.HttpSettingsActivity"
-            android:configChanges="uiMode" />
-        <activity
-            android:name="com.narcis.application.presentation.connection.profile.ShadowsocksSettingsActivity"
-            android:configChanges="uiMode" />
-        <activity
-            android:name="com.narcis.application.presentation.connection.profile.ShadowsocksRSettingsActivity"
-            android:configChanges="uiMode" />
-        <activity
-            android:name="com.narcis.application.presentation.connection.profile.VMessSettingsActivity"
-            android:configChanges="uiMode" />
-        <activity
-            android:name="com.narcis.application.presentation.connection.profile.TrojanSettingsActivity"
-            android:configChanges="uiMode" />
-        <activity
-            android:name="com.narcis.application.presentation.connection.profile.TrojanGoSettingsActivity"
-            android:configChanges="uiMode" />
-        <activity
-            android:name="com.narcis.application.presentation.connection.profile.NaiveSettingsActivity"
-            android:configChanges="uiMode" />
-        <activity
-            android:name="com.narcis.application.presentation.connection.profile.HysteriaSettingsActivity"
-            android:configChanges="uiMode" />
-        <activity
-            android:name="com.narcis.application.presentation.connection.profile.SSHSettingsActivity"
-            android:configChanges="uiMode" />
-        <activity
-            android:name="com.narcis.application.presentation.connection.profile.WireGuardSettingsActivity"
-            android:configChanges="uiMode" />
-        <activity
-            android:name="com.narcis.application.presentation.connection.profile.TuicSettingsActivity"
-            android:configChanges="uiMode" />
-        <activity
-            android:name="com.narcis.application.presentation.connection.profile.ChainSettingsActivity"
-            android:configChanges="uiMode" />
-        <activity android:name="com.narcis.application.presentation.connection.ui.SwitchActivity"
-            android:configChanges="uiMode"
-            android:excludeFromRecents="true"
-            android:launchMode="singleInstance"
-            android:theme="@style/Theme.SagerNet.Dialog"
-            />
-        <activity
-            android:name="com.narcis.application.presentation.uiActivity.AssetsActivity"
-            android:configChanges="uiMode" />
-<!--        <activity-->
-<!--            android:name="moe.matsuri.nya.neko.NekoSettingActivity"-->
-<!--            android:configChanges="uiMode" />-->
-<!--        <activity-->
-<!--            android:name="io.nekohasekai.sagernet.ui.GroupSettingsActivity"-->
-<!--            android:configChanges="uiMode" />-->
-<!--        <activity-->
-<!--            android:name="io.nekohasekai.sagernet.ui.RouteSettingsActivity"-->
-<!--            android:configChanges="uiMode" />-->
-<!--        <activity-->
-<!--            android:name="io.nekohasekai.sagernet.ui.AssetsActivity"-->
-<!--            android:configChanges="uiMode" />-->
-<!--        <activity-->
-<!--            android:name="io.nekohasekai.sagernet.ui.AppListActivity"-->
-<!--            android:configChanges="uiMode" />-->
 
         <service
             android:name="io.nekohasekai.sagernet.bg.ProxyService"

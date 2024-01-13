@@ -36,20 +36,6 @@ import moe.matsuri.nya.Protocols
 import moe.matsuri.nya.neko.haveStandardLink
 import io.nekohasekai.sagernet.ktx.isTLS
 import moe.matsuri.nya.neko.shareLink
-import com.narcis.application.presentation.connection.profile.ChainSettingsActivity
-import com.narcis.application.presentation.connection.profile.HttpSettingsActivity
-import com.narcis.application.presentation.connection.profile.HysteriaSettingsActivity
-import com.narcis.application.presentation.connection.profile.NaiveSettingsActivity
-import com.narcis.application.presentation.connection.profile.ProfileSettingsActivity
-import com.narcis.application.presentation.connection.profile.SSHSettingsActivity
-import com.narcis.application.presentation.connection.profile.ShadowsocksRSettingsActivity
-import com.narcis.application.presentation.connection.profile.ShadowsocksSettingsActivity
-import com.narcis.application.presentation.connection.profile.SocksSettingsActivity
-import com.narcis.application.presentation.connection.profile.TrojanGoSettingsActivity
-import com.narcis.application.presentation.connection.profile.TrojanSettingsActivity
-import com.narcis.application.presentation.connection.profile.TuicSettingsActivity
-import com.narcis.application.presentation.connection.profile.VMessSettingsActivity
-import com.narcis.application.presentation.connection.profile.WireGuardSettingsActivity
 import com.esotericsoftware.kryo.io.ByteBufferInput
 import com.esotericsoftware.kryo.io.ByteBufferOutput
 import io.nekohasekai.sagernet.aidl.TrafficStats
@@ -471,32 +457,6 @@ data class ProxyEntity(
             else -> error("Undefined type $type")
         }
         return this
-    }
-
-    fun settingIntent(ctx: Context, isSubscription: Boolean): Intent {
-        return Intent(
-            ctx, when (type) {
-                TYPE_SOCKS -> SocksSettingsActivity::class.java
-                TYPE_HTTP -> HttpSettingsActivity::class.java
-                TYPE_SS -> ShadowsocksSettingsActivity::class.java
-                TYPE_SSR -> ShadowsocksRSettingsActivity::class.java
-                TYPE_VMESS -> VMessSettingsActivity::class.java
-                TYPE_TROJAN -> TrojanSettingsActivity::class.java
-                TYPE_TROJAN_GO -> TrojanGoSettingsActivity::class.java
-                TYPE_NAIVE -> NaiveSettingsActivity::class.java
-                TYPE_HYSTERIA -> HysteriaSettingsActivity::class.java
-                TYPE_SSH -> SSHSettingsActivity::class.java
-                TYPE_WG -> WireGuardSettingsActivity::class.java
-                TYPE_TUIC -> TuicSettingsActivity::class.java
-
-                TYPE_CHAIN -> ChainSettingsActivity::class.java
-//                TYPE_NEKO -> NekoSettingActivity::class.java
-                else -> throw IllegalArgumentException()
-            }
-        ).apply {
-            putExtra(ProfileSettingsActivity.EXTRA_PROFILE_ID, id)
-            putExtra(ProfileSettingsActivity.EXTRA_IS_SUBSCRIPTION, isSubscription)
-        }
     }
 
     @androidx.room.Dao

@@ -28,7 +28,7 @@ import androidx.room.Update
 import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.GroupOrder
 import io.nekohasekai.sagernet.GroupType
-import com.abrnoc.application.presentation.connection.applyDefaultValues
+import com.narcis.application.presentation.connection.applyDefaultValues
 import com.esotericsoftware.kryo.io.ByteBufferInput
 import com.esotericsoftware.kryo.io.ByteBufferOutput
 import io.nekohasekai.sagernet.ftm.Serializable

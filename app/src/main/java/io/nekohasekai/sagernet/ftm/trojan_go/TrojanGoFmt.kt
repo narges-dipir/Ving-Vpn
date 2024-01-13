@@ -27,8 +27,8 @@ import io.nekohasekai.sagernet.ktx.linkBuilder
 import io.nekohasekai.sagernet.ktx.toLink
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.IPv6Mode
-import com.abrnoc.application.presentation.connection.applyDefaultValues
-import com.abrnoc.application.presentation.connection.toStringPretty
+import com.narcis.application.presentation.connection.applyDefaultValues
+import com.narcis.application.presentation.connection.toStringPretty
 import io.nekohasekai.sagernet.ftm.LOCALHOST
 import io.nekohasekai.sagernet.ftm.shadowsocks.fixInvalidParams
 import io.nekohasekai.sagernet.ktx.urlSafe

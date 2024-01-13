@@ -27,8 +27,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.preference.EditTextPreferenceDialogFragmentCompat
 import androidx.preference.PreferenceDialogFragmentCompat
-import com.abrnoc.application.presentation.connection.profile.ShadowsocksSettingsActivity
-import com.abrnoc.application.presentation.connection.profile.TrojanGoSettingsActivity
+import com.narcis.application.presentation.connection.profile.ShadowsocksSettingsActivity
+import com.narcis.application.presentation.connection.profile.TrojanGoSettingsActivity
 import com.github.shadowsocks.plugin.PluginContract
 import com.github.shadowsocks.plugin.PluginManager
 import io.nekohasekai.sagernet.ktx.app

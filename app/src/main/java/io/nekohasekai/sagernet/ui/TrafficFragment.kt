@@ -28,10 +28,10 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.abrnoc.application.presentation.MainActivity
+import com.narcis.application.presentation.MainActivity
 import io.nekohasekai.sagernet.R
-import com.abrnoc.application.presentation.connection.fragment.ToolbarFragment
-import com.abrnoc.application.presentation.connection.runOnDefaultDispatcher
+import com.narcis.application.presentation.connection.fragment.ToolbarFragment
+import com.narcis.application.presentation.connection.runOnDefaultDispatcher
 import com.google.android.material.tabs.TabLayoutMediator
 import io.nekohasekai.sagernet.aidl.AppStats
 import io.nekohasekai.sagernet.databinding.LayoutTrafficBinding

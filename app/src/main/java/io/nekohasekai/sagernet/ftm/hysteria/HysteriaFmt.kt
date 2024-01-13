@@ -24,10 +24,10 @@ import io.nekohasekai.sagernet.ktx.linkBuilder
 import io.nekohasekai.sagernet.ktx.toLink
 import io.nekohasekai.sagernet.ktx.wrapIPV6Host
 import io.nekohasekai.sagernet.ktx.wrapUri
-import com.abrnoc.application.presentation.connection.getBool
-import com.abrnoc.application.presentation.connection.getIntNya
-import com.abrnoc.application.presentation.connection.getStr
-import com.abrnoc.application.presentation.connection.toStringPretty
+import com.narcis.application.presentation.connection.getBool
+import com.narcis.application.presentation.connection.getIntNya
+import com.narcis.application.presentation.connection.getStr
+import com.narcis.application.presentation.connection.toStringPretty
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.ftm.LOCALHOST
 import io.nekohasekai.sagernet.ktx.urlSafe

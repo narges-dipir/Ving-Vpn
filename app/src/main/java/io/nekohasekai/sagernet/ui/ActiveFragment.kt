@@ -27,11 +27,11 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import com.abrnoc.application.presentation.MainActivity
+import com.narcis.application.presentation.MainActivity
 import io.nekohasekai.sagernet.R
-import com.abrnoc.application.presentation.connection.onMainDispatcher
-import com.abrnoc.application.presentation.connection.runOnDefaultDispatcher
-import com.abrnoc.application.presentation.connection.runOnMainDispatcher
+import com.narcis.application.presentation.connection.onMainDispatcher
+import com.narcis.application.presentation.connection.runOnDefaultDispatcher
+import com.narcis.application.presentation.connection.runOnMainDispatcher
 import io.nekohasekai.sagernet.Key
 import io.nekohasekai.sagernet.aidl.AppStats
 import io.nekohasekai.sagernet.database.DataStore

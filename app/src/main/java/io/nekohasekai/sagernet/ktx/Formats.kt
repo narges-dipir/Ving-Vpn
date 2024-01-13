@@ -23,7 +23,7 @@ import moe.matsuri.nya.neko.NekoJSInterface
 import moe.matsuri.nya.neko.NekoPluginManager
 import moe.matsuri.nya.utils.Util
 import moe.matsuri.nya.neko.parseShareLink
-import com.abrnoc.application.presentation.connection.Logs
+import com.narcis.application.presentation.connection.Logs
 import com.google.gson.JsonParser
 import io.nekohasekai.sagernet.ftm.AbstractBean
 import io.nekohasekai.sagernet.ftm.Serializable

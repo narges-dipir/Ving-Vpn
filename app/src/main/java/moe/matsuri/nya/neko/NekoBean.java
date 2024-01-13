@@ -6,7 +6,7 @@ import io.nekohasekai.sagernet.R;
 import io.nekohasekai.sagernet.ftm.AbstractBean;
 import io.nekohasekai.sagernet.ftm.KryoConverters;
 
-import com.abrnoc.application.presentation.connection.Logs;
+import com.narcis.application.presentation.connection.Logs;
 import io.nekohasekai.sagernet.SagerNet;
 import com.esotericsoftware.kryo.io.ByteBufferInput;
 import com.esotericsoftware.kryo.io.ByteBufferOutput;

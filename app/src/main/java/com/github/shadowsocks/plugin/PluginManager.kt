@@ -37,7 +37,7 @@ import android.util.Base64
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import io.nekohasekai.sagernet.R
-import com.abrnoc.application.presentation.connection.Logs
+import com.narcis.application.presentation.connection.Logs
 import io.nekohasekai.sagernet.SagerNet
 import io.nekohasekai.sagernet.bg.BaseService
 import io.nekohasekai.sagernet.ktx.listenForPackageChanges

@@ -9,10 +9,10 @@ import androidx.preference.PreferenceScreen
 import io.nekohasekai.sagernet.BuildConfig
 import moe.matsuri.nya.utils.Util
 import moe.matsuri.nya.utils.JavaUtil
-import com.abrnoc.application.presentation.connection.Logs
-import com.abrnoc.application.presentation.connection.runBlockingOnMainDispatcher
-import com.abrnoc.application.presentation.connection.runOnIoDispatcher
-import com.abrnoc.application.presentation.connection.runOnMainDispatcher
+import com.narcis.application.presentation.connection.Logs
+import com.narcis.application.presentation.connection.runBlockingOnMainDispatcher
+import com.narcis.application.presentation.connection.runOnIoDispatcher
+import com.narcis.application.presentation.connection.runOnMainDispatcher
 import com.takisoft.preferencex.SimpleMenuPreference
 import io.nekohasekai.sagernet.SagerNet
 import io.nekohasekai.sagernet.database.DataStore

@@ -24,9 +24,9 @@ import com.github.shadowsocks.plugin.PluginOptions
 import moe.matsuri.nya.utils.Util
 import io.nekohasekai.sagernet.ktx.linkBuilder
 import io.nekohasekai.sagernet.ktx.toLink
-import com.abrnoc.application.presentation.connection.decodeBase64UrlSafe
-import com.abrnoc.application.presentation.connection.getIntNya
-import com.abrnoc.application.presentation.connection.getStr
+import com.narcis.application.presentation.connection.decodeBase64UrlSafe
+import com.narcis.application.presentation.connection.getIntNya
+import com.narcis.application.presentation.connection.getStr
 import io.nekohasekai.sagernet.ktx.unUrlSafe
 import io.nekohasekai.sagernet.ktx.urlSafe
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull

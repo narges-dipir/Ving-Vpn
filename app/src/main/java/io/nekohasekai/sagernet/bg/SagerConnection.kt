@@ -27,7 +27,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
 import android.os.RemoteException
-import com.abrnoc.application.presentation.connection.runOnMainDispatcher
+import com.narcis.application.presentation.connection.runOnMainDispatcher
 import io.nekohasekai.sagernet.Action
 import io.nekohasekai.sagernet.Key
 import io.nekohasekai.sagernet.aidl.AppStats

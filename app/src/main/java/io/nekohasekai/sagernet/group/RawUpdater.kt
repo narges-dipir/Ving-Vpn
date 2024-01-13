@@ -30,14 +30,14 @@ import io.nekohasekai.sagernet.ktx.isTLS
 import io.nekohasekai.sagernet.ktx.setTLS
 
 import io.nekohasekai.sagernet.database.DataStore
-import com.abrnoc.application.presentation.connection.Logs
+import com.narcis.application.presentation.connection.Logs
 import io.nekohasekai.sagernet.database.ProxyEntity
 import io.nekohasekai.sagernet.database.ProxyGroup
 import io.nekohasekai.sagernet.database.SubscriptionBean
-import com.abrnoc.application.presentation.connection.decodeBase64UrlSafe
-import com.abrnoc.application.presentation.connection.filterIsInstance
-import com.abrnoc.application.presentation.connection.forEach
-import com.abrnoc.application.presentation.connection.parseProxies
+import com.narcis.application.presentation.connection.decodeBase64UrlSafe
+import com.narcis.application.presentation.connection.filterIsInstance
+import com.narcis.application.presentation.connection.forEach
+import com.narcis.application.presentation.connection.parseProxies
 import io.nekohasekai.sagernet.ftm.gson.gson
 import io.nekohasekai.sagernet.ftm.hysteria.parseHysteria
 import io.nekohasekai.sagernet.ftm.shadowsocks.fixInvalidParams

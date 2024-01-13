@@ -19,7 +19,7 @@
 
 package io.nekohasekai.sagernet.database
 
-import com.abrnoc.application.presentation.connection.applyDefaultValues
+import com.narcis.application.presentation.connection.applyDefaultValues
 import io.nekohasekai.sagernet.GroupType
 import io.nekohasekai.sagernet.bg.SubscriptionUpdater
 

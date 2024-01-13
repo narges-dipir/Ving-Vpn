@@ -22,10 +22,10 @@ package io.nekohasekai.sagernet.group
 import android.net.Uri
 import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.ktx.USER_AGENT
-import com.abrnoc.application.presentation.connection.Logs
-import com.abrnoc.application.presentation.connection.applyDefaultValues
-import com.abrnoc.application.presentation.connection.filterIsInstance
-import com.abrnoc.application.presentation.connection.getStr
+import com.narcis.application.presentation.connection.Logs
+import com.narcis.application.presentation.connection.applyDefaultValues
+import com.narcis.application.presentation.connection.filterIsInstance
+import com.narcis.application.presentation.connection.getStr
 import io.nekohasekai.sagernet.ExtraType
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.database.GroupManager

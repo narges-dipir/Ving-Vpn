@@ -30,9 +30,9 @@ import moe.matsuri.nya.neko.NekoBean
 import moe.matsuri.nya.neko.NekoJSInterface
 import moe.matsuri.nya.neko.NekoPluginManager
 import moe.matsuri.nya.neko.updateAllConfig
-import com.abrnoc.application.presentation.connection.Logs
-import com.abrnoc.application.presentation.connection.onMainDispatcher
-import com.abrnoc.application.presentation.connection.runOnMainDispatcher
+import com.narcis.application.presentation.connection.Logs
+import com.narcis.application.presentation.connection.onMainDispatcher
+import com.narcis.application.presentation.connection.runOnMainDispatcher
 import io.nekohasekai.sagernet.SagerNet
 import io.nekohasekai.sagernet.bg.AbstractInstance
 import io.nekohasekai.sagernet.bg.GuardedProcessPool

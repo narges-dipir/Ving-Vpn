@@ -31,7 +31,7 @@ import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.group.GroupUpdater
 import io.nekohasekai.sagernet.database.SagerDatabase
 import io.nekohasekai.sagernet.database.DataStore
-import com.abrnoc.application.presentation.connection.Logs
+import com.narcis.application.presentation.connection.Logs
 import io.nekohasekai.sagernet.ktx.app
 import java.util.concurrent.TimeUnit
 

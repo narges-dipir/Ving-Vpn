@@ -15,7 +15,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Abrnoc Application"
+rootProject.name = "narcis Application"
 include(":app")
 include(":data")
 include(":domain")

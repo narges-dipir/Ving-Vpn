@@ -32,10 +32,10 @@ import android.os.PowerManager
 import android.os.RemoteCallbackList
 import android.os.RemoteException
 import android.widget.Toast
-import com.abrnoc.application.presentation.connection.Logs
-import com.abrnoc.application.presentation.connection.runOnDefaultDispatcher
-import com.abrnoc.application.presentation.connection.runOnMainDispatcher
-import com.abrnoc.application.presentation.utiles.network.PingUtil
+import com.narcis.application.presentation.connection.Logs
+import com.narcis.application.presentation.connection.runOnDefaultDispatcher
+import com.narcis.application.presentation.connection.runOnMainDispatcher
+import com.narcis.application.presentation.utiles.network.PingUtil
 import io.nekohasekai.sagernet.Action
 import io.nekohasekai.sagernet.BootReceiver
 import io.nekohasekai.sagernet.R

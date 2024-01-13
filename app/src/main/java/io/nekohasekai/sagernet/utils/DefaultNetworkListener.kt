@@ -29,7 +29,7 @@ import android.net.NetworkRequest
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
-import com.abrnoc.application.presentation.connection.Logs
+import com.narcis.application.presentation.connection.Logs
 import io.nekohasekai.sagernet.SagerNet
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers

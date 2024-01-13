@@ -7,7 +7,7 @@ plugins {
 
 //setupApp()
 android {
-    namespace = "com.abrnoc.data"
+    namespace = "com.narcis.data"
     compileSdk = 34
 
     defaultConfig {

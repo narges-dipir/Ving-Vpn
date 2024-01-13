@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">KeepitOn Application</string>
+    <string name="app_name">Ving Application</string>
     <!-- bottom tabs -->
     <string name="home">Home</string>
     <string name="profile">Profile</string>

@@ -32,7 +32,7 @@
             app:indicatorColor="?colorMaterial100"
             app:layout_anchor="@+id/fab"
             app:layout_anchorGravity="center"
-            app:layout_behavior="com.abrnoc.application.presentation.connection.FabProgressBehavior"
+            app:layout_behavior="com.narcis.application.presentation.connection.FabProgressBehavior"
             app:trackCornerRadius="@dimen/mtrl_progress_track_thickness"
             app:trackThickness="8dp" />
 
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/main_icon"
             />
-        <com.abrnoc.application.presentation.connection.ServiceButton
+        <com.narcis.application.presentation.connection.ServiceButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -53,7 +53,7 @@
             app:pressedTranslationZ="6dp"
             app:srcCompat="@drawable/ic_service_idle" />
 
-        <com.abrnoc.application.presentation.connection.StatsBar
+        <com.narcis.application.presentation.connection.StatsBar
             android:id="@+id/stats"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
 
             </LinearLayout>
 
-        </com.abrnoc.application.presentation.connection.StatsBar>
+        </com.narcis.application.presentation.connection.StatsBar>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

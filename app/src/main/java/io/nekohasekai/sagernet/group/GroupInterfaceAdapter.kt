@@ -19,12 +19,12 @@
 
 package io.nekohasekai.sagernet.group
 
-import com.abrnoc.application.presentation.MainActivity
+import com.narcis.application.presentation.MainActivity
 import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.database.GroupManager
 import io.nekohasekai.sagernet.database.ProxyGroup
-import com.abrnoc.application.presentation.connection.onMainDispatcher
-import com.abrnoc.application.presentation.connection.runOnMainDispatcher
+import com.narcis.application.presentation.connection.onMainDispatcher
+import com.narcis.application.presentation.connection.runOnMainDispatcher
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.delay
 import kotlin.coroutines.resume

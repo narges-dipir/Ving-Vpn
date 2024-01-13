@@ -21,7 +21,7 @@
 package com.github.shadowsocks.net
 
 import android.net.LocalSocket
-import com.abrnoc.application.presentation.connection.Logs
+import com.narcis.application.presentation.connection.Logs
 import kotlinx.coroutines.*
 import java.io.File
 

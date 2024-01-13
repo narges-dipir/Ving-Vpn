@@ -21,12 +21,12 @@ package io.nekohasekai.sagernet.ftm.v2ray
 
 import io.nekohasekai.sagernet.ktx.linkBuilder
 import io.nekohasekai.sagernet.ktx.toLink
-import com.abrnoc.application.presentation.connection.Logs
+import com.narcis.application.presentation.connection.Logs
 import moe.matsuri.nya.utils.NGUtil
-import com.abrnoc.application.presentation.connection.decodeBase64UrlSafe
-import com.abrnoc.application.presentation.connection.formatObject
-import com.abrnoc.application.presentation.connection.getIntNya
-import com.abrnoc.application.presentation.connection.getStr
+import com.narcis.application.presentation.connection.decodeBase64UrlSafe
+import com.narcis.application.presentation.connection.formatObject
+import com.narcis.application.presentation.connection.getIntNya
+import com.narcis.application.presentation.connection.getStr
 import com.google.gson.Gson
 import io.nekohasekai.sagernet.ftm.trojan.TrojanBean
 import io.nekohasekai.sagernet.ktx.pathSafe

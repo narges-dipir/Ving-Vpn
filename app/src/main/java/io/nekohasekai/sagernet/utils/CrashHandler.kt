@@ -22,7 +22,7 @@ import android.annotation.SuppressLint
 import android.os.Build
 import android.util.Log
 import io.nekohasekai.sagernet.BuildConfig
-import com.abrnoc.application.presentation.connection.Logs
+import com.narcis.application.presentation.connection.Logs
 import io.nekohasekai.sagernet.database.preference.PublicDatabase
 import java.io.BufferedReader
 import java.io.IOException

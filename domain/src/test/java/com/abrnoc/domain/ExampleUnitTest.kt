@@ -1,4 +1,4 @@
-package com.abrnoc.domain
+package com.narcis.domain
 
 import org.junit.Test
 

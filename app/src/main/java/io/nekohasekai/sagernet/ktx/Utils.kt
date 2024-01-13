@@ -44,10 +44,10 @@ import androidx.preference.Preference
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import io.nekohasekai.sagernet.BuildConfig
-import com.abrnoc.application.presentation.MainActivity
+import com.narcis.application.presentation.MainActivity
 import io.nekohasekai.sagernet.R
 import moe.matsuri.nya.utils.NGUtil
-import com.abrnoc.application.presentation.connection.profile.ThemedActivity
+import com.narcis.application.presentation.connection.profile.ThemedActivity
 import io.nekohasekai.sagernet.SagerNet
 import io.nekohasekai.sagernet.database.DataStore
 import kotlinx.coroutines.Dispatchers

@@ -6,8 +6,8 @@ import android.os.Build
 import androidx.core.content.FileProvider
 import io.nekohasekai.sagernet.BuildConfig
 import io.nekohasekai.sagernet.R
-import com.abrnoc.application.presentation.connection.Logs
-import com.abrnoc.application.presentation.connection.use
+import com.narcis.application.presentation.connection.Logs
+import com.narcis.application.presentation.connection.use
 import io.nekohasekai.sagernet.ktx.app
 import io.nekohasekai.sagernet.utils.CrashHandler
 import libcore.Libcore

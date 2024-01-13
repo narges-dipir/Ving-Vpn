@@ -36,8 +36,8 @@ import io.nekohasekai.sagernet.ftm.tuic.TuicBean;
 import io.nekohasekai.sagernet.ftm.v2ray.VMessBean;
 import io.nekohasekai.sagernet.ftm.wireguard.WireGuardBean;
 import moe.matsuri.nya.utils.JavaUtil;
-import com.abrnoc.application.presentation.connection.KryosKt;
-import com.abrnoc.application.presentation.connection.Logs;
+import com.narcis.application.presentation.connection.KryosKt;
+import com.narcis.application.presentation.connection.Logs;
 import io.nekohasekai.sagernet.database.SubscriptionBean;
 
 import com.esotericsoftware.kryo.KryoException;

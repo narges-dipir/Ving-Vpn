@@ -19,7 +19,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.abrnoc.application"
+        applicationId = "com.narcis.application"
         minSdk = 26
         targetSdk = 32
         versionCode = 1

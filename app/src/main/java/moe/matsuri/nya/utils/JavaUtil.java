@@ -9,7 +9,7 @@ import android.text.TextUtils;
 import android.webkit.WebView;
 
 import io.nekohasekai.sagernet.BuildConfig;
-import com.abrnoc.application.presentation.connection.Logs;
+import com.narcis.application.presentation.connection.Logs;
 
 import java.io.File;
 import java.io.RandomAccessFile;

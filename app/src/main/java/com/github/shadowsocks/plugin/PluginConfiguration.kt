@@ -21,7 +21,7 @@
 
 package com.github.shadowsocks.plugin
 
-import com.abrnoc.application.presentation.connection.Logs
+import com.narcis.application.presentation.connection.Logs
 import io.nekohasekai.sagernet.utils.Commandline
 import java.util.*
 

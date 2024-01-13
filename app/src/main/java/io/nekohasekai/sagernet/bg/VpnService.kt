@@ -18,9 +18,9 @@ import android.system.Os
 import androidx.annotation.RequiresApi
 import io.nekohasekai.sagernet.R
 import moe.matsuri.nya.neko.needBypassRootUid
-import com.abrnoc.application.presentation.connection.Logs
-import com.abrnoc.application.presentation.connection.VpnRequestActivity
-import com.abrnoc.application.presentation.connection.runOnDefaultDispatcher
+import com.narcis.application.presentation.connection.Logs
+import com.narcis.application.presentation.connection.VpnRequestActivity
+import com.narcis.application.presentation.connection.runOnDefaultDispatcher
 import com.github.shadowsocks.net.ConcurrentLocalSocketListener
 import io.nekohasekai.sagernet.IPv6Mode
 import io.nekohasekai.sagernet.Key

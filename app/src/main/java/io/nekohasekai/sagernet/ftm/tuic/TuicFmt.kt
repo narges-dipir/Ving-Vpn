@@ -20,7 +20,7 @@ package io.nekohasekai.sagernet.ftm.tuic
 
 import moe.matsuri.nya.neko.Plugins
 import io.nekohasekai.sagernet.ktx.isIpAddress
-import com.abrnoc.application.presentation.connection.toStringPretty
+import com.narcis.application.presentation.connection.toStringPretty
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.ftm.LOCALHOST
 import kotlinx.coroutines.Dispatchers

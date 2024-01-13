@@ -22,8 +22,8 @@ package io.nekohasekai.sagernet.group
 import io.nekohasekai.sagernet.R
 import io.nekohasekai.sagernet.ktx.isIpAddress
 import io.nekohasekai.sagernet.ktx.isTLS
-import com.abrnoc.application.presentation.connection.Logs
-import com.abrnoc.application.presentation.connection.runOnDefaultDispatcher
+import com.narcis.application.presentation.connection.Logs
+import com.narcis.application.presentation.connection.runOnDefaultDispatcher
 import io.nekohasekai.sagernet.*
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.database.GroupManager

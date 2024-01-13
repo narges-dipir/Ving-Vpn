@@ -5,7 +5,7 @@ import io.nekohasekai.sagernet.bg.BaseService
 import io.nekohasekai.sagernet.database.DataStore
 import io.nekohasekai.sagernet.utils.PackageCache
 import io.nekohasekai.sagernet.SagerNet
-import com.abrnoc.application.presentation.connection.forEach
+import com.narcis.application.presentation.connection.forEach
 import okhttp3.internal.closeQuietly
 import org.json.JSONObject
 import java.io.File

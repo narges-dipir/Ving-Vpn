@@ -27,7 +27,7 @@ import android.net.LocalSocketAddress
 import android.system.ErrnoException
 import android.system.Os
 import android.system.OsConstants
-import com.abrnoc.application.presentation.connection.Logs
+import com.narcis.application.presentation.connection.Logs
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.onFailure

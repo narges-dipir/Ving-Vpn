@@ -28,7 +28,7 @@ import android.system.Os
 import android.system.OsConstants
 import androidx.annotation.MainThread
 import io.nekohasekai.sagernet.utils.Commandline
-import com.abrnoc.application.presentation.connection.Logs
+import com.narcis.application.presentation.connection.Logs
 import io.nekohasekai.sagernet.SagerNet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi

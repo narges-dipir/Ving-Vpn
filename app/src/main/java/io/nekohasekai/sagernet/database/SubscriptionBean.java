@@ -23,7 +23,7 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-import com.abrnoc.application.presentation.connection.KryosKt;
+import com.narcis.application.presentation.connection.KryosKt;
 import com.esotericsoftware.kryo.io.ByteBufferInput;
 import com.esotericsoftware.kryo.io.ByteBufferOutput;
 

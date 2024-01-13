@@ -21,9 +21,9 @@ package moe.matsuri.nya.neko
 
 import moe.matsuri.nya.Protocols
 import io.nekohasekai.sagernet.database.DataStore
-import com.abrnoc.application.presentation.connection.Logs
-import com.abrnoc.application.presentation.connection.getStr
-import com.abrnoc.application.presentation.connection.runOnIoDispatcher
+import com.narcis.application.presentation.connection.Logs
+import com.narcis.application.presentation.connection.getStr
+import com.narcis.application.presentation.connection.runOnIoDispatcher
 import libcore.Libcore
 import org.json.JSONObject
 import kotlin.coroutines.resume

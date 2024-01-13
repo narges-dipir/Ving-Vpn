@@ -26,11 +26,11 @@ import com.github.shadowsocks.plugin.PluginOptions
 import io.nekohasekai.sagernet.database.SagerDatabase
 import io.nekohasekai.sagernet.ktx.USER_AGENT
 import io.nekohasekai.sagernet.ExtraType
-import com.abrnoc.application.presentation.connection.Logs
+import com.narcis.application.presentation.connection.Logs
 import io.nekohasekai.sagernet.database.ProxyEntity
 import io.nekohasekai.sagernet.database.ProxyGroup
 import io.nekohasekai.sagernet.database.SubscriptionBean
-import com.abrnoc.application.presentation.connection.filterIsInstance
+import com.narcis.application.presentation.connection.filterIsInstance
 import io.nekohasekai.sagernet.ftm.shadowsocks.fixInvalidParams
 import io.nekohasekai.sagernet.ktx.app
 import io.nekohasekai.sagernet.ktx.applyDefaultValues

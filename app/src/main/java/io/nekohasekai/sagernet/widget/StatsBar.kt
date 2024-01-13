@@ -31,9 +31,9 @@ import androidx.appcompat.widget.TooltipCompat
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.whenStarted
-import com.abrnoc.application.presentation.MainActivity
+import com.narcis.application.presentation.MainActivity
 import io.nekohasekai.sagernet.R
-import com.abrnoc.application.presentation.connection.runOnDefaultDispatcher
+import com.narcis.application.presentation.connection.runOnDefaultDispatcher
 import com.google.android.material.bottomappbar.BottomAppBar
 import io.nekohasekai.sagernet.bg.BaseService
 import io.nekohasekai.sagernet.ktx.app

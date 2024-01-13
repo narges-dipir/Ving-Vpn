@@ -63,7 +63,7 @@
         android:roundIcon="@drawable/main_icon"
         android:supportsRtl="true"
         android:banner="@drawable/main_icon"
-        android:theme="@style/Theme.AbrnocApplication"
+        android:theme="@style/Theme.narcisApplication"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
 
@@ -76,7 +76,7 @@
             android:resource="@xml/shortcuts" />
 
         <activity
-            android:name="com.abrnoc.application.presentation.MainActivity"
+            android:name="com.narcis.application.presentation.MainActivity"
             android:configChanges="uiMode"
             android:exported="true"
             android:windowSoftInputMode="adjustResize"
@@ -161,56 +161,56 @@
         </activity>
 
         <activity
-            android:name="com.abrnoc.application.presentation.connection.VpnRequestActivity"
+            android:name="com.narcis.application.presentation.connection.VpnRequestActivity"
             android:excludeFromRecents="true"
             android:taskAffinity="" />
         <activity
-            android:name="com.abrnoc.application.presentation.connection.profile.SocksSettingsActivity"
+            android:name="com.narcis.application.presentation.connection.profile.SocksSettingsActivity"
             android:configChanges="uiMode" />
         <activity
-            android:name="com.abrnoc.application.presentation.connection.profile.HttpSettingsActivity"
+            android:name="com.narcis.application.presentation.connection.profile.HttpSettingsActivity"
             android:configChanges="uiMode" />
         <activity
-            android:name="com.abrnoc.application.presentation.connection.profile.ShadowsocksSettingsActivity"
+            android:name="com.narcis.application.presentation.connection.profile.ShadowsocksSettingsActivity"
             android:configChanges="uiMode" />
         <activity
-            android:name="com.abrnoc.application.presentation.connection.profile.ShadowsocksRSettingsActivity"
+            android:name="com.narcis.application.presentation.connection.profile.ShadowsocksRSettingsActivity"
             android:configChanges="uiMode" />
         <activity
-            android:name="com.abrnoc.application.presentation.connection.profile.VMessSettingsActivity"
+            android:name="com.narcis.application.presentation.connection.profile.VMessSettingsActivity"
             android:configChanges="uiMode" />
         <activity
-            android:name="com.abrnoc.application.presentation.connection.profile.TrojanSettingsActivity"
+            android:name="com.narcis.application.presentation.connection.profile.TrojanSettingsActivity"
             android:configChanges="uiMode" />
         <activity
-            android:name="com.abrnoc.application.presentation.connection.profile.TrojanGoSettingsActivity"
+            android:name="com.narcis.application.presentation.connection.profile.TrojanGoSettingsActivity"
             android:configChanges="uiMode" />
         <activity
-            android:name="com.abrnoc.application.presentation.connection.profile.NaiveSettingsActivity"
+            android:name="com.narcis.application.presentation.connection.profile.NaiveSettingsActivity"
             android:configChanges="uiMode" />
         <activity
-            android:name="com.abrnoc.application.presentation.connection.profile.HysteriaSettingsActivity"
+            android:name="com.narcis.application.presentation.connection.profile.HysteriaSettingsActivity"
             android:configChanges="uiMode" />
         <activity
-            android:name="com.abrnoc.application.presentation.connection.profile.SSHSettingsActivity"
+            android:name="com.narcis.application.presentation.connection.profile.SSHSettingsActivity"
             android:configChanges="uiMode" />
         <activity
-            android:name="com.abrnoc.application.presentation.connection.profile.WireGuardSettingsActivity"
+            android:name="com.narcis.application.presentation.connection.profile.WireGuardSettingsActivity"
             android:configChanges="uiMode" />
         <activity
-            android:name="com.abrnoc.application.presentation.connection.profile.TuicSettingsActivity"
+            android:name="com.narcis.application.presentation.connection.profile.TuicSettingsActivity"
             android:configChanges="uiMode" />
         <activity
-            android:name="com.abrnoc.application.presentation.connection.profile.ChainSettingsActivity"
+            android:name="com.narcis.application.presentation.connection.profile.ChainSettingsActivity"
             android:configChanges="uiMode" />
-        <activity android:name="com.abrnoc.application.presentation.connection.ui.SwitchActivity"
+        <activity android:name="com.narcis.application.presentation.connection.ui.SwitchActivity"
             android:configChanges="uiMode"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
             android:theme="@style/Theme.SagerNet.Dialog"
             />
         <activity
-            android:name="com.abrnoc.application.presentation.uiActivity.AssetsActivity"
+            android:name="com.narcis.application.presentation.uiActivity.AssetsActivity"
             android:configChanges="uiMode" />
 <!--        <activity-->
 <!--            android:name="moe.matsuri.nya.neko.NekoSettingActivity"-->

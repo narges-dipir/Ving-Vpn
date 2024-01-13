@@ -20,8 +20,8 @@
 package io.nekohasekai.sagernet.ftm.shadowsocksr
 
 import moe.matsuri.nya.utils.Util
-import com.abrnoc.application.presentation.connection.applyDefaultValues
-import com.abrnoc.application.presentation.connection.decodeBase64UrlSafe
+import com.narcis.application.presentation.connection.applyDefaultValues
+import com.narcis.application.presentation.connection.decodeBase64UrlSafe
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.json.JSONObject
 import java.util.*

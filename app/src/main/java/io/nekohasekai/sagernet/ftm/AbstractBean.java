@@ -26,7 +26,7 @@ import io.nekohasekai.sagernet.ftm.gson.GsonsKt;
 import io.nekohasekai.sagernet.ktx.NetsKt;
 
 import moe.matsuri.nya.utils.JavaUtil;
-import com.abrnoc.application.presentation.connection.KryosKt;
+import com.narcis.application.presentation.connection.KryosKt;
 import com.esotericsoftware.kryo.io.ByteBufferInput;
 import com.esotericsoftware.kryo.io.ByteBufferOutput;
 

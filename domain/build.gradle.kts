@@ -6,7 +6,7 @@ plugins {
 }
 //setupApp()
 android {
-    namespace = "com.abrnoc.domain"
+    namespace = "com.narcis.domain"
     compileSdk = 34
 
     defaultConfig {

@@ -20,8 +20,8 @@
 package io.nekohasekai.sagernet.bg.test
 
 
-import com.abrnoc.application.presentation.connection.Logs
-import com.abrnoc.application.presentation.connection.runOnDefaultDispatcher
+import com.narcis.application.presentation.connection.Logs
+import com.narcis.application.presentation.connection.runOnDefaultDispatcher
 import io.nekohasekai.sagernet.BuildConfig
 import io.nekohasekai.sagernet.bg.GuardedProcessPool
 import io.nekohasekai.sagernet.bg.proto.V2RayInstance

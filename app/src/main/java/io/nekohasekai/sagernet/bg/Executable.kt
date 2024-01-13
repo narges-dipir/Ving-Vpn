@@ -25,7 +25,7 @@ import android.system.ErrnoException
 import android.system.Os
 import android.system.OsConstants
 import android.text.TextUtils
-import com.abrnoc.application.presentation.connection.Logs
+import com.narcis.application.presentation.connection.Logs
 import java.io.File
 import java.io.IOException
 

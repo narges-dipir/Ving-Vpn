@@ -7,7 +7,7 @@ import android.content.Intent
 import android.net.Uri
 import android.text.Editable
 import android.util.Base64
-import com.abrnoc.application.presentation.connection.Logs
+import com.narcis.application.presentation.connection.Logs
 import java.net.URLDecoder
 import java.net.URLEncoder
 import java.util.UUID

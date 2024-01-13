@@ -41,7 +41,7 @@
             app:title="@string/group_subscription_link"
             app:useSimpleSummaryProvider="true" />
 
-        <com.abrnoc.application.connection.sagernet.widget.OOCv1TokenPreference
+        <com.narcis.application.connection.sagernet.widget.OOCv1TokenPreference
             app:icon="@drawable/ic_baseline_vpn_key_24"
             app:key="subscriptionToken"
             app:title="@string/ooc_subscription_token"
@@ -69,7 +69,7 @@
             app:key="subscriptionUpdateWhenConnectedOnly"
             app:summary="@string/update_when_connected_only_sum"
             app:title="@string/update_when_connected_only" />
-        <com.abrnoc.application.connection.sagernet.widget.UserAgentPreference
+        <com.narcis.application.connection.sagernet.widget.UserAgentPreference
             app:icon="@drawable/ic_baseline_grid_3x3_24"
             app:key="subscriptionUserAgent"
             app:title="@string/subscription_user_agent"

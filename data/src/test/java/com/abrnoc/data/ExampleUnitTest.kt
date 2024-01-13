@@ -1,4 +1,4 @@
-package com.abrnoc.data
+package com.narcis.data
 
 import org.junit.Test
 

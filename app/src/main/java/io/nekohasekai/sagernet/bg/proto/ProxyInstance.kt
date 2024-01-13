@@ -19,7 +19,7 @@
 
 package io.nekohasekai.sagernet.bg.proto
 
-import com.abrnoc.application.presentation.connection.Logs
+import com.narcis.application.presentation.connection.Logs
 import io.nekohasekai.sagernet.bg.BaseService
 import io.nekohasekai.sagernet.database.ProxyEntity
 import io.nekohasekai.sagernet.database.SagerDatabase

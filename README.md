@@ -5,3 +5,9 @@
 
 # Ving Vpn
 a Restful Matsuri-based vpn with login and sign up flow, Multi module, view with compose, data persistance with dataStore and Retrofit.
+
+# Flow of the application
+
+first there is two greeting screens :
+
+

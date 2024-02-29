@@ -25,5 +25,6 @@ if you have an account (we assume that you do), the screen that would be navigat
 
 the main connection page with loading : 
 
-![photo_2024-02-17 22 07 49](https://github.com/narcis-dpr/Ving-Vpn/assets/29674637/85575fe5-4486-469a-a2fd-a4936ac8b572)
+
+<img src="https://github.com/narcis-dpr/Ving-Vpn/assets/29674637/85575fe5-4486-469a-a2fd-a4936ac8b572" width="200" height="400">
 
